@@ -5,13 +5,16 @@ Rose Designs is a browser-based room designer for planning, styling, and present
 The app now runs as a small static app shell instead of one giant inlined page:
 - `rose-designs.html` is the document shell
 - `styles/app.css` holds the visual system
-- `scripts/app.js` holds the planner/runtime logic
-- `data/asset-manifest.json` adds structured catalog metadata for collections and room recommendations
+- `scripts/app.js` is the module bootstrap
+- `scripts/state.js`, `scripts/storage.js`, `scripts/catalog.js`, `scripts/planner2d.js`, `scripts/planner3d.js`, `scripts/walkthrough.js`, `scripts/export.js`, and `scripts/ui.js` split the runtime into focused static modules
+- `data/asset-manifest.json` is the source of truth for the catalog taxonomy, collections, and future thumbnail wiring
 
 It includes:
 - 2D room drawing with walls, doors, windows, closets, partitions, and measurements
 - 3D room viewing with orbit and walk modes
+- polished local walkthrough presets: `Dollhouse`, `Stroll`, `Corner Reveal`, `Before / After Flythrough`, and `Romantic Reveal`
 - furniture placement with multi-select, copy/paste, snap-to-grid, and finish colors
+- premium catalog browsing with stronger category taxonomy, collection filters, favorites, recents, and graceful thumbnail placeholders
 - existing-room redesign planning with `keep / move / replace / remove`
 - option-based redesign workflows with notes, thumbnails, and comparison views
 - export tools for PNGs, comparison sheets, summary sheets, and client presentation PDFs
@@ -40,7 +43,15 @@ Open the folder and serve it with any simple static server.
 
 - `rose-designs.html` - document shell
 - `styles/app.css` - extracted UI styling
-- `scripts/app.js` - extracted planner/runtime code
+- `scripts/app.js` - module bootstrap loader
+- `scripts/state.js` - shared state and planner model helpers
+- `scripts/storage.js` - IndexedDB/local profile persistence and catalog/storage utilities
+- `scripts/catalog.js` - manifest-backed catalog, picker, and furniture-side props
+- `scripts/planner2d.js` - 2D plan rendering and editor interactions
+- `scripts/planner3d.js` - 3D scene, camera behavior, and walkthrough presets
+- `scripts/walkthrough.js` - emotional layer, self-test boot, and guided story behavior
+- `scripts/export.js` - PNG, summary, comparison, and PDF export
+- `scripts/ui.js` - home/editor shell behavior and compare state
 - `data/asset-manifest.json` - structured asset metadata
 - `assets/` - models and supporting art assets
 - `package.json` - local Playwright dependency for QA
@@ -69,3 +80,5 @@ http://127.0.0.1:8123/rose-designs.html#selftest
 - stronger floor and furniture rendering for clearer visual contrast
 - profile-aware local persistence for Rose and Marco
 - collection-aware asset browsing with manifest-backed catalog metadata
+- category-first premium picker with favorites, recents, collection chips, and thumbnail-ready cards
+- smoother 3D camera behavior with double-click focus and walkthrough presets

@@ -363,4 +363,38 @@ input,select{font-family:var(--fb)}
   .cw{position:relative!important;overflow:visible!important;height:auto!important;min-height:600px}
   #edCan{position:relative!important}
 }
-</style>
+.catalog-overlay{position:fixed;inset:0;z-index:3000;display:flex;align-items:flex-end;justify-content:center;background:rgba(41,31,28,.28);backdrop-filter:blur(8px)}
+.catalog-sheet{background:linear-gradient(180deg,#fbf8f3 0%,#f3ede4 100%);border-radius:28px 28px 0 0;padding:14px 16px 26px;width:100%;max-width:540px;max-height:88vh;overflow:auto;box-shadow:0 -24px 64px rgba(55,38,33,.18);animation:su .2s ease}
+.catalog-grabber{width:34px;height:4px;border-radius:999px;background:rgba(121,96,92,.18);margin:2px auto 14px}
+.catalog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.catalog-heading{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--rose-d)}
+.catalog-copy{font-size:11px;line-height:1.5;color:var(--taupe);max-width:330px}
+.catalog-search{width:100%;padding:13px 14px;border-radius:16px;border:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.88);box-shadow:var(--sh);font-size:12px;outline:none}
+.catalog-chip-row{display:flex;gap:8px;overflow:auto;padding:10px 0 2px}
+.catalog-chip-row-alt{padding-top:8px}
+.catalog-section-title{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--taupe);margin:14px 0 8px}
+.catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.catalog-grid.compact{grid-template-columns:repeat(2,minmax(0,1fr))}
+.catalog-card{position:relative;display:flex;flex-direction:column;gap:10px;align-items:flex-start;text-align:left;padding:10px;border-radius:18px;border:1px solid rgba(76,57,49,.08);background:rgba(255,255,255,.88);box-shadow:0 14px 30px rgba(73,51,45,.08);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+.catalog-card:hover{transform:translateY(-1px);box-shadow:0 18px 34px rgba(73,51,45,.12);border-color:rgba(150,113,104,.16)}
+.catalog-card.compact{padding:10px 10px 11px}
+.catalog-thumb{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1.28;border-radius:14px;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.65)}
+.catalog-thumb::after{content:"";position:absolute;inset:auto 10% 8% 10%;height:18%;background:radial-gradient(circle at center,rgba(69,50,44,.16),transparent 70%)}
+.catalog-thumb-mark{position:relative;z-index:1;font-size:28px;font-weight:700;color:rgba(74,53,48,.78);letter-spacing:.08em}
+.catalog-thumb-media{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat}
+.catalog-meta{display:flex;flex-direction:column;gap:4px;min-width:0}
+.catalog-title{font-size:11px;font-weight:700;color:var(--esp);line-height:1.35}
+.catalog-sub{font-size:9px;color:var(--taupe);letter-spacing:.02em}
+.catalog-fav{position:absolute;top:10px;right:10px;display:grid;place-items:center;width:26px;height:26px;border-radius:999px;background:rgba(255,255,255,.74);backdrop-filter:blur(8px);font-size:12px;color:rgba(127,101,96,.6);box-shadow:0 8px 18px rgba(58,40,35,.12)}
+.catalog-fav.active{color:#c38c8a;background:rgba(255,247,245,.92)}
+.catalog-empty{display:none;margin-top:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.78);font-size:11px;color:var(--taupe);text-align:center}
+.tour-tray{position:absolute;left:12px;right:12px;bottom:16px;z-index:66;display:flex;gap:10px;align-items:flex-end;pointer-events:none}
+.tour-panel{margin-left:auto;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;max-width:min(560px,72vw);padding:12px;border-radius:18px;background:rgba(250,247,242,.92);box-shadow:var(--shl);pointer-events:auto}
+.tour-panel .mini-chip{padding:9px 12px;font-size:9px}
+@media (max-width:760px){
+  .catalog-sheet{max-width:none;border-radius:24px 24px 0 0}
+  .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .catalog-grid.compact{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tour-tray{left:10px;right:10px;bottom:12px}
+  .tour-panel{max-width:none;width:100%;justify-content:flex-start}
+}
