@@ -5,7 +5,7 @@
     "category": "Beds",
     "subcategory": "bed",
     "modelPath": "./assets/models/bed.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/bed.png",
     "defaultScale": 1,
     "tags": [
       "soft-romantic"
@@ -23,7 +23,7 @@
     "category": "Beds",
     "subcategory": "bed",
     "modelPath": "./assets/models/bed_king.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/bed_king.png",
     "defaultScale": 1,
     "tags": [
       "soft-romantic"
@@ -41,7 +41,7 @@
     "category": "Beds",
     "subcategory": "bed",
     "modelPath": "./assets/models/bed_twin.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/bed_twin.png",
     "defaultScale": 1,
     "tags": [
       "soft-romantic"
@@ -59,7 +59,7 @@
     "category": "Seating",
     "subcategory": "bench",
     "modelPath": "./assets/models/bench.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/bench.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -78,7 +78,7 @@
     "category": "Openings",
     "subcategory": "blinds",
     "modelPath": "./assets/models/blinds.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/blinds.png",
     "defaultScale": 1,
     "tags": [
       "tailored"
@@ -98,7 +98,7 @@
     "category": "Storage",
     "subcategory": "bookcase",
     "modelPath": "./assets/models/bookcase_books.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/bookcase_books.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -114,10 +114,10 @@
   {
     "id": "bookshelf",
     "name": "Bookshelf",
-    "category": "Decor",
+    "category": "Storage",
     "subcategory": "bookshelf",
     "modelPath": "./assets/models/bookshelf.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/bookshelf.png",
     "defaultScale": 1,
     "tags": [
       "tailored"
@@ -136,7 +136,7 @@
     "category": "Beds",
     "subcategory": "bunk",
     "modelPath": "./assets/models/bunk_bed.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/bunk_bed.png",
     "defaultScale": 1,
     "tags": [
       "soft-romantic"
@@ -154,7 +154,7 @@
     "category": "Storage",
     "subcategory": "cabinet",
     "modelPath": "./assets/models/cabinet.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/cabinet.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -172,7 +172,7 @@
     "category": "Seating",
     "subcategory": "chair",
     "modelPath": "./assets/models/chair.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/chair.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -190,7 +190,7 @@
     "category": "Seating",
     "subcategory": "chair",
     "modelPath": "./assets/models/chair_office.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/chair_office.png",
     "defaultScale": 1,
     "tags": [
       "tailored"
@@ -209,7 +209,7 @@
     "category": "Storage",
     "subcategory": "closet",
     "modelPath": "./assets/models/closet_short.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/closet_short.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -227,7 +227,7 @@
     "category": "Storage",
     "subcategory": "closet",
     "modelPath": "./assets/models/closet_tall.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/closet_tall.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -245,7 +245,7 @@
     "category": "Storage",
     "subcategory": "console",
     "modelPath": "./assets/models/console_low.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/console_low.png",
     "defaultScale": 1,
     "tags": [
       "quiet-luxury"
@@ -263,7 +263,7 @@
     "category": "Openings",
     "subcategory": "curtains",
     "modelPath": "./assets/models/curtains.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/curtains.png",
     "defaultScale": 1,
     "tags": [
       "soft-romantic"
@@ -283,7 +283,7 @@
     "category": "Tables",
     "subcategory": "desk",
     "modelPath": "./assets/models/desk.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/desk.png",
     "defaultScale": 1,
     "tags": [
       "tailored"
@@ -302,7 +302,7 @@
     "category": "Tables",
     "subcategory": "dining",
     "modelPath": "./assets/models/dining_table.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/dining_table.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -321,7 +321,7 @@
     "category": "Openings",
     "subcategory": "door",
     "modelPath": "./assets/models/door_single.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/door_single.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -339,7 +339,7 @@
     "category": "Storage",
     "subcategory": "dresser",
     "modelPath": "./assets/models/dresser.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/dresser.png",
     "defaultScale": 1,
     "tags": [
       "soft-romantic"
@@ -357,7 +357,7 @@
     "category": "Storage",
     "subcategory": "dresser",
     "modelPath": "./assets/models/dresser_tall.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/dresser_tall.png",
     "defaultScale": 1,
     "tags": [
       "soft-romantic"
@@ -375,7 +375,7 @@
     "category": "Decor",
     "subcategory": "fireplace",
     "modelPath": "./assets/models/fireplace.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/fireplace.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -393,7 +393,7 @@
     "category": "Lighting",
     "subcategory": "lamp",
     "modelPath": "./assets/models/lamp_ceiling.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/lamp_ceiling.png",
     "defaultScale": 1,
     "tags": [
       "warm-modern"
@@ -413,7 +413,7 @@
     "category": "Lighting",
     "subcategory": "lamp",
     "modelPath": "./assets/models/lamp_chandelier.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/lamp_chandelier.png",
     "defaultScale": 1,
     "tags": [
       "quiet-luxury"
@@ -433,7 +433,7 @@
     "category": "Lighting",
     "subcategory": "lamp",
     "modelPath": "./assets/models/lamp_cube.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/lamp_cube.png",
     "defaultScale": 1,
     "tags": [
       "warm-modern"
@@ -453,7 +453,7 @@
     "category": "Lighting",
     "subcategory": "lamp",
     "modelPath": "./assets/models/lamp_floor.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/lamp_floor.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -473,7 +473,7 @@
     "category": "Lighting",
     "subcategory": "lamp",
     "modelPath": "./assets/models/lamp_pendant.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/lamp_pendant.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -493,7 +493,7 @@
     "category": "Lighting",
     "subcategory": "lamp",
     "modelPath": "./assets/models/lamp_stand.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/lamp_stand.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -513,7 +513,7 @@
     "category": "Lighting",
     "subcategory": "lamp",
     "modelPath": "./assets/models/lamp_table.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/lamp_table.png",
     "defaultScale": 1,
     "tags": [
       "soft-romantic"
@@ -533,7 +533,7 @@
     "category": "Lighting",
     "subcategory": "lamp",
     "modelPath": "./assets/models/lamp_wall.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/lamp_wall.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -553,7 +553,7 @@
     "category": "Wall Decor",
     "subcategory": "mirror",
     "modelPath": "./assets/models/mirror.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/mirror.png",
     "defaultScale": 1,
     "tags": [
       "quiet-luxury"
@@ -573,7 +573,7 @@
     "category": "Storage",
     "subcategory": "nightstand",
     "modelPath": "./assets/models/nightstand.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/nightstand.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -591,7 +591,7 @@
     "category": "Storage",
     "subcategory": "nightstand",
     "modelPath": "./assets/models/nightstand_alt.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/nightstand_alt.png",
     "defaultScale": 1,
     "tags": [
       "quiet-luxury"
@@ -609,7 +609,7 @@
     "category": "Decor",
     "subcategory": "plant",
     "modelPath": "./assets/models/plant_cactus.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/plant_cactus.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -629,7 +629,7 @@
     "category": "Decor",
     "subcategory": "plant",
     "modelPath": "./assets/models/plant_floor.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/plant_floor.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -649,7 +649,7 @@
     "category": "Decor",
     "subcategory": "plant",
     "modelPath": "./assets/models/plant_leafy.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/plant_leafy.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -669,7 +669,7 @@
     "category": "Decor",
     "subcategory": "plant",
     "modelPath": "./assets/models/plant_palm.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/plant_palm.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -689,7 +689,7 @@
     "category": "Decor",
     "subcategory": "plant",
     "modelPath": "./assets/models/plant_round.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/plant_round.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -709,7 +709,7 @@
     "category": "Decor",
     "subcategory": "plant",
     "modelPath": "./assets/models/plant_small.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/plant_small.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -729,7 +729,7 @@
     "category": "Rugs",
     "subcategory": "rug",
     "modelPath": "./assets/models/rug.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/rug.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -749,7 +749,7 @@
     "category": "Rugs",
     "subcategory": "rug",
     "modelPath": "./assets/models/rug_round.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/rug_round.png",
     "defaultScale": 1,
     "tags": [
       "cozy",
@@ -771,7 +771,7 @@
     "category": "Rugs",
     "subcategory": "runner",
     "modelPath": "./assets/models/runner_rug.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/runner_rug.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -791,7 +791,7 @@
     "category": "Storage",
     "subcategory": "shelf",
     "modelPath": "./assets/models/shelf_small.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/shelf_small.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -809,7 +809,7 @@
     "category": "Storage",
     "subcategory": "shelving",
     "modelPath": "./assets/models/shelving.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/shelving.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -827,7 +827,7 @@
     "category": "Seating",
     "subcategory": "sofa",
     "modelPath": "./assets/models/sofa.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/sofa.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -845,7 +845,7 @@
     "category": "Seating",
     "subcategory": "sofa",
     "modelPath": "./assets/models/sofa_compact.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/sofa_compact.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -863,7 +863,7 @@
     "category": "Seating",
     "subcategory": "sofa",
     "modelPath": "./assets/models/sofa_grand.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/sofa_grand.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -881,7 +881,7 @@
     "category": "Seating",
     "subcategory": "sofa",
     "modelPath": "./assets/models/sofa_l.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/sofa_l.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -899,7 +899,7 @@
     "category": "Seating",
     "subcategory": "sofa",
     "modelPath": "./assets/models/sofa_large.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/sofa_large.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -917,7 +917,7 @@
     "category": "Seating",
     "subcategory": "sofa",
     "modelPath": "./assets/models/sofa_medium.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/sofa_medium.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -935,7 +935,7 @@
     "category": "Seating",
     "subcategory": "sofa",
     "modelPath": "./assets/models/sofa_modern.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/sofa_modern.png",
     "defaultScale": 1,
     "tags": [
       "cozy",
@@ -955,7 +955,7 @@
     "category": "Seating",
     "subcategory": "sofa",
     "modelPath": "./assets/models/sofa_small.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/sofa_small.png",
     "defaultScale": 1,
     "tags": [
       "cozy"
@@ -973,7 +973,7 @@
     "category": "Seating",
     "subcategory": "stool",
     "modelPath": "./assets/models/stool.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/stool.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -992,7 +992,7 @@
     "category": "Tables",
     "subcategory": "table",
     "modelPath": "./assets/models/table_coffee.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/table_coffee.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -1010,7 +1010,7 @@
     "category": "Tables",
     "subcategory": "table",
     "modelPath": "./assets/models/table_round_large.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/table_round_large.png",
     "defaultScale": 1,
     "tags": [
       "versatile"
@@ -1028,7 +1028,7 @@
     "category": "Tables",
     "subcategory": "table",
     "modelPath": "./assets/models/table_round_small.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/table_round_small.png",
     "defaultScale": 1,
     "tags": [
       "warm-modern"
@@ -1046,7 +1046,7 @@
     "category": "Storage",
     "subcategory": "tv",
     "modelPath": "./assets/models/tv_console.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/tv_console.png",
     "defaultScale": 1,
     "tags": [
       "quiet-luxury"
@@ -1064,7 +1064,7 @@
     "category": "Wall Decor",
     "subcategory": "wall",
     "modelPath": "./assets/models/wall_art_01.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/wall_art_01.png",
     "defaultScale": 1,
     "tags": [
       "quiet-luxury"
@@ -1084,7 +1084,7 @@
     "category": "Wall Decor",
     "subcategory": "wall",
     "modelPath": "./assets/models/wall_art_04.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/wall_art_04.png",
     "defaultScale": 1,
     "tags": [
       "quiet-luxury"
@@ -1104,7 +1104,7 @@
     "category": "Wall Decor",
     "subcategory": "wall",
     "modelPath": "./assets/models/wall_art_06.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/wall_art_06.png",
     "defaultScale": 1,
     "tags": [
       "quiet-luxury"
@@ -1124,7 +1124,7 @@
     "category": "Openings",
     "subcategory": "window",
     "modelPath": "./assets/models/window_large.glb",
-    "thumbnailPath": null,
+    "thumbnailPath": "./assets/thumbnails/window_large.png",
     "defaultScale": 1,
     "tags": [
       "versatile"

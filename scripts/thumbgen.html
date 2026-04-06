@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rose Designs Thumbnail Generator</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.82), transparent 38%),
+        radial-gradient(circle at bottom right, rgba(230,210,200,.46), transparent 34%),
+        linear-gradient(180deg, #f7f1ea 0%, #efe6dc 100%);
+      font-family: Outfit, system-ui, sans-serif;
+    }
+    #stage {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    #fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
+      color: #6f5a50;
+      text-align: center;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.84), transparent 42%),
+        linear-gradient(180deg, rgba(252,248,242,.98), rgba(242,233,224,.98));
+    }
+    #fallback .mark {
+      width: 92px;
+      height: 92px;
+      border-radius: 28px;
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      font-weight: 700;
+      background: rgba(255,255,255,.78);
+      box-shadow: 0 18px 36px rgba(93,72,63,.12);
+    }
+    #fallback .label {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+    #fallback .meta {
+      font-size: 13px;
+      color: #8b7569;
+      max-width: 280px;
+      line-height: 1.5;
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="stage">
+    <div id="fallback">
+      <div class="mark" id="fallbackMark">R</div>
+      <div class="label" id="fallbackLabel">Rose Designs</div>
+      <div class="meta" id="fallbackMeta">Thumbnail unavailable</div>
+    </div>
+  </div>
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
+
+    const stage = document.getElementById('stage');
+    const fallback = document.getElementById('fallback');
+    const fallbackMark = document.getElementById('fallbackMark');
+    const fallbackLabel = document.getElementById('fallbackLabel');
+    const fallbackMeta = document.getElementById('fallbackMeta');
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0xf4ece4, 18, 34);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    stage.appendChild(renderer.domElement);
+
+    const camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(4.2, 2.8, 5.8);
+
+    const hemi = new THREE.HemisphereLight(0xffffff, 0xd7b28d, 1.14);
+    scene.add(hemi);
+    const ambient = new THREE.AmbientLight(0xfff1df, 0.64);
+    scene.add(ambient);
+    const key = new THREE.DirectionalLight(0xfffcf6, 1.65);
+    key.position.set(5, 7, 6);
+    key.castShadow = true;
+    key.shadow.mapSize.width = 1024;
+    key.shadow.mapSize.height = 1024;
+    key.shadow.camera.left = -8;
+    key.shadow.camera.right = 8;
+    key.shadow.camera.top = 8;
+    key.shadow.camera.bottom = -8;
+    key.shadow.bias = -0.0008;
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xf2d7bf, 0.48);
+    fill.position.set(-4, 3, 3);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.35);
+    rim.position.set(-2, 5, -5);
+    scene.add(rim);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.ShadowMaterial({ color: 0x8d6b60, opacity: 0.14 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.02;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    const plinth = new THREE.Mesh(
+      new THREE.CylinderGeometry(2.55, 2.75, 0.14, 48),
+      new THREE.MeshStandardMaterial({ color: 0xf7efe5, roughness: 0.95, metalness: 0.02 })
+    );
+    plinth.position.y = -0.08;
+    plinth.receiveShadow = true;
+    scene.add(plinth);
+
+    const loader = new GLTFLoader();
+    let currentRoot = null;
+
+    function clearFallback() {
+      fallback.style.display = 'none';
+      renderer.domElement.style.display = 'block';
+    }
+
+    function showFallback(name, symbol, category) {
+      fallbackMark.textContent = symbol || (name || 'R').charAt(0).toUpperCase();
+      fallbackLabel.textContent = name || 'Rose Designs';
+      fallbackMeta.textContent = category ? `${category} preview coming soon` : 'Thumbnail unavailable';
+      fallback.style.display = 'flex';
+      renderer.domElement.style.display = 'none';
+      document.body.dataset.thumbReady = 'true';
+      document.body.dataset.thumbMode = 'fallback';
+    }
+
+    function resetScene() {
+      if (!currentRoot) return;
+      scene.remove(currentRoot);
+      currentRoot.traverse(obj => {
+        if (obj.geometry?.dispose) obj.geometry.dispose();
+        if (obj.material) {
+          const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+          mats.forEach(mat => {
+            ['map','normalMap','roughnessMap','metalnessMap','emissiveMap','aoMap','alphaMap'].forEach(key => {
+              if (mat[key]?.dispose) mat[key].dispose();
+            });
+            if (mat.dispose) mat.dispose();
+          });
+        }
+      });
+      currentRoot = null;
+    }
+
+    function categoryLook(category) {
+      switch (category) {
+        case 'Rugs':
+          return { yaw: 0.02, pitch: 1.34, pad: 2.9, lift: 0.08 };
+        case 'Wall Decor':
+        case 'Openings':
+          return { yaw: 0.0, pitch: 0.12, pad: 2.45, lift: 0.22 };
+        case 'Lighting':
+          return { yaw: 0.48, pitch: 0.54, pad: 2.35, lift: 0.26 };
+        default:
+          return { yaw: 0.6, pitch: 0.44, pad: 2.15, lift: 0.18 };
+      }
+    }
+
+    function frameObject(root, category) {
+      const box = new THREE.Box3().setFromObject(root);
+      const size = new THREE.Vector3();
+      const center = new THREE.Vector3();
+      box.getSize(size);
+      box.getCenter(center);
+
+      root.position.sub(center);
+      root.position.y -= box.min.y;
+
+      const look = categoryLook(category);
+      const maxDim = Math.max(size.x, size.y, size.z, 0.8);
+      const fitHeightDistance = maxDim / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov * 0.5)));
+      const fitWidthDistance = fitHeightDistance / camera.aspect;
+      const distance = Math.max(fitHeightDistance, fitWidthDistance) * look.pad;
+      const target = new THREE.Vector3(0, Math.max(size.y * look.lift, 0.08), 0);
+
+      camera.position.set(
+        Math.sin(look.yaw) * Math.cos(look.pitch) * distance,
+        Math.sin(look.pitch) * distance + Math.max(size.y * 0.18, 0.14),
+        Math.cos(look.yaw) * Math.cos(look.pitch) * distance
+      );
+      camera.lookAt(target);
+      key.target.position.copy(target);
+      key.target.updateMatrixWorld();
+    }
+
+    async function renderThumb(modelUrl, meta = {}) {
+      document.body.dataset.thumbReady = 'false';
+      document.body.dataset.thumbMode = 'render';
+      clearFallback();
+      resetScene();
+      try {
+        const gltf = await loader.loadAsync(modelUrl);
+        currentRoot = gltf.scene || gltf.scenes?.[0];
+        if (!currentRoot) throw new Error('No scene in glTF');
+        currentRoot.traverse(obj => {
+          if (obj.isMesh) {
+            obj.castShadow = true;
+            obj.receiveShadow = true;
+            const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+            mats.forEach(mat => {
+              if (!mat) return;
+              mat.side = THREE.FrontSide;
+              if ('roughness' in mat && mat.roughness > 0.08) mat.roughness = Math.min(1, mat.roughness * 1.02);
+              if ('envMapIntensity' in mat) mat.envMapIntensity = 0.8;
+            });
+          }
+        });
+        scene.add(currentRoot);
+        frameObject(currentRoot, meta.category || '');
+        renderer.render(scene, camera);
+        await new Promise(resolve => requestAnimationFrame(() => {
+          renderer.render(scene, camera);
+          resolve();
+        }));
+        document.body.dataset.thumbReady = 'true';
+      } catch (err) {
+        console.warn('thumb render failed', meta.id || modelUrl, err);
+        showFallback(meta.name, meta.symbol, meta.category);
+      }
+      return { mode: document.body.dataset.thumbMode };
+    }
+
+    window.thumbgen = { renderThumb };
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.render(scene, camera);
+    });
+  </script>
+</body>
+</html>

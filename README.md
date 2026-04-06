@@ -7,14 +7,14 @@ The app now runs as a small static app shell instead of one giant inlined page:
 - `styles/app.css` holds the visual system
 - `scripts/app.js` is the module bootstrap
 - `scripts/state.js`, `scripts/storage.js`, `scripts/catalog.js`, `scripts/planner2d.js`, `scripts/planner3d.js`, `scripts/walkthrough.js`, `scripts/export.js`, and `scripts/ui.js` split the runtime into focused static modules
-- `data/asset-manifest.json` is the source of truth for the catalog taxonomy, collections, and future thumbnail wiring
+- `data/asset-manifest.json` is the source of truth for the catalog taxonomy, collections, and thumbnail wiring
 
 It includes:
 - 2D room drawing with walls, doors, windows, closets, partitions, and measurements
 - 3D room viewing with orbit and walk modes
 - polished local walkthrough presets: `Dollhouse`, `Stroll`, `Corner Reveal`, `Before / After Flythrough`, and `Romantic Reveal`
 - furniture placement with multi-select, copy/paste, snap-to-grid, and finish colors
-- premium catalog browsing with stronger category taxonomy, collection filters, favorites, recents, and graceful thumbnail placeholders
+- premium catalog browsing with stronger category taxonomy, collection filters, favorites, recents, and real generated product thumbnails
 - existing-room redesign planning with `keep / move / replace / remove`
 - option-based redesign workflows with notes, thumbnails, and comparison views
 - export tools for PNGs, comparison sheets, summary sheets, and client presentation PDFs
@@ -50,10 +50,13 @@ Open the folder and serve it with any simple static server.
 - `scripts/planner2d.js` - 2D plan rendering and editor interactions
 - `scripts/planner3d.js` - 3D scene, camera behavior, and walkthrough presets
 - `scripts/walkthrough.js` - emotional layer, self-test boot, and guided story behavior
+- `scripts/thumbgen.html` - local thumbnail-render stage used to generate catalog previews
+- `scripts/generate-thumbnails.mjs` - bulk thumbnail generator for the current asset catalog
 - `scripts/export.js` - PNG, summary, comparison, and PDF export
 - `scripts/ui.js` - home/editor shell behavior and compare state
 - `data/asset-manifest.json` - structured asset metadata
-- `assets/` - models and supporting art assets
+- `assets/models/` - source GLB furniture and decor assets
+- `assets/thumbnails/` - generated product thumbnails used by the catalog
 - `package.json` - local Playwright dependency for QA
 - `progress.md` - running development and verification log
 
@@ -71,6 +74,16 @@ The app includes a built-in self-test:
 http://127.0.0.1:8123/rose-designs.html#selftest
 ```
 
+## Thumbnail Pipeline
+
+Generate or refresh the product thumbnails with:
+
+```bash
+node ./scripts/generate-thumbnails.mjs
+```
+
+This uses `scripts/thumbgen.html` as a consistent local render stage and writes PNGs into `assets/thumbnails/`.
+
 ## Current Highlights
 
 - persistent undo/redo
@@ -80,5 +93,5 @@ http://127.0.0.1:8123/rose-designs.html#selftest
 - stronger floor and furniture rendering for clearer visual contrast
 - profile-aware local persistence for Rose and Marco
 - collection-aware asset browsing with manifest-backed catalog metadata
-- category-first premium picker with favorites, recents, collection chips, and thumbnail-ready cards
+- category-first premium picker with favorites, recents, collection chips, and real thumbnail cards
 - smoother 3D camera behavior with double-click focus and walkthrough presets
