@@ -99,8 +99,15 @@ function toggleWalkthroughTray(){
 function updateWalkthroughTray(){
   const existing=document.getElementById('tourTray');
   if(!is3D||!walkthroughTrayOpen){if(existing)existing.remove();return;}
-  const presets=[['dollhouse','Dollhouse'],['stroll','Stroll'],['corner_reveal','Corner Reveal'],['before_after','Before / After Flythrough'],['romantic_reveal','Romantic Reveal']];
-  const markup='<div class="tour-tray" id="tourTray"><div class="tour-panel">'+presets.map(([id,label])=>'<button class="mini-chip" type="button" onclick="startWalkthroughPreset(\''+id+'\')">'+label+'</button>').join('')+'</div></div>';
+  const isTouch=(navigator.maxTouchPoints||0)>0||window.innerWidth<=760;
+  const presets=[
+    ['dollhouse','Dollhouse','Pulls back for the full room form.'],
+    ['stroll','Stroll','Walks the room at eye level.'],
+    ['corner_reveal','Corner Reveal','Settles into a cinematic corner angle.'],
+    ['before_after','Before / After','Cycles existing, redesign, and combined.'],
+    ['romantic_reveal','Romantic Reveal','Soft presentation sweep for the final feel.'],
+  ];
+  const markup='<div class="tour-tray'+(isTouch?' touch':'')+'" id="tourTray"><div class="tour-panel'+(isTouch?' touch':'')+'"><div class="tour-head"><div><div class="tour-title">Walkthrough Presets</div><div class="tour-copy">'+(isTouch?'Pick a move and keep your thumb near the bottom edge.':'Choose a camera move for the room.')+'</div></div><button class="mini-chip secondary" type="button" onclick="toggleWalkthroughTray()">Close</button></div><div class="tour-grid'+(isTouch?' touch':'')+'">'+presets.map(([id,label,copy])=>'<button class="tour-preset'+(isTouch?' touch':'')+'" type="button" onclick="startWalkthroughPreset(\''+id+'\')"><span class="tour-preset-title">'+label+'</span><span class="tour-preset-copy">'+copy+'</span></button>').join('')+'</div></div></div>';
   if(existing)existing.outerHTML=markup; else document.getElementById('cWrap').insertAdjacentHTML('beforeend',markup);
 }
 function easeInOut(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
@@ -317,17 +324,17 @@ function updateWalkUI(){
     const isWide=walkControlLayout==='wide'||window.innerWidth>window.innerHeight;
     const className=isWide?'wide':'';
     const markup=`<div id="walkCtrl" class="${className}" style="position:absolute;left:12px;right:12px;bottom:${isWide?12:18}px;z-index:65;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;pointer-events:none">
-      <div style="display:grid;grid-template-columns:repeat(2,52px);gap:8px;pointer-events:auto">
-        <button class="cmb" style="width:52px;height:52px" onpointerdown="startWalkTurn(-1)" onpointerup="stopWalkTurn()" onpointerleave="stopWalkTurn()" onpointercancel="stopWalkTurn()"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <button class="cmb" style="width:52px;height:52px" onpointerdown="startWalkMove(1)" onpointerup="stopWalkMove()" onpointerleave="stopWalkMove()" onpointercancel="stopWalkMove()"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="18 15 12 9 6 15"/></svg></button>
-        <button class="cmb" style="width:52px;height:52px" onpointerdown="startWalkTurn(1)" onpointerup="stopWalkTurn()" onpointerleave="stopWalkTurn()" onpointercancel="stopWalkTurn()"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="9 18 15 12 9 6"/></svg></button>
-        <button class="cmb" style="width:52px;height:52px" onpointerdown="startWalkMove(-1)" onpointerup="stopWalkMove()" onpointerleave="stopWalkMove()" onpointercancel="stopWalkMove()"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="18 9 12 15 6 9"/></svg></button>
-      </div>
-      <div style="pointer-events:auto;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
-        <div style="padding:10px 12px;border-radius:16px;background:rgba(250,247,242,.92);box-shadow:var(--shl);font-size:10px;font-weight:700;color:var(--rose-d);max-width:${isWide?'220px':'180px'};text-align:right">${isWide?'Landscape walkthrough mode':'Turn sideways for easier walkthroughs'}</div>
-        <button class="mini-chip" style="pointer-events:auto" onclick="toggleWalkControlLayout()">${isWide?'Standard Dock':'Sideways Dock'}</button>
-      </div>
-    </div>`;
+        <div style="display:grid;grid-template-columns:repeat(2,52px);gap:8px;pointer-events:auto">
+          <button class="cmb" style="width:52px;height:52px" onpointerdown="startWalkTurn(-1)" onpointerup="stopWalkTurn()" onpointerleave="stopWalkTurn()" onpointercancel="stopWalkTurn()"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button class="cmb" style="width:52px;height:52px" onpointerdown="startWalkMove(1)" onpointerup="stopWalkMove()" onpointerleave="stopWalkMove()" onpointercancel="stopWalkMove()"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="18 15 12 9 6 15"/></svg></button>
+          <button class="cmb" style="width:52px;height:52px" onpointerdown="startWalkTurn(1)" onpointerup="stopWalkTurn()" onpointerleave="stopWalkTurn()" onpointercancel="stopWalkTurn()"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="9 18 15 12 9 6"/></svg></button>
+          <button class="cmb" style="width:52px;height:52px" onpointerdown="startWalkMove(-1)" onpointerup="stopWalkMove()" onpointerleave="stopWalkMove()" onpointercancel="stopWalkMove()"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="18 9 12 15 6 9"/></svg></button>
+        </div>
+        <div style="pointer-events:auto;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <div style="padding:10px 12px;border-radius:16px;background:rgba(250,247,242,.92);box-shadow:var(--shl);font-size:10px;font-weight:700;color:var(--rose-d);max-width:${isWide?'220px':'180px'};text-align:right">${isWide?'Landscape walkthrough mode':'Use the dock for movement and drag anywhere else to look around'}</div>
+          <button class="mini-chip" style="pointer-events:auto" onclick="toggleWalkControlLayout()">${isWide?'Standard Dock':'Sideways Dock'}</button>
+        </div>
+      </div>`;
     if(!wc2)document.getElementById('cWrap').insertAdjacentHTML('beforeend',markup);
     else{
       const wrap=document.createElement('div');

@@ -136,7 +136,7 @@ function catalogPlaceholderMarkup(item){
 function buildCatalogOptionCard(item,index,compact=false){
   const collection=(item.collections||[])[0]||'Everyday Staples';
   const favClass=isFavoriteCatalogItem(item.assetKey)?' active':'';
-  return `<button class="catalog-card furn-option${compact?' compact':''}" type="button" data-asset-key="${esc(item.assetKey||'')}" data-group="${esc(item.group)}" data-category="${esc(normalizeCatalogGroup(item.group))}" data-collection="${esc((item.collections||[]).join('|'))}" data-label="${esc(catalogSearchText(item))}" onclick="placeFurn(${index})"><span class="catalog-fav${favClass}" onclick="event.stopPropagation();toggleFavoriteCatalogItem('${esc(item.assetKey||'')}')">&#9733;</span><span class="catalog-thumb" style="background:${catalogCardTone(item)}">${catalogPlaceholderMarkup(item)}</span><span class="catalog-meta"><span class="catalog-title">${esc(item.label)}</span><span class="catalog-sub">${esc(collection)}</span></span></button>`;
+  return `<button class="catalog-card furn-option${compact?' compact':''}" type="button" data-asset-key="${esc(item.assetKey||'')}" data-group="${esc(item.group)}" data-category="${esc(normalizeCatalogGroup(item.group))}" data-collection="${esc((item.collections||[]).join('|'))}" data-label="${esc(catalogSearchText(item))}" onclick="placeFurn(${index})" onpointerenter="setPendingFurniturePreview(FURN_ITEMS[${index}])" onfocus="setPendingFurniturePreview(FURN_ITEMS[${index}])"><span class="catalog-fav${favClass}" onclick="event.stopPropagation();toggleFavoriteCatalogItem('${esc(item.assetKey||'')}')">&#9733;</span><span class="catalog-thumb" style="background:${catalogCardTone(item)}">${catalogPlaceholderMarkup(item)}</span><span class="catalog-meta"><span class="catalog-title">${esc(item.label)}</span><span class="catalog-sub">${esc(collection)}</span></span></button>`;
 }
 function catalogItemsForKeys(keys){return keys.map(key=>FURN_ITEM_BY_KEY.get(key)).filter(Boolean)}
 async function loadAssetManifest(){
@@ -201,6 +201,18 @@ function normalizeFurnitureRecord(f){
   };
 }
 let pendFurnPos=null;
+let pendFurnPreviewKey='';
+let pendFurnPreviewLabel='';
+function setPendingFurniturePreview(item){
+  pendFurnPreviewKey=item?.assetKey||'';
+  pendFurnPreviewLabel=item?.label||'';
+  if(typeof draw==='function')draw();
+}
+function clearPendingFurniturePreview(){
+  pendFurnPreviewKey='';
+  pendFurnPreviewLabel='';
+  if(typeof draw==='function')draw();
+}
 function showFurnPicker(wp){
   pendFurnPos=wp;
   furnQuery='';
@@ -213,11 +225,12 @@ function showFurnPicker(wp){
   const categoryButtons=catalogCategoryList().map(name=>`<button class="mini-chip${name===activeCatalogCategory?'':' secondary'}" type="button" onclick="setCatalogCategory('${esc(name)}')" style="padding:8px 11px;font-size:9px">${esc(name==='all'?'All Categories':name)}</button>`).join('');
   const section=(title,key,items,compact=false)=>items.length?'<div class="furn-group" data-group="'+esc(key)+'"><div class="catalog-section-title">'+esc(title)+'</div><div class="catalog-grid'+(compact?' compact':'')+'">'+items.map(item=>buildCatalogOptionCard(item,FURN_ITEMS.indexOf(item),compact)).join('')+'</div></div>':'';
   const roomLabel=(ROOM_TYPES.find(t=>t.id===(curRoom?.roomType||'living_room'))||ROOM_TYPES[0]).name;
-  const html='<div class="catalog-overlay" id="furnPickOv" onclick="if(event.target===this)closeFurnPick()"><div class="catalog-sheet"><div class="catalog-grabber"></div><div class="catalog-head"><div><div class="catalog-heading">Bring Something Beautiful In</div><div class="catalog-copy">Search the curated catalog, save favorites, and drop pieces in with confidence.</div></div><button class="mini-chip secondary" type="button" onclick="closeFurnPick()">Close</button></div><input id="furnSearch" type="search" placeholder="Search sofa, bed, lamp, console, romantic..." oninput="filterFurnPicker(this.value)" class="catalog-search"><div class="catalog-chip-row">'+collectionButtons+'</div><div class="catalog-chip-row catalog-chip-row-alt">'+categoryButtons+'</div>'+section('Favorites','favorites',favoriteItems,true)+section('Recent','recent',recentItems,true)+section('Quick Picks For '+roomLabel,'quick',suggested,true)+CATALOG_CATEGORY_ORDER.map(group=>section(group,group,FURN_ITEMS.filter(f=>normalizeCatalogGroup(f.group)===group),false)).join('')+'<div id="furnEmpty" class="catalog-empty">No matches yet. Try a broader word like sofa, bed, rug, mirror, or storage.</div></div></div>';
+  const html='<div class="catalog-overlay" id="furnPickOv" onclick="if(event.target===this)closeFurnPick()"><div class="catalog-sheet"><div class="catalog-grabber"></div><div class="catalog-head"><div><div class="catalog-heading">Bring Something Beautiful In</div><div class="catalog-copy">Search the curated catalog, save favorites, and drop pieces in with confidence.</div></div><button class="mini-chip secondary" type="button" onclick="closeFurnPick()">Close</button></div><input id="furnSearch" type="search" placeholder="Search sofa, bed, lamp, console, romantic..." oninput="filterFurnPicker(this.value)" class="catalog-search"><div class="catalog-placement-note">The canvas keeps showing the drop target while you browse. Tap another spot in the room if you want to move it first.</div><div class="catalog-chip-row">'+collectionButtons+'</div><div class="catalog-chip-row catalog-chip-row-alt">'+categoryButtons+'</div>'+section('Favorites','favorites',favoriteItems,true)+section('Recent','recent',recentItems,true)+section('Quick Picks For '+roomLabel,'quick',suggested,true)+CATALOG_CATEGORY_ORDER.map(group=>section(group,group,FURN_ITEMS.filter(f=>normalizeCatalogGroup(f.group)===group),false)).join('')+'<div id="furnEmpty" class="catalog-empty">No matches yet. Try a broader word like sofa, bed, rug, mirror, or storage.</div></div></div>';
   document.body.insertAdjacentHTML('beforeend',html);
+  setPendingFurniturePreview(suggested[0]||favoriteItems[0]||recentItems[0]||FURN_ITEMS[0]||null);
   filterFurnPicker('');
 }
-function closeFurnPick(){const ov=document.getElementById('furnPickOv');if(ov)ov.remove();pendFurnPos=null}
+function closeFurnPick(){const ov=document.getElementById('furnPickOv');if(ov)ov.remove();pendFurnPos=null;clearPendingFurniturePreview()}
 function setCatalogCollection(collection){
   activeCatalogCollection=collection||'all';
   const search=document.getElementById('furnSearch');
@@ -255,6 +268,11 @@ function filterFurnPicker(query){
   const anyVisible=options.some(el=>el.dataset.match==='1');
   const empty=document.getElementById('furnEmpty');
   if(empty)empty.style.display=anyVisible?'none':'block';
+  const firstVisible=options.find(el=>el.dataset.match==='1');
+  if(firstVisible){
+    const item=FURN_ITEM_BY_KEY.get(firstVisible.dataset.assetKey)||null;
+    if(item)setPendingFurniturePreview(item);
+  }
 }
 function placeFurn(itemIdx){
   if(!pendFurnPos||!curRoom)return;
@@ -434,11 +452,19 @@ function isTouchUi(){return Math.max(navigator.maxTouchPoints||0,0)>0}
 function mobilePanelShouldPeek(){
   if(!isTouchUi()||window.innerWidth>760)return false;
   if(!curRoom)return false;
-  if(tool==='furniture'&&!sel.type)return true;
+  if(tool==='furniture')return true;
+  if(sel.type==='furniture'||sel.type==='opening'||sel.type==='structure')return true;
   if(!sel.type||sel.idx<0)return true;
   return false;
 }
 function propSection(title,body){return `<div class="prop-section"><div class="prop-sec-title">${title}</div>${body}</div>`}
+function updatePanelTabLabel(){
+  const tab=document.getElementById('propsTab');
+  if(!tab)return;
+  if(tool==='furniture')tab.textContent='Open Details';
+  else if(sel.type==='furniture')tab.textContent='Open Item Panel';
+  else tab.textContent='Open Panel';
+}
 const LIGHTING_PRESET_HELP={
   daylight:'Bright, airy daylight for checking colors and keeping the room open.',
   warm_evening:'Golden evening light that makes the room feel softer and more intimate.',
@@ -461,6 +487,7 @@ function showP(){
   const tab=document.getElementById('propsTab');
   if(!r){hideP();return}
   normalizeFurnitureSelection();
+  updatePanelTabLabel();
   tab.classList.toggle('on',panelHidden);
   if(panelHidden){p.classList.remove('on');return}
   p.classList.toggle('peek',mobilePanelShouldPeek());
@@ -498,7 +525,7 @@ function showP(){
     }
   }
   p.innerHTML=h;p.classList.add('on')}
-function hideP(){const panel=document.getElementById('propsP');panel.classList.remove('on','peek');document.getElementById('propsTab').classList.toggle('on',panelHidden&&!!curRoom)}
+function hideP(){const panel=document.getElementById('propsP');panel.classList.remove('on','peek');updatePanelTabLabel();document.getElementById('propsTab').classList.toggle('on',panelHidden&&!!curRoom)}
 function closeP(){panelHidden=true;hideP()}
 function openP(){panelHidden=false;showP()}
 function uV(k,v){curRoom.polygon[sel.idx][k]=parseDistanceInput(v,curRoom.polygon[sel.idx][k]);curRoom.walls=genWalls(curRoom);pushU();draw()}

@@ -104,6 +104,57 @@ function furniture2DTint(f,item){
   if(f.finishColor)return f.finishColor;
   return FURN_GROUP_TINTS[item?.group]||'#8A7868';
 }
+function pendingFurniturePreviewItem(){
+  if(!pendFurnPreviewKey)return null;
+  return FURN_ITEM_BY_KEY.get(pendFurnPreviewKey)||FURN_ITEMS.find(item=>item.assetKey===pendFurnPreviewKey)||null;
+}
+function drawPendingFurniturePlacement(room){
+  if(!pendFurnPos)return;
+  const snapped=snapFurniturePoint(pendFurnPos.x,pendFurnPos.y);
+  const screen=tS({x:snapped.x,y:snapped.z});
+  const item=pendingFurniturePreviewItem();
+  const width=(item?.w||2)*vScale;
+  const depth=(item?.d||1.5)*vScale;
+  const tone=safeThreeColor(furniture2DTint({finishColor:''},item),'#B8918E');
+  const fill=threeColorToRgba(tone,.24);
+  const stroke=threeColorToRgba(tone.clone().offsetHSL(0,.02,-.08),.88);
+  const glow=threeColorToRgba(tone.clone().offsetHSL(0,.04,.1),.22);
+  ctx.save();
+  ctx.translate(screen.x,screen.y);
+  ctx.beginPath();
+  ctx.roundRect(-width/2,-depth/2,width,depth,Math.max(12,Math.min(width,depth)*.16));
+  ctx.fillStyle=fill;
+  ctx.shadowColor=glow;
+  ctx.shadowBlur=18;
+  ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.strokeStyle=stroke;
+  ctx.lineWidth=2.2;
+  ctx.setLineDash([8,6]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(-14,0);ctx.lineTo(14,0);ctx.moveTo(0,-14);ctx.lineTo(0,14);
+  ctx.strokeStyle='rgba(184,145,142,.92)';
+  ctx.lineWidth=1.8;
+  ctx.stroke();
+  const label=item?.label||pendFurnPreviewLabel||'Placement';
+  const snapText=furnitureSnap?'snap on':'free place';
+  const info=`${label} · ${formatDistance(snapped.x,'compact')}, ${formatDistance(snapped.z,'compact')} · ${snapText}`;
+  ctx.font=`700 ${Math.max(8,vScale*.22)}px Outfit,sans-serif`;
+  const infoW=Math.max(88,ctx.measureText(info).width+18);
+  const pillY=-Math.max(depth/2+20,32);
+  ctx.fillStyle='rgba(250,247,242,.94)';
+  ctx.fillRect(-infoW/2,pillY-10,infoW,20);
+  ctx.strokeStyle='rgba(184,145,142,.34)';
+  ctx.lineWidth=1;
+  ctx.strokeRect(-infoW/2,pillY-10,infoW,20);
+  ctx.fillStyle='rgba(92,77,66,.88)';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(info,0,pillY);
+  ctx.restore();
+}
 
 // ── DRAW 2D ──
 function draw(){
@@ -114,6 +165,7 @@ function draw(){
   ctx.save();ctx.beginPath();r.polygon.forEach((p,i)=>{const s=tS(p);if(!i)ctx.moveTo(s.x,s.y);else ctx.lineTo(s.x,s.y)});ctx.closePath();ctx.fillStyle=r.materials.wall||WALL_PALETTES[0].color;ctx.globalAlpha=.42;ctx.fill();ctx.restore();
   // Floor
   ctx.save();ctx.beginPath();r.polygon.forEach((p,i)=>{const s=tS(p);if(!i)ctx.moveTo(s.x,s.y);else ctx.lineTo(s.x,s.y)});ctx.closePath();ctx.fillStyle=floorPattern2D(r.materials)||r.materials.floor;ctx.globalAlpha=.92;ctx.fill();ctx.globalAlpha=1;ctx.restore();
+  drawPendingFurniturePlacement(r);
   // Structures
   r.structures.forEach((st,i)=>{ctx.save();const is=sel.type==='structure'&&sel.idx===i;
     if(st.type==='closet'&&st.rect){const fin=CLOSET_FINISHES.find(f=>f.id===(st.finish||'white_painted'))||CLOSET_FINISHES[0];const a=tS({x:st.rect.x,y:st.rect.y}),b=tS({x:st.rect.x+st.rect.w,y:st.rect.y+st.rect.h});ctx.fillStyle=fin.body;ctx.strokeStyle=is?'#B8918E':fin.trim;ctx.lineWidth=is?2.5:1.5;if(is)ctx.setLineDash([5,3]);ctx.fillRect(a.x,a.y,b.x-a.x,b.y-a.y);ctx.strokeRect(a.x,a.y,b.x-a.x,b.y-a.y);ctx.setLineDash([]);const midX=(a.x+b.x)/2;ctx.strokeStyle=fin.trim;ctx.beginPath();ctx.moveTo(midX,a.y+4);ctx.lineTo(midX,b.y-4);ctx.stroke();ctx.fillStyle=fin.trim;ctx.font=`${Math.max(9,vScale*.35)}px Outfit,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('closet',(a.x+b.x)/2,(a.y+b.y)/2)}
@@ -554,4 +606,20 @@ function findNW(wp){let b=-1,bd=Infinity;const snapDist=Math.max(2,3/Math.max(1,
 function findNWO(wp){let best=null,bd=Infinity;const snapDist=Math.max(2,3/Math.max(1,vScale/20));curRoom.walls.forEach((w,i)=>{const d=psw(wp,wS(curRoom,w),wE(curRoom,w));if(d<bd&&d<snapDist){const a=wS(curRoom,w),b=wE(curRoom,w),dx=b.x-a.x,dy=b.y-a.y,wl=wL(curRoom,w),t=((wp.x-a.x)*dx+(wp.y-a.y)*dy)/(dx*dx+dy*dy);bd=d;best={wi:i,off:Math.round(Math.max(1.5,Math.min(wl-1.5,t*wl))*4)/4}}});return best}
 function addVtx(wi,wp){const w=curRoom.walls[wi];curRoom.polygon.splice(w.startIdx+1,0,{x:Math.round(wp.x*2)/2,y:Math.round(wp.y*2)/2});curRoom.walls=genWalls(curRoom);sel={type:'vertex',idx:w.startIdx+1};pushU();showP();draw();toast('Vertex added')}
 
-function setTool(t){tool=t;document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.t===t));closetSt=null;pendEnd=null;if(t!=='select'){clearFurnitureSelection();sel={type:null,idx:-1};if(isTouchUi()&&window.innerWidth<=760)panelHidden=true;hideP()}else if(isTouchUi()&&window.innerWidth<=760&&!sel.type){panelHidden=true;hideP()}draw()}
+function setTool(t){
+  tool=t;
+  document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  closetSt=null;
+  pendEnd=null;
+  if(t!=='furniture'&&typeof closeFurnPick==='function'&&document.getElementById('furnPickOv'))closeFurnPick();
+  if(t!=='select'){
+    clearFurnitureSelection();
+    sel={type:null,idx:-1};
+    if(isTouchUi()&&window.innerWidth<=760)panelHidden=true;
+    hideP();
+  }else if(isTouchUi()&&window.innerWidth<=760&&!sel.type){
+    panelHidden=true;
+    hideP();
+  }
+  draw();
+}
