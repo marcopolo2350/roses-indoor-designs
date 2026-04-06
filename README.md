@@ -13,6 +13,8 @@ It includes:
 - 2D room drawing with walls, doors, windows, closets, partitions, and measurements
 - local reference-image tracing in 2D with import, move, scale, opacity, lock, and calibration controls
 - 3D room viewing with orbit and walk modes
+- photo-focused 3D captures with `Photo Mode`, hero framing presets, and higher-quality PNG output
+- richer lighting control with `Lighting Mood` plus a `Light Character` slider for daylight-to-evening scene shaping
 - polished local walkthrough presets: `Dollhouse`, `Stroll`, `Corner Reveal`, `Before / After Flythrough`, and `Romantic Reveal`
 - furniture placement with multi-select, copy/paste, snap-to-grid, and material variants
 - premium catalog browsing with stronger category taxonomy, collection filters, favorites, recents, and real generated product thumbnails
@@ -50,7 +52,7 @@ Open the folder and serve it with any simple static server.
 - `scripts/catalog.js` - manifest-backed catalog, picker, variant selection, and furniture-side props
 - `scripts/planner2d.js` - 2D plan rendering and editor interactions
 - `scripts/planner2d.js` also owns the reference-overlay tracing workflow and calibration behavior
-- `scripts/planner3d.js` - 3D scene, camera behavior, and walkthrough presets
+- `scripts/planner3d.js` - 3D scene, camera behavior, walkthrough presets, and photo mode / lighting polish
 - `scripts/walkthrough.js` - emotional layer, self-test boot, and guided story behavior
 - `scripts/thumbgen.html` - local thumbnail-render stage used to generate catalog previews
 - `scripts/generate-thumbnails.mjs` - bulk thumbnail generator for the current asset catalog
@@ -99,6 +101,8 @@ This uses `scripts/thumbgen.html` as a consistent local render stage and writes 
 - category-first premium picker with favorites, recents, collection chips, and real thumbnail cards
 - manifest-driven product/material variants for major furniture, storage, rug, and lighting categories
 - smoother 3D camera behavior with double-click focus and walkthrough presets
+- photo mode with capture-oriented camera presets and cleaner presentation framing
+- more cinematic 3D lighting with ACES tone mapping, better shadowing, and a daylight-to-evening light character control
 
 ## Reference Overlay Workflow
 

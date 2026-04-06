@@ -496,6 +496,9 @@ function normalizeRoom(room){
   room.materials.trim=normalizeColorValue(room.materials.trim||'#E6DFD4',TRIM_COLORS[0]);
   room.materials.ceilingBrightness=Number.isFinite(room.materials.ceilingBrightness)?room.materials.ceilingBrightness:1;
   room.materials.lightingPreset=room.materials.lightingPreset||'daylight';
+  room.materials.lightCharacter=Number.isFinite(room.materials.lightCharacter)
+    ? Math.max(0,Math.min(1,room.materials.lightCharacter))
+    : ({daylight:.38,warm_evening:.76,soft_lamp_glow:.84,moody:.92,bright_studio:.28}[room.materials.lightingPreset]??.5);
   room.materials.closetStyle=room.materials.closetStyle||'white_shaker';
   room.mood=room.mood||'';
   room.roomType=room.roomType||'living_room';

@@ -538,7 +538,19 @@ function resetFloorColorToStyle(){
 }
 function setTrimColor(color){if(!curRoom)return;curRoom.materials.trim=normalizeColorValue(color,TRIM_COLORS[0]);roomStyleChanged()}
 function setCeilingBrightness(v){if(!curRoom)return;curRoom.materials.ceilingBrightness=Math.max(.7,Math.min(1.35,parseFloat(v)||1));roomStyleChanged()}
-function setLightingPreset(id){if(!curRoom)return;curRoom.materials.lightingPreset=id;if(is3D&&ren&&scene){const preset=getLightingPreset(curRoom);ren.toneMappingExposure=preset.exposure;scene.background=safeThreeColor(preset.background,'#0f141c');scene.fog=new THREE.Fog(scene.background.getHex(),preset.fogNear||28,preset.fogFar||82)}roomStyleChanged()}
+function setLightingPreset(id){
+  if(!curRoom)return;
+  curRoom.materials.lightingPreset=id;
+  if(!Number.isFinite(curRoom.materials.lightCharacter)){
+    curRoom.materials.lightCharacter=({daylight:.38,warm_evening:.76,soft_lamp_glow:.84,moody:.92,bright_studio:.28}[id]??.5);
+  }
+  roomStyleChanged();
+}
+function setLightCharacter(v){
+  if(!curRoom)return;
+  curRoom.materials.lightCharacter=Math.max(0,Math.min(1,parseFloat(v)||0));
+  roomStyleChanged();
+}
 function setRoomType(id){if(!curRoom)return;curRoom.roomType=id;pushU();draw();showP()}
 function nudgeStyle(action){
   if(!curRoom)return;
@@ -565,6 +577,7 @@ function applyDesignPresetToRoom(room,id){
   if(floor){room.materials.floorType=floor.id;room.materials.floor=floor.color;room.materials.floorColorCustom=false;}
   room.materials.trim=preset.trim||room.materials.trim;
   room.materials.lightingPreset=preset.lightingPreset||room.materials.lightingPreset;
+  room.materials.lightCharacter=({daylight:.38,warm_evening:.76,soft_lamp_glow:.84,moody:.92,bright_studio:.28}[room.materials.lightingPreset]??room.materials.lightCharacter??.5);
   room.materials.ceilingBrightness=Number.isFinite(preset.ceilingBrightness)?preset.ceilingBrightness:(room.materials.ceilingBrightness||1);
   room.mood=preset.mood||room.mood;
 }
@@ -667,6 +680,14 @@ function ceilingBrightnessLabel(room){
   if(value<=0.88)return 'Ceiling is intentionally toned down for a moodier top plane.';
   return 'Ceiling is staying close to its natural painted brightness.';
 }
+function lightCharacterLabel(room){
+  const value=Math.max(0,Math.min(1,room?.materials?.lightCharacter??.5));
+  if(value<=.2)return 'Cool early daylight with a higher, crisper sun.';
+  if(value<=.45)return 'Balanced daylight that keeps colors honest and natural.';
+  if(value<=.7)return 'Soft late-day warmth with a gentler sun angle.';
+  if(value<=.88)return 'Golden-hour warmth that feels calmer and more cinematic.';
+  return 'Blue-hour mood with warmer practical lights and deeper shadows.';
+}
 
 function showP(){
   const p=document.getElementById('propsP'),r=curRoom;
@@ -688,7 +709,7 @@ function showP(){
     const refWidth=refBounds?formatDistance(refBounds.width,'friendly'):'';
     h=cBtn.replace('$T','Room Style');
     h+=propSection('Surfaces',`<label>WALL STYLE</label><div class="mat-grid">${WALL_PALETTES.map(c=>`<button class="mat-btn${(r.materials.wallFinish||'warm_white')===c.id?' sel':''}" onclick="setWallFinish('${c.id}')" style="background:${c.color};color:${c.id==='charcoal_accent'?'#fff':'#332922'}">${c.name}</button>`).join('')}</div><div class="prop-state${wallColorIsCustom(r)?' custom':''}">${wallColorIsCustom(r)?`Custom color active <button class="prop-link-btn" onclick="resetWallColorToStyle()">Reset to style</button>`:'Wall color follows the selected wall style.'}</div><label style="margin-top:8px">WALL COLOR OVERRIDE</label><div class="paint-row">${WALL_PALETTES.map(c=>`<button class="swatch${r.materials.wall===c.color?' sel':''}" style="background:${c.color}" onclick="setWallPaint('${c.color}')" title="Use ${c.name} as a custom wall color"></button>`).join('')}</div><div class="prop-tip">Choosing a wall style resets the wall back to that style color. Picking a swatch creates an intentional custom override.</div><label style="margin-top:8px">FLOOR STYLE</label><div class="mat-grid">${FLOOR_TYPES.map(ft=>`<button class="mat-btn${(r.materials.floorType||'light_oak')===ft.id?' sel':''}" onclick="setFloorType('${ft.id}')">${ft.name}</button>`).join('')}</div><div class="prop-state${floorColorIsCustom(r)?' custom':''}">${floorColorIsCustom(r)?`Custom color active <button class="prop-link-btn" onclick="resetFloorColorToStyle()">Reset to style</button>`:'Floor color follows the selected floor style.'}</div><label style="margin-top:8px">FLOOR COLOR OVERRIDE</label><div class="paint-row">${FLOOR_TYPES.map(ft=>`<button class="swatch${r.materials.floor===ft.color?' sel':''}" style="background:${ft.color}" onclick="setFloorPaint('${ft.color}')" title="Use ${ft.name} as a custom floor color"></button>`).join('')}</div><div class="prop-tip">Floor style controls texture and the default finish color. Use a swatch only when you want to override that style on purpose.</div><label style="margin-top:8px">TRIM COLOR</label><div class="paint-row">${TRIM_COLORS.map(c=>`<button class="swatch${r.materials.trim===c?' sel':''}" style="background:${c}" onclick="setTrimColor('${c}')"></button>`).join('')}</div>`);
-    h+=propSection('Lighting Scene',`<label>LIGHTING MOOD</label><div class="mat-grid tall">${Object.entries(LIGHTING_PRESETS).map(([id,preset])=>`<button class="mat-btn${activeLightingPreset===id?' sel':''}" onclick="setLightingPreset('${id}')">${preset.name}</button>`).join('')}</div><div class="prop-state">Active scene: <strong>${LIGHTING_PRESETS[activeLightingPreset]?.name||'Daylight'}</strong></div><div class="prop-tip">${lightingPresetHelp(activeLightingPreset)}</div><label style="margin-top:8px">CEILING BRIGHTNESS</label><input type="range" min="0.7" max="1.35" step="0.05" value="${r.materials.ceilingBrightness||1}" oninput="setCeilingBrightness(this.value)"><div class="prop-tip">Brightness only changes how much light the ceiling appears to bounce in 3D. It does not change room size.</div><div class="prop-state">${ceilingBrightnessLabel(r)}</div>`);
+    h+=propSection('Lighting Scene',`<label>LIGHTING MOOD</label><div class="mat-grid tall">${Object.entries(LIGHTING_PRESETS).map(([id,preset])=>`<button class="mat-btn${activeLightingPreset===id?' sel':''}" onclick="setLightingPreset('${id}')">${preset.name}</button>`).join('')}</div><div class="prop-state">Active scene: <strong>${LIGHTING_PRESETS[activeLightingPreset]?.name||'Daylight'}</strong></div><div class="prop-tip">${lightingPresetHelp(activeLightingPreset)}</div><label style="margin-top:8px">LIGHT CHARACTER</label><input type="range" min="0" max="1" step="0.05" value="${r.materials.lightCharacter??.5}" oninput="setLightCharacter(this.value)"><div class="prop-tip">Shifts the sun angle and warmth from crisp daylight toward golden and blue-hour light without changing room geometry.</div><div class="prop-state">${lightCharacterLabel(r)}</div><label style="margin-top:8px">CEILING BRIGHTNESS</label><input type="range" min="0.7" max="1.35" step="0.05" value="${r.materials.ceilingBrightness||1}" oninput="setCeilingBrightness(this.value)"><div class="prop-tip">Brightness only changes how much light the ceiling appears to bounce in 3D. It does not change room size.</div><div class="prop-state">${ceilingBrightnessLabel(r)}</div>${is3D?`<div class="quick-rotate-row" style="margin-top:8px"><button class="pbtn soft" onclick="togglePhotoMode()">${photoMode?'Exit Photo Mode':'Open Photo Mode'}</button><button class="pbtn soft" onclick="toggleWalkthroughTray()">Open Walkthroughs</button></div>`:''}`);
     h+=propSection('Ceiling Geometry',`<label>CEILING HEIGHT (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.5)}" value="${distanceInputValue(r.height)}" onchange="uRoomHeight(this.value)"><div class="prop-tip">Height changes the room geometry, wall proportions, and how the 3D space feels. It is a structural room value, not a lighting effect.</div><div class="prop-tip">Closets live in the dedicated structural tool, not the furniture catalog.</div>`);
     h+=propSection('Room Direction',`<label>ROOM TYPE</label><div class="mat-grid">${ROOM_TYPES.map(type=>`<button class="mat-btn${(r.roomType||'living_room')===type.id?' sel':''}" onclick="setRoomType('${type.id}')">${type.name}</button>`).join('')}</div><label style="margin-top:8px">DESIGN PRESET</label><div class="mat-grid tall">${DESIGN_PRESETS.map(preset=>`<button class="mat-btn${(r.designPreset||'')===preset.id?' sel':''}" onclick="applyDesignPreset('${preset.id}')">${preset.name}</button>`).join('')}</div><div class="prop-tip">${(DESIGN_PRESETS.find(p=>p.id===r.designPreset)?.note)||'Choose a style direction to coordinate finishes, lighting, and mood.'}</div>`);
     h+=propSection('Expand Home',`<div class="pr"><div><label>ROOM WIDTH (${distanceLabel()})</label><input type="number" step="${distanceInputStep(1)}" value="${distanceInputValue(adjRoomCfg.width)}" onchange="setAdjRoomWidth(this.value)"></div><div><label>ROOM DEPTH (${distanceLabel()})</label><input type="number" step="${distanceInputStep(1)}" value="${distanceInputValue(adjRoomCfg.depth)}" onchange="setAdjRoomDepth(this.value)"></div></div><div class="mat-grid tall"><button class="mat-btn" onclick="attachAdjacentRoom('north')">Add North Room</button><button class="mat-btn" onclick="attachAdjacentRoom('east')">Add East Room</button><button class="mat-btn" onclick="attachAdjacentRoom('south')">Add South Room</button><button class="mat-btn" onclick="attachAdjacentRoom('west')">Add West Room</button></div><div class="prop-tip">Adds a connected room to the current footprint so you can keep building one walkable home.</div>`);

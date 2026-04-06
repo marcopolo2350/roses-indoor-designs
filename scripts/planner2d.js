@@ -842,7 +842,8 @@ function applyRoomStyleToScene(){
   if(!is3D||!scene||!ren||!curRoom)return;
   const style=scene.userData?.styleTargets;
   if(!style)return;
-  const preset=getLightingPreset(curRoom);
+  const lightState=typeof computeSceneLightingState==='function'?computeSceneLightingState(curRoom):null;
+  const preset=lightState?.preset||getLightingPreset(curRoom);
   const wallColor=safeThreeColor(curRoom.materials.wall,WALL_PALETTES[0].color);
   const wallFinish=WALL_PALETTES.find(w=>w.id===(curRoom.materials.wallFinish||'warm_white'))||WALL_PALETTES[0];
   const trimColor=safeThreeColor(curRoom.materials.trim,TRIM_COLORS[0]);
@@ -888,21 +889,29 @@ function applyRoomStyleToScene(){
     style.floorAccent.material.map.needsUpdate=true;
     style.floorAccent.material.needsUpdate=true;
   }
-  ren.toneMappingExposure=preset.exposure;
-  scene.background=safeThreeColor(preset.background,'#0f141c');
-  scene.fog=new THREE.Fog(scene.background.getHex(),preset.fogNear||28,preset.fogFar||82);
-    if(style.hemiLight){style.hemiLight.intensity=preset.ambient*1.18;style.hemiLight.groundColor.setHex(preset.warm);}
-    if(style.ambLight){style.ambLight.intensity=preset.ambient*.78;style.ambLight.color.setHex(preset.warm);}
-    if(style.dirLight){style.dirLight.intensity=preset.dir;style.dirLight.color.setHex(preset.dirColor);}
-    if(style.fillLight)style.fillLight.intensity=preset.ambient*.52;
+  ren.toneMapping=THREE.ACESFilmicToneMapping;
+  ren.toneMappingExposure=lightState?.exposure??preset.exposure;
+  scene.background=(lightState?.background||safeThreeColor(preset.background,'#0f141c')).clone();
+  scene.fog=new THREE.Fog(scene.background.getHex(),lightState?.fogNear??preset.fogNear??28,lightState?.fogFar??preset.fogFar??82);
+    if(style.hemiLight){style.hemiLight.intensity=lightState?.hemiIntensity??(preset.ambient*1.18);style.hemiLight.groundColor.copy(lightState?.warmColor||safeThreeColor(preset.warm,0xFFF1D3));}
+    if(style.ambLight){style.ambLight.intensity=(lightState?.ambientIntensity??preset.ambient)*.76;style.ambLight.color.copy(lightState?.warmColor||safeThreeColor(preset.warm,0xFFF1D3));}
+    if(style.dirLight){
+      style.dirLight.intensity=lightState?.dirIntensity??preset.dir;
+      style.dirLight.color.copy(lightState?.dirColor||safeThreeColor(preset.dirColor,0xffffff));
+      if(lightState?.sunPosition)style.dirLight.position.set(lightState.sunPosition.x,lightState.sunPosition.y,lightState.sunPosition.z);
+    }
+    if(style.fillLight){
+      style.fillLight.intensity=lightState?.fillIntensity??(preset.ambient*.52);
+      if(lightState?.fillPosition)style.fillLight.position.set(lightState.fillPosition.x,lightState.fillPosition.y,lightState.fillPosition.z);
+    }
     if(style.ceilingLight)style.ceilingLight.intensity=.28*(curRoom.materials.ceilingBrightness||1);
     (style.practicalLights||[]).forEach(entry=>{
       if(!entry?.light)return;
       const baseIntensity=Number(entry.baseIntensity)||1;
       const baseDistance=Number(entry.baseDistance)||6;
-      entry.light.intensity=baseIntensity*Math.max(.08,preset.practical||.04)*(curRoom.materials.ceilingBrightness||1);
-      if('distance' in entry.light)entry.light.distance=baseDistance*(preset.practical>.8?1.08:1);
-      if(entry.light.color?.setHex)entry.light.color.setHex(preset.warm);
+      entry.light.intensity=baseIntensity*Math.max(.08,(lightState?.practicalMultiplier??(preset.practical||.04)))*(curRoom.materials.ceilingBrightness||1);
+      if('distance' in entry.light)entry.light.distance=baseDistance*(((lightState?.practicalMultiplier??preset.practical)||0)>.8?1.08:1);
+      if(entry.light.color?.copy)entry.light.color.copy(lightState?.warmColor||safeThreeColor(preset.warm,0xFFF1D3));
     });
   }
 function setAdjRoomWidth(v){adjRoomCfg.width=Math.max(6,Math.min(30,parseDistanceInput(v,adjRoomCfg.width||10)));showP()}

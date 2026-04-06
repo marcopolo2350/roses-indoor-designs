@@ -2,10 +2,12 @@
 function exportPNG(){
   if(!curRoom){toast('Open a room first');return}
   let dataUrl;
-  if(is3D&&ren){ren.render(scene,cam);dataUrl=ren.domElement.toDataURL('image/png')}
+  if(is3D&&ren){
+    dataUrl=typeof capturePhotoMode==='function'?capturePhotoMode(false):(ren.render(scene,cam),ren.domElement.toDataURL('image/png'));
+  }
   else if(canvas){dataUrl=canvas.toDataURL('image/png')}
   else{toast('Nothing to export');return}
-  const a=document.createElement('a');a.href=dataUrl;a.download=`${(curRoom.name||'room').replace(/[^a-z0-9]/gi,'_')}_${is3D?'3d':'plan'}.png`;
+  const a=document.createElement('a');a.href=dataUrl;a.download=`${(curRoom.name||'room').replace(/[^a-z0-9]/gi,'_')}_${is3D?(photoMode?'photo':'3d'):'plan'}.png`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);toast('PNG exported')
 }
 function renderPlanModeToDataURL(mode,width=1100,height=800){
@@ -379,4 +381,3 @@ function printFloorPlan(){
   window.print();
   canvas.width=prevW;canvas.height=prevH;showMeasurements=prevM;autoFit();draw()
 }
-
