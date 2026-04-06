@@ -1,0 +1,17 @@
+{
+  "name": "Rose Designs",
+  "short_name": "Rose Designs",
+  "description": "Plan, redesign, compare, and present beautiful rooms in 2D and 3D.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#faf7f2",
+  "theme_color": "#b8918e",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

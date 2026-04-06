@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Rose Designs share preview</title>
+  <desc id="desc">A warm branded preview image for the Rose Designs room design web app.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f9f2eb"/>
+      <stop offset="55%" stop-color="#ead9d1"/>
+      <stop offset="100%" stop-color="#d9b9b0"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fffdfa"/>
+      <stop offset="100%" stop-color="#f2e8df"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#6d514b" flood-opacity=".18"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1030" cy="112" r="164" fill="#ffffff" opacity=".18"/>
+  <circle cx="180" cy="520" r="188" fill="#ffffff" opacity=".12"/>
+  <g filter="url(#shadow)">
+    <rect x="84" y="76" width="1032" height="478" rx="34" fill="url(#panel)"/>
+  </g>
+  <rect x="118" y="112" width="430" height="404" rx="28" fill="#f8f2ea" stroke="#d7c1b8" stroke-width="4"/>
+  <rect x="146" y="142" width="374" height="348" rx="22" fill="#efe5d6"/>
+  <path d="M170 170h325v290H170z" fill="#f7eddc" stroke="#a68567" stroke-width="8"/>
+  <path d="M258 170v290M345 170v290M432 170v290" stroke="#7b5f49" stroke-width="7" opacity=".78"/>
+  <path d="M170 242h325M170 314h325M170 386h325" stroke="#8a6a52" stroke-width="5" opacity=".52"/>
+  <rect x="220" y="232" width="116" height="72" rx="18" fill="#9d7567"/>
+  <rect x="235" y="248" width="84" height="40" rx="12" fill="#c9a28f"/>
+  <rect x="363" y="220" width="84" height="132" rx="18" fill="#6d8475"/>
+  <rect x="382" y="240" width="46" height="58" rx="10" fill="#f6f1e8"/>
+  <rect x="230" y="350" width="188" height="86" rx="30" fill="#c4938e"/>
+  <rect x="252" y="372" width="144" height="42" rx="21" fill="#f0ddda"/>
+  <circle cx="477" cy="174" r="16" fill="#c4a872"/>
+  <circle cx="477" cy="174" r="7" fill="#fff5dd"/>
+  <g transform="translate(594 110)">
+    <rect width="466" height="190" rx="28" fill="#fffaf4" stroke="#d9c6ba" stroke-width="4"/>
+    <text x="36" y="56" fill="#6f5149" font-family="Georgia, serif" font-size="30" font-weight="700">Rose Designs</text>
+    <text x="36" y="97" fill="#8c6f68" font-family="Arial, sans-serif" font-size="24">Plan, redesign, compare, and present rooms beautifully.</text>
+    <g transform="translate(36 126)">
+      <rect width="150" height="36" rx="18" fill="#e9d2cf"/>
+      <text x="75" y="24" text-anchor="middle" fill="#805f59" font-family="Arial, sans-serif" font-size="16" font-weight="700">2D + 3D</text>
+      <rect x="164" width="166" height="36" rx="18" fill="#efe6db"/>
+      <text x="247" y="24" text-anchor="middle" fill="#80685f" font-family="Arial, sans-serif" font-size="16" font-weight="700">Redesign Options</text>
+      <rect x="344" width="92" height="36" rx="18" fill="#d9cfc5"/>
+      <text x="390" y="24" text-anchor="middle" fill="#6d5b53" font-family="Arial, sans-serif" font-size="16" font-weight="700">PDF</text>
+    </g>
+  </g>
+  <g transform="translate(594 330)">
+    <rect width="466" height="186" rx="28" fill="#f8efe6" stroke="#d8c2b6" stroke-width="4"/>
+    <rect x="28" y="28" width="126" height="132" rx="18" fill="#fffaf5"/>
+    <text x="50" y="58" fill="#7b6158" font-family="Arial, sans-serif" font-size="18" font-weight="700">As-Is</text>
+    <rect x="50" y="76" width="84" height="62" rx="14" fill="#ceb5a7"/>
+    <rect x="180" y="28" width="126" height="132" rx="18" fill="#fffaf5"/>
+    <text x="193" y="58" fill="#7b6158" font-family="Arial, sans-serif" font-size="18" font-weight="700">Redesign</text>
+    <rect x="204" y="76" width="84" height="62" rx="14" fill="#96aa9d"/>
+    <rect x="332" y="28" width="106" height="132" rx="18" fill="#fffaf5"/>
+    <text x="349" y="58" fill="#7b6158" font-family="Arial, sans-serif" font-size="18" font-weight="700">Compare</text>
+    <path d="M356 92h58M356 112h58M356 132h42" stroke="#b48c82" stroke-width="8" stroke-linecap="round"/>
+    <text x="28" y="171" fill="#9a7b73" font-family="Arial, sans-serif" font-size="18">Made for calm room planning, redesigns, and client-ready exports.</text>
+  </g>
+</svg>
