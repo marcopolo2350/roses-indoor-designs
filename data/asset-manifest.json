@@ -95,7 +95,7 @@
   {
     "id": "bookcase_books",
     "name": "Bookcase Books",
-    "category": "Decor",
+    "category": "Storage",
     "subcategory": "bookcase",
     "modelPath": "./assets/models/bookcase_books.glb",
     "thumbnailPath": null,
@@ -114,7 +114,7 @@
   {
     "id": "bookshelf",
     "name": "Bookshelf",
-    "category": "Storage",
+    "category": "Decor",
     "subcategory": "bookshelf",
     "modelPath": "./assets/models/bookshelf.glb",
     "thumbnailPath": null,
@@ -372,7 +372,7 @@
   {
     "id": "fireplace",
     "name": "Fireplace",
-    "category": "Storage",
+    "category": "Decor",
     "subcategory": "fireplace",
     "modelPath": "./assets/models/fireplace.glb",
     "thumbnailPath": null,
