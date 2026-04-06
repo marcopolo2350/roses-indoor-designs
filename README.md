@@ -11,7 +11,7 @@ The app now runs as a small static app shell instead of one giant inlined page:
 
 It includes:
 - 2D room drawing with walls, doors, windows, closets, partitions, and measurements
-- local reference-image tracing in 2D with import, move, scale, opacity, lock, and calibration controls
+- local reference-image and PDF tracing in 2D with import, move, scale, opacity, lock, page switching, and calibration controls
 - 3D room viewing with orbit and walk modes
 - photo-focused 3D captures with `Photo Mode`, hero framing presets, and higher-quality PNG output
 - richer lighting control with `Lighting Mood` plus a `Light Character` slider for daylight-to-evening scene shaping
@@ -51,7 +51,7 @@ Open the folder and serve it with any simple static server.
 - `scripts/storage.js` - IndexedDB/local profile persistence and catalog/storage utilities
 - `scripts/catalog.js` - manifest-backed catalog, picker, variant selection, and furniture-side props
 - `scripts/planner2d.js` - 2D plan rendering and editor interactions
-- `scripts/planner2d.js` also owns the reference-overlay tracing workflow and calibration behavior
+- `scripts/planner2d.js` also owns the image/PDF reference-overlay tracing workflow, page rendering, and calibration behavior
 - `scripts/planner3d.js` - 3D scene, camera behavior, walkthrough presets, and photo mode / lighting polish
 - `scripts/walkthrough.js` - emotional layer, self-test boot, and guided story behavior
 - `scripts/thumbgen.html` - local thumbnail-render stage used to generate catalog previews
@@ -93,6 +93,7 @@ This uses `scripts/thumbgen.html` as a consistent local render stage and writes 
 - persistent undo/redo
 - imperial and metric units
 - local image-based floor-plan / room-photo tracing overlays with calibration and saved per-room state
+- local PDF floor-plan import that renders into the same saved tracing overlay workflow
 - redesign options and client presentation export
 - room comparison views in 2D and 3D
 - stronger floor and furniture rendering for clearer visual contrast
@@ -106,10 +107,11 @@ This uses `scripts/thumbgen.html` as a consistent local render stage and writes 
 
 ## Reference Overlay Workflow
 
-- import a local image as a floor-plan or room-photo reference
+- import a local image or PDF as a floor-plan or room-photo reference
 - reposition it directly on the 2D canvas
 - adjust opacity and scale
 - lock it so tracing/editing ignores the overlay
 - calibrate it by clicking two points and entering a real-world distance
+- switch PDF pages when the source file has more than one page
 
-This pass is image-first. PDF import can be added later without changing the local-first architecture.
+Everything stays local in the browser. PDFs are rendered into the same overlay system as images, so tracing, calibration, and saved room state work the same way.

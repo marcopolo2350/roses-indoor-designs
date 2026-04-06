@@ -544,8 +544,14 @@ function normalizeReferenceOverlay(ref,room){
   const naturalWidth=Math.max(1,Number(ref?.naturalWidth)||1);
   const naturalHeight=Math.max(1,Number(ref?.naturalHeight)||1);
   const defaultWidth=Math.max(8,Math.min(30,bounds.width||12));
+  const pdfPageCount=Number.isFinite(ref?.pdfPageCount)&&ref.pdfPageCount>0?Math.round(ref.pdfPageCount):0;
   return {
     src:typeof ref?.src==='string'?ref.src:'',
+    sourceType:ref?.sourceType==='pdf'?'pdf':'image',
+    sourceName:typeof ref?.sourceName==='string'?ref.sourceName:'',
+    pdfSource:typeof ref?.pdfSource==='string'?ref.pdfSource:'',
+    pdfPageCount,
+    pdfPage:pdfPageCount?Math.max(1,Math.min(pdfPageCount,Math.round(ref?.pdfPage)||1)):1,
     visible:ref?.visible!==false,
     locked:ref?.locked!==false,
     opacity:Math.max(.08,Math.min(.95,Number(ref?.opacity)||.56)),
