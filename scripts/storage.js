@@ -44,6 +44,7 @@ let verify3D=null;
 let presentationMode=false,furnQuery='';
 let furnitureSnap=true,multiSelectMode=false,unitSystem='imperial',pasteCascade=0;
 let compare3DMode=false;
+let activeProjectFloorId=null;
 const EXTERIOR_MODE_ENABLED=false;
 const ROOM_HISTORY_PREFIX='room_history_';
 const FEET_TO_METERS=.3048;
@@ -508,6 +509,18 @@ function normalizeRoom(room){
   room.ghostExisting=room.ghostExisting!==false;
   room.planViewMode=PLAN_VIEW_MODES[room.planViewMode]?room.planViewMode:'combined';
   room.showPlanLegend=room.showPlanLegend!==false;
+  room.projectId=room.projectId||room.id;
+  room.projectName=(typeof room.projectName==='string'&&room.projectName.trim())?room.projectName.trim():room.name||'Home Project';
+  room.floorId=room.floorId||'floor_1';
+  room.floorLabel=(typeof room.floorLabel==='string'&&room.floorLabel.trim())?room.floorLabel.trim():'Floor 1';
+  room.floorOrder=Number.isFinite(room.floorOrder)?Math.max(0,Math.round(room.floorOrder)):0;
+  room.roomOrder=Number.isFinite(room.roomOrder)?Math.max(0,Math.round(room.roomOrder)):0;
+  room.connections=Array.isArray(room.connections)?room.connections.map(link=>({
+    roomId:link?.roomId||'',
+    side:link?.side||'',
+    via:link?.via||'',
+    label:typeof link?.label==='string'?link.label:''
+  })).filter(link=>link.roomId):[];
   room.baseRoomId=room.baseRoomId||room.id;
   room.optionName=room.optionName||'Main';
   room.optionNotes=typeof room.optionNotes==='string'?room.optionNotes:'';

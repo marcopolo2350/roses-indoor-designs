@@ -11,6 +11,7 @@ The app now runs as a small static app shell instead of one giant inlined page:
 
 It includes:
 - 2D room drawing with walls, doors, windows, closets, partitions, and measurements
+- multi-room home planning inside one project, with per-room geometry, furniture, variants, overlays, notes, and floor grouping
 - local reference-image and PDF tracing in 2D with import, move, scale, opacity, lock, page switching, and calibration controls
 - 3D room viewing with orbit and walk modes
 - photo-focused 3D captures with `Photo Mode`, hero framing presets, and higher-quality PNG output
@@ -58,6 +59,7 @@ Open the folder and serve it with any simple static server.
 - `scripts/generate-thumbnails.mjs` - bulk thumbnail generator for the current asset catalog
 - `scripts/export.js` - PNG, summary, comparison, and PDF export
 - `scripts/ui.js` - home/editor shell behavior and compare state
+- `scripts/ui.js` also owns project-level room/floor grouping, room organizer actions, and multi-room creation flows
 - `data/asset-manifest.json` - structured asset metadata
 - `assets/models/` - source GLB furniture and decor assets
 - `assets/thumbnails/` - generated product thumbnails used by the catalog
@@ -94,6 +96,7 @@ This uses `scripts/thumbgen.html` as a consistent local render stage and writes 
 - imperial and metric units
 - local image-based floor-plan / room-photo tracing overlays with calibration and saved per-room state
 - local PDF floor-plan import that renders into the same saved tracing overlay workflow
+- project-aware room organization with floor-ready metadata and limited multi-floor switching
 - redesign options and client presentation export
 - room comparison views in 2D and 3D
 - stronger floor and furniture rendering for clearer visual contrast
@@ -115,3 +118,10 @@ This uses `scripts/thumbgen.html` as a consistent local render stage and writes 
 - switch PDF pages when the source file has more than one page
 
 Everything stays local in the browser. PDFs are rendered into the same overlay system as images, so tracing, calibration, and saved room state work the same way.
+
+## Multi-Room Planning
+
+- each project can now contain multiple named rooms
+- each room keeps its own geometry, furniture, variants, tracing overlay, and option state
+- floors are lightweight but persistent: rooms carry `floorId`, `floorLabel`, and `floorOrder`
+- the current editor exports still operate on the active room and its option set, not the whole project at once

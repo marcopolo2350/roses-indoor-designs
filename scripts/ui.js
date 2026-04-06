@@ -57,6 +57,51 @@ function showTut(){
 function nextTut(){tutS++;showTut()}
 function endTut(){tutS=-1;document.getElementById('tutOv').classList.remove('on');setLocal(profileSeenKey(),'1');findEgg(1)} // Easter egg: Soft Petal
 
+function compareProjectRooms(a,b){
+  return (a.floorOrder-b.floorOrder)||(a.roomOrder-b.roomOrder)||String(a.name||'').localeCompare(String(b.name||''))||String(a.optionName||'').localeCompare(String(b.optionName||''));
+}
+function projectRooms(projectOrRoom=curRoom){
+  const projectId=typeof projectOrRoom==='string'?projectOrRoom:(projectOrRoom?.projectId||projectOrRoom?.id);
+  return projects.filter(room=>(room.projectId||room.id)===projectId).sort(compareProjectRooms);
+}
+function projectMainRooms(projectOrRoom=curRoom){
+  const grouped=new Map();
+  projectRooms(projectOrRoom).forEach(room=>{
+    const key=room.baseRoomId||room.id;
+    const current=grouped.get(key);
+    const currentBase=curRoom?(curRoom.baseRoomId||curRoom.id):'';
+    if(!current||room.optionName==='Main'||currentBase===key)grouped.set(key,room);
+  });
+  return [...grouped.values()].sort(compareProjectRooms);
+}
+function projectFloors(projectOrRoom=curRoom){
+  const floors=new Map();
+  projectMainRooms(projectOrRoom).forEach(room=>{
+    const key=room.floorId||'floor_1';
+    if(!floors.has(key))floors.set(key,{id:key,label:room.floorLabel||'Floor 1',order:Number.isFinite(room.floorOrder)?room.floorOrder:0,rooms:[]});
+    floors.get(key).rooms.push(room);
+  });
+  return [...floors.values()].sort((a,b)=>(a.order-b.order)||a.label.localeCompare(b.label));
+}
+function projectPrimaryRoom(projectOrRoom=curRoom){
+  const rooms=projectMainRooms(projectOrRoom);
+  return rooms.find(room=>room.optionName==='Main')||rooms[0]||null;
+}
+function currentProjectId(){return curRoom?.projectId||null}
+function currentProjectName(){return curRoom?.projectName||curRoom?.name||'Home Project'}
+function currentFloorRooms(projectOrRoom=curRoom,floorId=activeProjectFloorId||curRoom?.floorId){
+  return projectMainRooms(projectOrRoom).filter(room=>(room.floorId||'floor_1')===floorId);
+}
+function nextProjectFloorMeta(projectOrRoom=curRoom){
+  const floors=projectFloors(projectOrRoom);
+  const nextIndex=floors.length+1;
+  return {id:`floor_${nextIndex}`,label:`Floor ${nextIndex}`,order:floors.length};
+}
+let createRoomContext={mode:'new_project',projectId:null,projectName:'',floorId:'floor_1',floorLabel:'Floor 1',floorOrder:0};
+function setCreateRoomContext(ctx={}){
+  createRoomContext={mode:'new_project',projectId:null,projectName:'',floorId:'floor_1',floorLabel:'Floor 1',floorOrder:0,...ctx};
+}
+
 // ── HOME ──
 function renderHome(){
   // Time-aware greeting
@@ -81,7 +126,8 @@ function renderHome(){
   updateProfileChip();
   const l=document.getElementById('prjList');
   if(!projects.length){l.innerHTML='<div class="emp"><div class="ei">\u{1F339}</div><h3>No rooms yet</h3><p>Create your first room to start designing.</p></div>';return}
-  l.innerHTML=projects.slice().reverse().map(p=>{
+  const grouped=[...new Map(projects.map(room=>[(room.projectId||room.id),projectPrimaryRoom(room)])).values()].filter(Boolean).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  l.innerHTML=grouped.map(p=>{
     const n=p.polygon?p.polygon.length:0;
     const sh=n===4?'Rectangle':n===6?'L-Shape':n>0?n+'-gon':'Drawing...';
     const type=(ROOM_TYPES.find(t=>t.id===(p.roomType||'living_room'))||ROOM_TYPES[0]).name;
@@ -89,29 +135,49 @@ function renderHome(){
     const presetLabel=p.designPreset?(DESIGN_PRESETS.find(d=>d.id===p.designPreset)?.name||'Styled'):null;
     const primaryChip=moodLabel||presetLabel||'In Progress';
     const edited=new Date(p.updatedAt||p.createdAt||Date.now()).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+    const roomCount=projectMainRooms(p).length;
+    const floorCount=projectFloors(p).length;
     if(!p.previewThumb&&p.polygon?.length)updateRoomPreviewThumb(p);
     const optionChip=(p.optionName&&p.optionName!=='Main')?`<span class="chip">${esc(p.optionName)}</span>`:'';
     const optionCount=optionSiblings(p).length>1?`<span class="chip">${optionSiblings(p).length} options</span>`:'';
     const thumb=p.previewThumb?`<div style="width:92px;height:72px;border-radius:14px;overflow:hidden;flex-shrink:0;box-shadow:var(--sh)"><img src="${p.previewThumb}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>`:'';
-    return `<div class="pc" onclick="openPrj('${p.id}')">${thumb}<div class="pci">${p.favorite?'\u2728':'\u{1F3E0}'}</div><div class="pcf"><h3>${esc(p.name)}</h3><p>${sh} &middot; ${formatDistance(p.height,'friendly')} ceiling &middot; ${esc(type)} &middot; edited ${edited}</p><div class="pcmeta"><span class="chip">${esc(primaryChip)}</span>${presetLabel&&moodLabel?`<span class="chip">${esc(presetLabel)}</span>`:''}${optionChip}${optionCount}</div></div><div class="pca"><button class="pab" onpointerdown="favPrjClick(event,'${p.id}')" title="Favorite"><svg viewBox="0 0 24 24"><path d="M12 17.3 5.8 21l1.7-7-5.5-4.8 7.2-.6L12 2l2.8 6.6 7.2.6-5.5 4.8 1.7 7z"/></svg></button><button class="pab" onpointerdown="dupPrjClick(event,'${p.id}')" title="Duplicate"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="pab" onpointerdown="delPrjClick(event,'${p.id}')" title="Delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></div>`}).join('')}
-function openPrj(id){const p=projects.find(r=>r.id===id);if(p)openEd(p)}
+    return `<div class="pc" onclick="openPrj('${p.projectId||p.id}')">${thumb}<div class="pci">${p.favorite?'\u2728':'\u{1F3E0}'}</div><div class="pcf"><h3>${esc(p.projectName||p.name)}</h3><p>${roomCount} room${roomCount===1?'':'s'} &middot; ${floorCount} floor${floorCount===1?'':'s'} &middot; edited ${edited}</p><div class="pcmeta"><span class="chip">${esc(primaryChip)}</span>${presetLabel&&moodLabel?`<span class="chip">${esc(presetLabel)}</span>`:''}<span class="chip">${esc(type)}</span>${roomCount>1?`<span class="chip">${roomCount} rooms</span>`:''}${floorCount>1?`<span class="chip">${floorCount} floors</span>`:''}${optionChip}${optionCount}</div></div><div class="pca"><button class="pab" onpointerdown="favPrjClick(event,'${p.projectId||p.id}')" title="Favorite"><svg viewBox="0 0 24 24"><path d="M12 17.3 5.8 21l1.7-7-5.5-4.8 7.2-.6L12 2l2.8 6.6 7.2.6-5.5 4.8 1.7 7z"/></svg></button><button class="pab" onpointerdown="dupPrjClick(event,'${p.projectId||p.id}')" title="Duplicate"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="pab" onpointerdown="delPrjClick(event,'${p.projectId||p.id}')" title="Delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></div>`}).join('')}
+function openPrj(id){const p=projectPrimaryRoom(id)||projects.find(r=>r.id===id);if(p)openEd(p)}
 function dupPrj(id){
-  const p=projects.find(r=>r.id===id);
-  if(!p)return;
-  const d=JSON.parse(JSON.stringify(p));
-  d.id=uid();
-  d.name+=' (Copy)';
-  d.createdAt=Date.now();
-  d.updatedAt=Date.now();
-  d.baseRoomId=d.id;
-  d.optionName='Main';
-  projects.push(normalizeRoom(d));
+  const sourceRooms=projectRooms(id);
+  if(!sourceRooms.length)return;
+  const roomIdMap=new Map();
+  const baseIdMap=new Map();
+  const nextProjectId=uid();
+  sourceRooms.forEach(room=>{
+    roomIdMap.set(room.id,uid());
+    if(!baseIdMap.has(room.baseRoomId||room.id))baseIdMap.set(room.baseRoomId||room.id,uid());
+  });
+  const clones=sourceRooms.map((room,index)=>{
+    const d=JSON.parse(JSON.stringify(room));
+    d.id=roomIdMap.get(room.id);
+    d.projectId=nextProjectId;
+    d.projectName=`${room.projectName||room.name} (Copy)`;
+    d.baseRoomId=baseIdMap.get(room.baseRoomId||room.id)||d.id;
+    d.createdAt=Date.now();
+    d.updatedAt=Date.now()+index;
+    d.connections=(room.connections||[]).map(link=>roomIdMap.has(link.roomId)?({...link,roomId:roomIdMap.get(link.roomId)}):null).filter(Boolean);
+    d.furniture=(room.furniture||[]).map(item=>({...item,id:uid(),linkedExistingId:'',replacementId:''}));
+    return normalizeRoom(d);
+  });
+  projects.push(...clones);
   saveAll();
   renderHome();
-  toast('Duplicated');
+  toast('Project duplicated');
 }
-function delPrj(id){projects=projects.filter(r=>r.id!==id);saveAll();renderHome();toast('Deleted')}
-function toggleFavoriteProject(id){const p=projects.find(r=>r.id===id);if(!p)return;p.favorite=!p.favorite;saveAll();renderHome();toast(p.favorite?'Saved to favorites':'Removed from favorites')}
+function delPrj(id){projects=projects.filter(r=>(r.projectId||r.id)!==id);saveAll();renderHome();toast('Deleted')}
+function toggleFavoriteProject(id){
+  const rooms=projectRooms(id);
+  if(!rooms.length)return;
+  const next=!rooms.some(r=>r.favorite);
+  rooms.forEach(room=>room.favorite=next);
+  saveAll();renderHome();toast(next?'Saved to favorites':'Removed from favorites')
+}
 function dupPrjClick(e,id){e.stopPropagation();e.preventDefault();dupPrj(id)}
 function delPrjClick(e,id){e.stopPropagation();e.preventDefault();showDeleteConfirm(id)}
 function favPrjClick(e,id){e.stopPropagation();e.preventDefault();toggleFavoriteProject(id)}
@@ -120,12 +186,12 @@ let pendingDeleteId=null;
 function showDeleteConfirm(id){
   if(document.getElementById('delConfirm'))return;
   pendingDeleteId=id;
-  const room=projects.find(r=>r.id===id);
-  const name=room?room.name:'this room';
+  const room=projectPrimaryRoom(id)||projects.find(r=>r.id===id);
+  const name=room?(room.projectName||room.name):'this project';
   document.body.insertAdjacentHTML('beforeend',
     `<div id="delConfirm" style="position:fixed;inset:0;z-index:4000;display:flex;align-items:center;justify-content:center;background:rgba(51,41,34,.3);backdrop-filter:blur(3px)">
       <div style="background:var(--bg);border-radius:var(--rl);padding:20px 24px;max-width:280px;text-align:center;box-shadow:var(--shl);animation:su .2s ease">
-        <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:6px">Delete room?</div>
+        <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:6px">Delete project?</div>
         <div style="font-size:12px;color:var(--taupe);margin-bottom:16px">${esc(name)}</div>
         <div style="display:flex;gap:8px">
           <button style="flex:1;padding:10px;border-radius:50px;background:var(--bg2);font-size:12px;font-weight:600" onclick="closeDeleteConfirm()">Cancel</button>
@@ -156,7 +222,15 @@ function selPre(id,el){
   document.querySelectorAll('.pi').forEach(e=>e.classList.remove('sel'));
   el.classList.add('sel')
 }
-function openCrModal(starterId='living_room'){const starter=ROOM_STARTERS.find(s=>s.id===starterId)||ROOM_STARTERS[0];selPreset=starter.id;document.getElementById('crN').value=starter.name==="Bedroom"?defaultPersonalRoomName():starter.name;document.getElementById('crW').value=starter.width;document.getElementById('crL').value=starter.depth;document.getElementById('crH').value=starter.height;popPresets();document.getElementById('crMod').classList.add('on')}
+function openCrModal(starterId='living_room',ctx=null){
+  const starter=ROOM_STARTERS.find(s=>s.id===starterId)||ROOM_STARTERS[0];
+  if(ctx)setCreateRoomContext(ctx);else setCreateRoomContext({mode:'new_project'});
+  selPreset=starter.id;
+  document.getElementById('crN').value=createRoomContext.mode==='project_room'
+    ? starter.name
+    : (starter.name==="Bedroom"?defaultPersonalRoomName():starter.name);
+  document.getElementById('crW').value=starter.width;document.getElementById('crL').value=starter.depth;document.getElementById('crH').value=starter.height;popPresets();document.getElementById('crMod').classList.add('on')
+}
 function closeCr(){document.getElementById('crMod').classList.remove('on')}
 document.getElementById('crMod').onclick=function(e){if(e.target===this)closeCr()};
 function buildStarterFurniture(starter,w,l){
@@ -193,11 +267,18 @@ function createFromPreset(){
   const l=parseFloat(document.getElementById('crL').value)||12;
   const h=parseFloat(document.getElementById('crH').value)||9;
   const nm=document.getElementById('crN').value||defaultPersonalRoomName();
+  const ctx=createRoomContext||{mode:'new_project'};
+  const projectId=ctx.mode==='project_room'?(ctx.projectId||curRoom?.projectId||uid()):uid();
+  const projectName=ctx.mode==='project_room'?(ctx.projectName||curRoom?.projectName||'Home Project'):nm;
+  const floorId=ctx.floorId||'floor_1';
+  const floorLabel=ctx.floorLabel||'Floor 1';
+  const floorOrder=Number.isFinite(ctx.floorOrder)?ctx.floorOrder:0;
   let poly;
   if(starter.shape==='lshape')poly=[{x:0,y:0},{x:w,y:0},{x:w,y:l*.5},{x:w*.5,y:l*.5},{x:w*.5,y:l},{x:0,y:l}];
   else if(starter.shape==='ushape'){const n=w*.3;poly=[{x:0,y:0},{x:w,y:0},{x:w,y:l},{x:w-n,y:l},{x:w-n,y:l*.4},{x:n,y:l*.4},{x:n,y:l},{x:0,y:l}]}
   else poly=[{x:0,y:0},{x:w,y:0},{x:w,y:l},{x:0,y:l}];
   const room=normalizeRoom({id:uid(),name:nm,height:h,wallThickness:.5,polygon:poly,openings:[],structures:[],furniture:[],
+    projectId,projectName,floorId,floorLabel,floorOrder,roomOrder:projectMainRooms(projectId).length,
     roomType:starter.roomType||'living_room',designPreset:starter.designPreset||'',materials:{wall:WALL_PALETTES[0].color,wallFinish:'warm_white',floor:FLOOR_TYPES[0].color,floorType:FLOOR_TYPES[0].id,ceiling:'#FAF7F2',trim:TRIM_COLORS[0],ceilingBrightness:1,lightingPreset:'daylight'},createdAt:Date.now(),updatedAt:Date.now(),favorite:false});
   room.furniture=buildStarterFurniture(starter,w,l);
   if(starter.designPreset)applyDesignPresetToRoom(room,starter.designPreset);
@@ -208,7 +289,14 @@ function createFromPreset(){
 
 function startFreeDraw(){
   closeCr();const nm=document.getElementById('crN').value||defaultPersonalRoomName();const h=parseFloat(document.getElementById('crH').value)||9;
+  const ctx=createRoomContext||{mode:'new_project'};
+  const projectId=ctx.mode==='project_room'?(ctx.projectId||curRoom?.projectId||uid()):uid();
+  const projectName=ctx.mode==='project_room'?(ctx.projectName||curRoom?.projectName||'Home Project'):nm;
+  const floorId=ctx.floorId||'floor_1';
+  const floorLabel=ctx.floorLabel||'Floor 1';
+  const floorOrder=Number.isFinite(ctx.floorOrder)?ctx.floorOrder:0;
   const room=normalizeRoom({id:uid(),name:nm,height:h,wallThickness:.5,polygon:[],walls:[],openings:[],structures:[],furniture:[],
+    projectId,projectName,floorId,floorLabel,floorOrder,roomOrder:projectMainRooms(projectId).length,
     roomType:'living_room',designPreset:'',materials:{wall:WALL_PALETTES[0].color,wallFinish:'warm_white',floor:FLOOR_TYPES[0].color,floorType:FLOOR_TYPES[0].id,ceiling:'#FAF7F2',trim:TRIM_COLORS[0],ceilingBrightness:1,lightingPreset:'daylight'},createdAt:Date.now(),updatedAt:Date.now()});
   projects.push(room);saveAll();curRoom=room;drawMode=true;drawPts=[];drawCur=null;
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scrEd').classList.add('on');
@@ -231,7 +319,7 @@ function clearFurnitureSelection(){
 function optionSiblings(room=curRoom){
   if(!room)return[];
   const baseId=room.baseRoomId||room.id;
-  return projects.filter(p=>(p.baseRoomId||p.id)===baseId);
+  return projects.filter(p=>(p.projectId||p.id)===(room.projectId||room.id)&&(p.baseRoomId||p.id)===baseId);
 }
 function nextOptionName(room=curRoom){
   const siblings=optionSiblings(room);
@@ -274,6 +362,116 @@ function switchToOption(id){
   const room=projects.find(p=>p.id===id);
   if(!room)return;
   openEd(room);
+}
+function renameCurrentProject(name){
+  if(!curRoom)return;
+  const trimmed=(name||'').trim();
+  if(!trimmed)return;
+  projectRooms(curRoom).forEach(room=>room.projectName=trimmed);
+  saveAll();
+  renderHome();
+  showP();
+}
+function renameCurrentRoom(name){
+  if(!curRoom)return;
+  const trimmed=(name||'').trim();
+  if(!trimmed)return;
+  optionSiblings(curRoom).forEach(room=>room.name=trimmed);
+  saveAll();
+  renderHome();
+  showP();
+}
+function setActiveFloor(floorId){
+  activeProjectFloorId=floorId;
+  showP();
+}
+function openProjectRoom(baseRoomId){
+  const baseRoom=projectRooms(curRoom).find(room=>(room.baseRoomId||room.id)===baseRoomId);
+  const target=(baseRoom?optionSiblings(baseRoom).find(room=>room.id===curRoom.id||room.optionName==='Main'):null)
+    || baseRoom;
+  if(target)openEd(target);
+}
+function openAddRoomModalForProject(floorId=activeProjectFloorId||curRoom?.floorId){
+  if(!curRoom)return;
+  const floor=projectFloors(curRoom).find(item=>item.id===floorId)||{id:curRoom.floorId||'floor_1',label:curRoom.floorLabel||'Floor 1',order:curRoom.floorOrder||0};
+  setCreateRoomContext({mode:'project_room',projectId:curRoom.projectId,projectName:currentProjectName(),floorId:floor.id,floorLabel:floor.label,floorOrder:floor.order});
+  openCrModal('living_room',createRoomContext);
+}
+function createNextFloor(){
+  if(!curRoom)return;
+  const floor=nextProjectFloorMeta(curRoom);
+  setCreateRoomContext({mode:'project_room',projectId:curRoom.projectId,projectName:currentProjectName(),floorId:floor.id,floorLabel:floor.label,floorOrder:floor.order});
+  activeProjectFloorId=floor.id;
+  openCrModal('living_room',createRoomContext);
+}
+function duplicateCurrentRoom(){
+  if(!curRoom)return;
+  const clone=JSON.parse(JSON.stringify(curRoom));
+  clone.id=uid();
+  clone.baseRoomId=clone.id;
+  clone.optionName='Main';
+  clone.roomOrder=projectMainRooms(curRoom).length;
+  clone.connections=[];
+  clone.createdAt=Date.now();
+  clone.updatedAt=Date.now();
+  clone.furniture=(clone.furniture||[]).map(item=>({...item,id:uid(),linkedExistingId:'',replacementId:''}));
+  projects.push(normalizeRoom(clone));
+  saveAll();
+  renderHome();
+  openEd(projects.find(room=>room.id===clone.id));
+  toast('Room duplicated');
+}
+function deleteCurrentRoom(){
+  if(!curRoom)return;
+  const siblings=projectMainRooms(curRoom);
+  if(siblings.length<=1){
+    toast('Keep at least one room in the project');
+    return;
+  }
+  const removeBase=curRoom.baseRoomId||curRoom.id;
+  const nextRoom=siblings.find(room=>(room.baseRoomId||room.id)!==removeBase);
+  projects=projects.filter(room=>!((room.projectId||room.id)===(curRoom.projectId||curRoom.id)&&(room.baseRoomId||room.id)===removeBase));
+  projects.forEach(room=>{
+    if((room.projectId||room.id)===(curRoom.projectId||curRoom.id)){
+      room.connections=(room.connections||[]).filter(link=>link.roomId!==curRoom.id&&link.roomId!==removeBase);
+    }
+  });
+  saveAll();
+  renderHome();
+  if(nextRoom)openEd(nextRoom); else exitEd();
+  toast('Room removed from project');
+}
+function moveCurrentRoomOrder(direction){
+  if(!curRoom)return;
+  const rooms=currentFloorRooms(curRoom);
+  const currentBase=curRoom.baseRoomId||curRoom.id;
+  const idx=rooms.findIndex(room=>(room.baseRoomId||room.id)===currentBase);
+  const nextIdx=idx+direction;
+  if(idx<0||nextIdx<0||nextIdx>=rooms.length)return;
+  const target=rooms[nextIdx];
+  const currentOrder=curRoom.roomOrder;
+  const targetOrder=target.roomOrder;
+  projectRooms(curRoom).forEach(room=>{
+    if((room.baseRoomId||room.id)===currentBase)room.roomOrder=targetOrder;
+    else if((room.baseRoomId||room.id)===(target.baseRoomId||target.id))room.roomOrder=currentOrder;
+  });
+  saveAll();
+  showP();
+}
+function moveCurrentRoomToFloor(floorId){
+  if(!curRoom||!floorId)return;
+  const floor=projectFloors(curRoom).find(item=>item.id===floorId);
+  if(!floor)return;
+  optionSiblings(curRoom).forEach(room=>{
+    room.floorId=floor.id;
+    room.floorLabel=floor.label;
+    room.floorOrder=floor.order;
+    room.roomOrder=currentFloorRooms(curRoom,floor.id).length;
+  });
+  activeProjectFloorId=floor.id;
+  saveAll();
+  renderHome();
+  showP();
 }
 function normalizeFurnitureSelection(){
   if(!curRoom){multiSelFurnitureIds=[];return[]}

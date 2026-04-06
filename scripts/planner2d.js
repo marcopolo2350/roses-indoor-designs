@@ -1,9 +1,10 @@
 // ── EDITOR ──
 async function openEd(room){
   normalizeRoom(room);
-  curRoom=room;sel={type:null,idx:-1};tool='select';undoSt=[];redoSt=[];multiSelFurnitureIds=[];is3D=false;drawMode=false;
+  curRoom=room;activeProjectFloorId=room.floorId||'floor_1';sel={type:null,idx:-1};tool='select';undoSt=[];redoSt=[];multiSelFurnitureIds=[];is3D=false;drawMode=false;
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scrEd').classList.add('on');
   document.getElementById('edT').textContent=room.optionName&&room.optionName!=='Main'?`${room.name} · ${room.optionName}`:room.name;document.getElementById('dBar').classList.remove('on');document.getElementById('mTbar').style.display='';
+  document.getElementById('edT').textContent=`${(room.projectName&&room.projectName!==room.name)?`${room.projectName} · `:''}${room.name}${room.optionName&&room.optionName!=='Main'?` · ${room.optionName}`:''}${room.floorLabel?` · ${room.floorLabel}`:''}`;
   document.getElementById('threeC').classList.remove('on');document.getElementById('b3d').classList.remove('on');document.getElementById('vLbl').textContent='2D Plan';
   document.getElementById('camBtns').classList.remove('on');document.getElementById('walkHint').classList.remove('on');
   document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.t==='select'));stop3D();initCan();await restoreRoomHistory(room);sel={type:null,idx:-1};panelHidden=false;showP();
@@ -11,7 +12,7 @@ async function openEd(room){
   if(!localStorage.getItem('rose_3d_hint')){setTimeout(()=>{toast('Tap the cube icon to step inside your room in 3D');localStorage.setItem('rose_3d_hint','1')},1200)}
   // Surface old note if returning to a room
   if(room.polygon&&room.polygon.length)maybeSurfaceNote(room.id);checkRoomReturn(room.id)}
-function exitEd(){persistRoomHistory();savePrj();stop3D();if(resH){window.removeEventListener('resize',resH);resH=null}curRoom=null;drawMode=false;multiSelFurnitureIds=[];
+function exitEd(){persistRoomHistory();savePrj();stop3D();if(resH){window.removeEventListener('resize',resH);resH=null}curRoom=null;activeProjectFloorId=null;drawMode=false;multiSelFurnitureIds=[];
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scrHome').classList.add('on');renderHome()}
 function savePrj(){if(!curRoom)return;persistRoomHistory();syncCurrentRoomRecord(true)}
 
@@ -1014,66 +1015,71 @@ function wallMatchesSide(room,wall,side,b){
   }
   return false;
 }
+function oppositeSide(side){
+  return ({north:'south',south:'north',east:'west',west:'east'})[side]||'south';
+}
 function attachAdjacentRoom(side,width=adjRoomCfg.width,depth=adjRoomCfg.depth){
   if(!curRoom||!curRoom.polygon?.length)return;
   const b=getRoomBounds2D(curRoom);
-  const walls=curRoom.walls.filter(w=>wallMatchesSide(curRoom,w,side,b));
-  if(!walls.length){toast('No exterior wall available on that side');return}
-  const wall=walls.sort((a,b2)=>wL(curRoom,b2)-wL(curRoom,a))[0];
-  const a=wS(curRoom,wall),c=wE(curRoom,wall);
-  const next=curRoom.polygon.slice();
-  const i=wall.startIdx,j=wall.endIdx;
-  const pts=[];
-  let connectorA=null,connectorB=null;
+  const shared=Math.max(6,Math.min(width,(side==='east'||side==='west')?b.height:b.width));
+  const roomDepth=Math.max(6,depth);
+  let poly,name;
   if(side==='east'||side==='west'){
-    const x=a.x,y0=Math.min(a.y,c.y),y1=Math.max(a.y,c.y),span=y1-y0,shared=Math.min(width,span),mid=(y0+y1)/2,start=mid-shared/2,end=mid+shared/2,outer=x+(side==='east'?depth:-depth),forward=a.y<c.y;
-    connectorA={x,y:start};
-    connectorB={x,y:end};
-    if(forward){
-      if(Math.abs(start-a.y)>.001)pts.push({x,y:start});
-      pts.push({x:outer,y:start},{x:outer,y:end});
-      if(Math.abs(end-c.y)>.001)pts.push({x,y:end});
-    }else{
-      if(Math.abs(end-a.y)>.001)pts.push({x,y:end});
-      pts.push({x:outer,y:end},{x:outer,y:start});
-      if(Math.abs(start-c.y)>.001)pts.push({x,y:start});
-    }
+    const midY=b.cy,start=midY-shared/2,end=midY+shared/2;
+    const x0=side==='east'?b.x1:b.x0-roomDepth;
+    const x1=side==='east'?b.x1+roomDepth:b.x0;
+    poly=[{x:x0,y:start},{x:x1,y:start},{x:x1,y:end},{x:x0,y:end}];
   }else{
-    const y=a.y,x0=Math.min(a.x,c.x),x1=Math.max(a.x,c.x),span=x1-x0,shared=Math.min(width,span),mid=(x0+x1)/2,start=mid-shared/2,end=mid+shared/2,outer=y+(side==='south'?depth:-depth),forward=a.x<c.x;
-    connectorA={x:start,y};
-    connectorB={x:end,y};
-    if(forward){
-      if(Math.abs(start-a.x)>.001)pts.push({x:start,y});
-      pts.push({x:start,y:outer},{x:end,y:outer});
-      if(Math.abs(end-c.x)>.001)pts.push({x:end,y});
-    }else{
-      if(Math.abs(end-a.x)>.001)pts.push({x:end,y});
-      pts.push({x:end,y:outer},{x:start,y:outer});
-      if(Math.abs(start-c.x)>.001)pts.push({x:start,y});
-    }
+    const midX=b.cx,start=midX-shared/2,end=midX+shared/2;
+    const y0=side==='south'?b.y1:b.y0-roomDepth;
+    const y1=side==='south'?b.y1+roomDepth:b.y0;
+    poly=[{x:start,y:y0},{x:end,y:y0},{x:end,y:y1},{x:start,y:y1}];
   }
-  next.splice(i+1,0,...pts);
-  curRoom.polygon=next;
-  curRoom.walls=genWalls(curRoom);
-  const matchesSegment=(w,p1,p2)=>{
-    const wa=wS(curRoom,w),wb=wE(curRoom,w);
-    const same=(p,q)=>Math.abs(p.x-q.x)<.01&&Math.abs(p.y-q.y)<.01;
-    return (same(wa,p1)&&same(wb,p2))||(same(wa,p2)&&same(wb,p1));
-  };
-  const sharedWall=connectorA&&connectorB?curRoom.walls.find(w=>matchesSegment(w,connectorA,connectorB)):null;
-  if(sharedWall&&!curRoom.openings.some(o=>o.wallId===sharedWall.id&&o.type==='door')){
-    const wl=wL(curRoom,sharedWall);
-    if(wl>4){
-      curRoom.openings.push({id:uid(),type:'door',wallId:sharedWall.id,offset:wl/2,width:3,height:7,swing:'in',hinge:'left'});
-    }
+  name=`${curRoom.name} ${side.charAt(0).toUpperCase()+side.slice(1)}`;
+  const nextOrder=projectMainRooms(curRoom).length;
+  const newRoom=normalizeRoom({
+    id:uid(),
+    projectId:curRoom.projectId,
+    projectName:curRoom.projectName,
+    floorId:curRoom.floorId,
+    floorLabel:curRoom.floorLabel,
+    floorOrder:curRoom.floorOrder,
+    roomOrder:nextOrder,
+    name,
+    height:curRoom.height,
+    wallThickness:curRoom.wallThickness||.5,
+    polygon:poly,
+    openings:[],
+    structures:[],
+    furniture:[],
+    materials:JSON.parse(JSON.stringify(curRoom.materials||{})),
+    roomType:curRoom.roomType||'living_room',
+    designPreset:curRoom.designPreset||'',
+    mood:curRoom.mood||'',
+    createdAt:Date.now(),
+    updatedAt:Date.now(),
+    favorite:curRoom.favorite
+  });
+  const currentBounds=getRoomBounds2D(curRoom);
+  const currentWall=curRoom.walls.find(w=>wallMatchesSide(curRoom,w,side,currentBounds));
+  if(currentWall){
+    const doorWidth=Math.min(4,Math.max(3,wL(curRoom,currentWall)-1));
+    curRoom.openings.push({id:uid(),type:'door',wallId:currentWall.id,offset:wL(curRoom,currentWall)/2,width:doorWidth,height:7,swing:'in',hinge:'left'});
   }
-  sel={type:null,idx:-1};
-  pushU();
-  autoFit();
-  draw();
-  showP();
-  if(is3D)rebuild3D();
-  toast('Adjacent room added with connecting door');
+  const opposite=oppositeSide(side);
+  const targetBounds=getRoomBounds2D(newRoom);
+  const targetWall=newRoom.walls.find(w=>wallMatchesSide(newRoom,w,opposite,targetBounds));
+  if(targetWall){
+    const doorWidth=Math.min(4,Math.max(3,wL(newRoom,targetWall)-1));
+    newRoom.openings.push({id:uid(),type:'door',wallId:targetWall.id,offset:wL(newRoom,targetWall)/2,width:doorWidth,height:7,swing:'in',hinge:'left'});
+  }
+  curRoom.connections=[...(curRoom.connections||[]).filter(link=>link.roomId!==newRoom.id),{roomId:newRoom.id,side,via:'door',label:newRoom.name}];
+  newRoom.connections=[{roomId:curRoom.id,side:opposite,via:'door',label:curRoom.name}];
+  projects.push(newRoom);
+  saveAll();
+  renderHome();
+  openEd(newRoom);
+  toast('Connected room added');
 }
 function clampOpeningToWall(op){
   if(!curRoom||!op)return;

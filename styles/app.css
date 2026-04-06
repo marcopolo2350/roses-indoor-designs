@@ -229,6 +229,13 @@ input,select{font-family:var(--fb)}
 .prop-state{margin-top:8px;padding:9px 10px;border-radius:12px;background:rgba(255,255,255,.72);font-size:10px;color:var(--taupe);line-height:1.45}
 .prop-state.custom{background:rgba(255,246,245,.9);color:var(--rose-d);border:1px solid rgba(184,145,142,.22)}
 .prop-link-btn{margin-left:6px;padding:0;background:none;border:none;color:var(--rose-d);font-size:10px;font-weight:700;text-decoration:underline;cursor:pointer}
+.room-card-stack{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.room-card-mini{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(120,98,83,.08)}
+.room-card-mini.active{background:rgba(255,246,242,.96);border-color:rgba(184,145,142,.28);box-shadow:0 8px 18px rgba(76,58,46,.08)}
+.room-card-main{flex:1;min-width:0;cursor:pointer}
+.room-card-title{font-size:12px;font-weight:700;color:var(--rose-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.room-card-meta{margin-top:3px;font-size:10px;color:var(--taupe);line-height:1.35}
+.room-card-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .mood-tags.premium{margin-top:10px}
 .mood-tag.premium{background:rgba(255,255,255,.82);box-shadow:var(--sh);font-size:9px}
 .mood-tag.premium.sel{background:var(--esp);color:#fff;border-color:var(--esp)}
