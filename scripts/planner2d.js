@@ -101,7 +101,8 @@ function furniture2DLabelInk(f,item){
   return hsl.l>.55?'rgba(58,44,34,.82)':'rgba(248,244,236,.9)';
 }
 function furniture2DTint(f,item){
-  if(f.finishColor)return f.finishColor;
+  const variantColor=typeof variantDisplayColor==='function'?variantDisplayColor(f,item):'';
+  if(variantColor)return variantColor;
   return FURN_GROUP_TINTS[item?.group]||'#8A7868';
 }
 function pendingFurniturePreviewItem(){
@@ -148,7 +149,7 @@ function drawPendingFurniturePlacement(room){
   const screen=tS({x:snapped.x,y:snapped.z});
   const width=(item?.w||2)*vScale;
   const depth=(item?.d||1.5)*vScale;
-  const tone=safeThreeColor(furniture2DTint({finishColor:''},item),'#B8918E');
+  const tone=safeThreeColor(furniture2DTint({variantId:(typeof getSelectedCatalogVariant==='function'?getSelectedCatalogVariant(item)?.id:''),finishColor:''},item),'#B8918E');
   const valid=!!state.valid;
   const accent=valid?safeThreeColor('#8FB47C','#8FB47C'):safeThreeColor('#C67B72','#C67B72');
   const fill=threeColorToRgba(valid?tone.clone().lerp(accent,.24):accent,.24);
@@ -191,7 +192,8 @@ function drawPendingFurniturePlacement(room){
   ctx.stroke();
   ctx.fillStyle=stroke;
   ctx.fill();
-  const label=item?.label||pendFurnPreviewLabel||'Placement';
+  const activeVariant=typeof getSelectedCatalogVariant==='function'?getSelectedCatalogVariant(item):null;
+  const label=`${item?.label||pendFurnPreviewLabel||'Placement'}${activeVariant?.label?` · ${activeVariant.label}`:''}`;
   const snapText=furnitureSnap?'snap on':'free place';
   const info=`${label} · ${state.valid?'ready':'adjust'} · ${formatDistance(snapped.x,'compact')}, ${formatDistance(snapped.z,'compact')} · ${snapText}`;
   ctx.font=`700 ${Math.max(8,vScale*.22)}px Outfit,sans-serif`;

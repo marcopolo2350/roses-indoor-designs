@@ -15,7 +15,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D9C7B0",
+        "accentColor": "#F0E4D6",
+        "roughness": 0.95,
+        "metalness": 0.01,
+        "tintStrength": 0.42
+      },
+      {
+        "id": "boucle_cream",
+        "label": "Boucle Cream",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#ECE5DA",
+        "accentColor": "#F9F4EB",
+        "roughness": 0.97,
+        "metalness": 0.01,
+        "tintStrength": 0.44
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#C9A09D",
+        "accentColor": "#E6C9C5",
+        "roughness": 0.74,
+        "metalness": 0.02,
+        "tintStrength": 0.5
+      },
+      {
+        "id": "tailored_charcoal",
+        "label": "Tailored Charcoal",
+        "type": "colorway",
+        "family": "fabric",
+        "previewColor": "#67625E",
+        "accentColor": "#8A847F",
+        "roughness": 0.88,
+        "metalness": 0.02,
+        "tintStrength": 0.54
+      }
+    ],
+    "defaultVariantId": "linen_sand"
   },
   {
     "id": "bed_king",
@@ -33,7 +80,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D9C7B0",
+        "accentColor": "#F0E4D6",
+        "roughness": 0.95,
+        "metalness": 0.01,
+        "tintStrength": 0.42
+      },
+      {
+        "id": "boucle_cream",
+        "label": "Boucle Cream",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#ECE5DA",
+        "accentColor": "#F9F4EB",
+        "roughness": 0.97,
+        "metalness": 0.01,
+        "tintStrength": 0.44
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#C9A09D",
+        "accentColor": "#E6C9C5",
+        "roughness": 0.74,
+        "metalness": 0.02,
+        "tintStrength": 0.5
+      },
+      {
+        "id": "tailored_charcoal",
+        "label": "Tailored Charcoal",
+        "type": "colorway",
+        "family": "fabric",
+        "previewColor": "#67625E",
+        "accentColor": "#8A847F",
+        "roughness": 0.88,
+        "metalness": 0.02,
+        "tintStrength": 0.54
+      }
+    ],
+    "defaultVariantId": "linen_sand"
   },
   {
     "id": "bed_twin",
@@ -51,7 +145,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D9C7B0",
+        "accentColor": "#F0E4D6",
+        "roughness": 0.95,
+        "metalness": 0.01,
+        "tintStrength": 0.42
+      },
+      {
+        "id": "boucle_cream",
+        "label": "Boucle Cream",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#ECE5DA",
+        "accentColor": "#F9F4EB",
+        "roughness": 0.97,
+        "metalness": 0.01,
+        "tintStrength": 0.44
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#C9A09D",
+        "accentColor": "#E6C9C5",
+        "roughness": 0.74,
+        "metalness": 0.02,
+        "tintStrength": 0.5
+      },
+      {
+        "id": "tailored_charcoal",
+        "label": "Tailored Charcoal",
+        "type": "colorway",
+        "family": "fabric",
+        "previewColor": "#67625E",
+        "accentColor": "#8A847F",
+        "roughness": 0.88,
+        "metalness": 0.02,
+        "tintStrength": 0.54
+      }
+    ],
+    "defaultVariantId": "linen_sand"
   },
   {
     "id": "bench",
@@ -70,7 +211,54 @@
     "recommendedRoomTypes": [
       "dining_room",
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E0D4",
+        "accentColor": "#F8F0E7",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "linen_taupe",
+        "label": "Linen Taupe",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#BAA28F",
+        "accentColor": "#D8C5B6",
+        "roughness": 0.93,
+        "metalness": 0.02,
+        "tintStrength": 0.5
+      },
+      {
+        "id": "leather_cognac",
+        "label": "Leather Cognac",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#946A4A",
+        "accentColor": "#B88A65",
+        "roughness": 0.66,
+        "metalness": 0.04,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#3D3937",
+        "accentColor": "#64605E",
+        "roughness": 0.58,
+        "metalness": 0.14,
+        "tintStrength": 0.72
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "blinds",
@@ -109,7 +297,54 @@
     "recommendedRoomTypes": [
       "office",
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "bookshelf",
@@ -128,7 +363,54 @@
     "recommendedRoomTypes": [
       "office",
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "bunk_bed",
@@ -146,7 +428,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D9C7B0",
+        "accentColor": "#F0E4D6",
+        "roughness": 0.95,
+        "metalness": 0.01,
+        "tintStrength": 0.42
+      },
+      {
+        "id": "boucle_cream",
+        "label": "Boucle Cream",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#ECE5DA",
+        "accentColor": "#F9F4EB",
+        "roughness": 0.97,
+        "metalness": 0.01,
+        "tintStrength": 0.44
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#C9A09D",
+        "accentColor": "#E6C9C5",
+        "roughness": 0.74,
+        "metalness": 0.02,
+        "tintStrength": 0.5
+      },
+      {
+        "id": "tailored_charcoal",
+        "label": "Tailored Charcoal",
+        "type": "colorway",
+        "family": "fabric",
+        "previewColor": "#67625E",
+        "accentColor": "#8A847F",
+        "roughness": 0.88,
+        "metalness": 0.02,
+        "tintStrength": 0.54
+      }
+    ],
+    "defaultVariantId": "linen_sand"
   },
   {
     "id": "cabinet",
@@ -164,7 +493,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "chair",
@@ -182,7 +558,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E0D4",
+        "accentColor": "#F8F0E7",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "linen_taupe",
+        "label": "Linen Taupe",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#BAA28F",
+        "accentColor": "#D8C5B6",
+        "roughness": 0.93,
+        "metalness": 0.02,
+        "tintStrength": 0.5
+      },
+      {
+        "id": "leather_cognac",
+        "label": "Leather Cognac",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#946A4A",
+        "accentColor": "#B88A65",
+        "roughness": 0.66,
+        "metalness": 0.04,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#3D3937",
+        "accentColor": "#64605E",
+        "roughness": 0.58,
+        "metalness": 0.14,
+        "tintStrength": 0.72
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "chair_office",
@@ -201,7 +624,54 @@
     "recommendedRoomTypes": [
       "office",
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E0D4",
+        "accentColor": "#F8F0E7",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "linen_taupe",
+        "label": "Linen Taupe",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#BAA28F",
+        "accentColor": "#D8C5B6",
+        "roughness": 0.93,
+        "metalness": 0.02,
+        "tintStrength": 0.5
+      },
+      {
+        "id": "leather_cognac",
+        "label": "Leather Cognac",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#946A4A",
+        "accentColor": "#B88A65",
+        "roughness": 0.66,
+        "metalness": 0.04,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#3D3937",
+        "accentColor": "#64605E",
+        "roughness": 0.58,
+        "metalness": 0.14,
+        "tintStrength": 0.72
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "closet_short",
@@ -219,7 +689,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "closet_tall",
@@ -237,7 +754,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "console_low",
@@ -255,7 +819,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "curtains",
@@ -294,7 +905,54 @@
     "recommendedRoomTypes": [
       "office",
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D4B28D",
+        "accentColor": "#EAD2B6",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B88C63",
+        "accentColor": "#D9B28A",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#6D503C",
+        "accentColor": "#92735D",
+        "roughness": 0.54,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#343232",
+        "accentColor": "#5A5655",
+        "roughness": 0.48,
+        "metalness": 0.18,
+        "tintStrength": 0.75
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "dining_table",
@@ -313,7 +971,54 @@
     "recommendedRoomTypes": [
       "dining_room",
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D4B28D",
+        "accentColor": "#EAD2B6",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B88C63",
+        "accentColor": "#D9B28A",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#6D503C",
+        "accentColor": "#92735D",
+        "roughness": 0.54,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#343232",
+        "accentColor": "#5A5655",
+        "roughness": 0.48,
+        "metalness": 0.18,
+        "tintStrength": 0.75
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "door_single",
@@ -349,7 +1054,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "dresser_tall",
@@ -367,7 +1119,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "fireplace",
@@ -405,7 +1204,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "brushed_brass",
+        "label": "Brushed Brass",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B99557",
+        "accentColor": "#E0C488",
+        "roughness": 0.28,
+        "metalness": 0.85,
+        "tintStrength": 0.82
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#2E2C2C",
+        "accentColor": "#555150",
+        "roughness": 0.36,
+        "metalness": 0.78,
+        "tintStrength": 0.8
+      },
+      {
+        "id": "polished_chrome",
+        "label": "Polished Chrome",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B6BDC2",
+        "accentColor": "#EEF3F6",
+        "roughness": 0.18,
+        "metalness": 0.92,
+        "tintStrength": 0.78
+      },
+      {
+        "id": "soft_ceramic",
+        "label": "Soft Ceramic",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#E6DFD5",
+        "accentColor": "#FBF7F1",
+        "roughness": 0.7,
+        "metalness": 0.08,
+        "tintStrength": 0.56
+      }
+    ],
+    "defaultVariantId": "brushed_brass"
   },
   {
     "id": "lamp_chandelier",
@@ -425,7 +1271,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "brushed_brass",
+        "label": "Brushed Brass",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B99557",
+        "accentColor": "#E0C488",
+        "roughness": 0.28,
+        "metalness": 0.85,
+        "tintStrength": 0.82
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#2E2C2C",
+        "accentColor": "#555150",
+        "roughness": 0.36,
+        "metalness": 0.78,
+        "tintStrength": 0.8
+      },
+      {
+        "id": "polished_chrome",
+        "label": "Polished Chrome",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B6BDC2",
+        "accentColor": "#EEF3F6",
+        "roughness": 0.18,
+        "metalness": 0.92,
+        "tintStrength": 0.78
+      },
+      {
+        "id": "soft_ceramic",
+        "label": "Soft Ceramic",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#E6DFD5",
+        "accentColor": "#FBF7F1",
+        "roughness": 0.7,
+        "metalness": 0.08,
+        "tintStrength": 0.56
+      }
+    ],
+    "defaultVariantId": "brushed_brass"
   },
   {
     "id": "lamp_cube",
@@ -445,7 +1338,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "brushed_brass",
+        "label": "Brushed Brass",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B99557",
+        "accentColor": "#E0C488",
+        "roughness": 0.28,
+        "metalness": 0.85,
+        "tintStrength": 0.82
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#2E2C2C",
+        "accentColor": "#555150",
+        "roughness": 0.36,
+        "metalness": 0.78,
+        "tintStrength": 0.8
+      },
+      {
+        "id": "polished_chrome",
+        "label": "Polished Chrome",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B6BDC2",
+        "accentColor": "#EEF3F6",
+        "roughness": 0.18,
+        "metalness": 0.92,
+        "tintStrength": 0.78
+      },
+      {
+        "id": "soft_ceramic",
+        "label": "Soft Ceramic",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#E6DFD5",
+        "accentColor": "#FBF7F1",
+        "roughness": 0.7,
+        "metalness": 0.08,
+        "tintStrength": 0.56
+      }
+    ],
+    "defaultVariantId": "brushed_brass"
   },
   {
     "id": "lamp_floor",
@@ -465,7 +1405,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "brushed_brass",
+        "label": "Brushed Brass",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B99557",
+        "accentColor": "#E0C488",
+        "roughness": 0.28,
+        "metalness": 0.85,
+        "tintStrength": 0.82
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#2E2C2C",
+        "accentColor": "#555150",
+        "roughness": 0.36,
+        "metalness": 0.78,
+        "tintStrength": 0.8
+      },
+      {
+        "id": "polished_chrome",
+        "label": "Polished Chrome",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B6BDC2",
+        "accentColor": "#EEF3F6",
+        "roughness": 0.18,
+        "metalness": 0.92,
+        "tintStrength": 0.78
+      },
+      {
+        "id": "soft_ceramic",
+        "label": "Soft Ceramic",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#E6DFD5",
+        "accentColor": "#FBF7F1",
+        "roughness": 0.7,
+        "metalness": 0.08,
+        "tintStrength": 0.56
+      }
+    ],
+    "defaultVariantId": "brushed_brass"
   },
   {
     "id": "lamp_pendant",
@@ -485,7 +1472,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "brushed_brass",
+        "label": "Brushed Brass",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B99557",
+        "accentColor": "#E0C488",
+        "roughness": 0.28,
+        "metalness": 0.85,
+        "tintStrength": 0.82
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#2E2C2C",
+        "accentColor": "#555150",
+        "roughness": 0.36,
+        "metalness": 0.78,
+        "tintStrength": 0.8
+      },
+      {
+        "id": "polished_chrome",
+        "label": "Polished Chrome",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B6BDC2",
+        "accentColor": "#EEF3F6",
+        "roughness": 0.18,
+        "metalness": 0.92,
+        "tintStrength": 0.78
+      },
+      {
+        "id": "soft_ceramic",
+        "label": "Soft Ceramic",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#E6DFD5",
+        "accentColor": "#FBF7F1",
+        "roughness": 0.7,
+        "metalness": 0.08,
+        "tintStrength": 0.56
+      }
+    ],
+    "defaultVariantId": "brushed_brass"
   },
   {
     "id": "lamp_stand",
@@ -505,7 +1539,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "brushed_brass",
+        "label": "Brushed Brass",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B99557",
+        "accentColor": "#E0C488",
+        "roughness": 0.28,
+        "metalness": 0.85,
+        "tintStrength": 0.82
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#2E2C2C",
+        "accentColor": "#555150",
+        "roughness": 0.36,
+        "metalness": 0.78,
+        "tintStrength": 0.8
+      },
+      {
+        "id": "polished_chrome",
+        "label": "Polished Chrome",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B6BDC2",
+        "accentColor": "#EEF3F6",
+        "roughness": 0.18,
+        "metalness": 0.92,
+        "tintStrength": 0.78
+      },
+      {
+        "id": "soft_ceramic",
+        "label": "Soft Ceramic",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#E6DFD5",
+        "accentColor": "#FBF7F1",
+        "roughness": 0.7,
+        "metalness": 0.08,
+        "tintStrength": 0.56
+      }
+    ],
+    "defaultVariantId": "brushed_brass"
   },
   {
     "id": "lamp_table",
@@ -525,7 +1606,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "brushed_brass",
+        "label": "Brushed Brass",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B99557",
+        "accentColor": "#E0C488",
+        "roughness": 0.28,
+        "metalness": 0.85,
+        "tintStrength": 0.82
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#2E2C2C",
+        "accentColor": "#555150",
+        "roughness": 0.36,
+        "metalness": 0.78,
+        "tintStrength": 0.8
+      },
+      {
+        "id": "polished_chrome",
+        "label": "Polished Chrome",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B6BDC2",
+        "accentColor": "#EEF3F6",
+        "roughness": 0.18,
+        "metalness": 0.92,
+        "tintStrength": 0.78
+      },
+      {
+        "id": "soft_ceramic",
+        "label": "Soft Ceramic",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#E6DFD5",
+        "accentColor": "#FBF7F1",
+        "roughness": 0.7,
+        "metalness": 0.08,
+        "tintStrength": 0.56
+      }
+    ],
+    "defaultVariantId": "brushed_brass"
   },
   {
     "id": "lamp_wall",
@@ -545,7 +1673,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "brushed_brass",
+        "label": "Brushed Brass",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B99557",
+        "accentColor": "#E0C488",
+        "roughness": 0.28,
+        "metalness": 0.85,
+        "tintStrength": 0.82
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#2E2C2C",
+        "accentColor": "#555150",
+        "roughness": 0.36,
+        "metalness": 0.78,
+        "tintStrength": 0.8
+      },
+      {
+        "id": "polished_chrome",
+        "label": "Polished Chrome",
+        "type": "finish",
+        "family": "metal",
+        "previewColor": "#B6BDC2",
+        "accentColor": "#EEF3F6",
+        "roughness": 0.18,
+        "metalness": 0.92,
+        "tintStrength": 0.78
+      },
+      {
+        "id": "soft_ceramic",
+        "label": "Soft Ceramic",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#E6DFD5",
+        "accentColor": "#FBF7F1",
+        "roughness": 0.7,
+        "metalness": 0.08,
+        "tintStrength": 0.56
+      }
+    ],
+    "defaultVariantId": "brushed_brass"
   },
   {
     "id": "mirror",
@@ -583,7 +1758,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "nightstand_alt",
@@ -601,7 +1823,54 @@
     ],
     "recommendedRoomTypes": [
       "bedroom"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "plant_cactus",
@@ -741,7 +2010,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "ivory_loop",
+        "label": "Ivory Loop",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#EAE2D4",
+        "accentColor": "#F7F0E3",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.38
+      },
+      {
+        "id": "taupe_weave",
+        "label": "Taupe Weave",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#B8A292",
+        "accentColor": "#D7C5B8",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.42
+      },
+      {
+        "id": "blush_wash",
+        "label": "Blush Wash",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#CFAAA7",
+        "accentColor": "#E8CFCB",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.4
+      },
+      {
+        "id": "charcoal_border",
+        "label": "Charcoal Border",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#5A5657",
+        "accentColor": "#8E8787",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.44
+      }
+    ],
+    "defaultVariantId": "ivory_loop"
   },
   {
     "id": "rug_round",
@@ -763,7 +2079,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "ivory_loop",
+        "label": "Ivory Loop",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#EAE2D4",
+        "accentColor": "#F7F0E3",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.38
+      },
+      {
+        "id": "taupe_weave",
+        "label": "Taupe Weave",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#B8A292",
+        "accentColor": "#D7C5B8",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.42
+      },
+      {
+        "id": "blush_wash",
+        "label": "Blush Wash",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#CFAAA7",
+        "accentColor": "#E8CFCB",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.4
+      },
+      {
+        "id": "charcoal_border",
+        "label": "Charcoal Border",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#5A5657",
+        "accentColor": "#8E8787",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.44
+      }
+    ],
+    "defaultVariantId": "ivory_loop"
   },
   {
     "id": "runner_rug",
@@ -783,7 +2146,54 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "ivory_loop",
+        "label": "Ivory Loop",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#EAE2D4",
+        "accentColor": "#F7F0E3",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.38
+      },
+      {
+        "id": "taupe_weave",
+        "label": "Taupe Weave",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#B8A292",
+        "accentColor": "#D7C5B8",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.42
+      },
+      {
+        "id": "blush_wash",
+        "label": "Blush Wash",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#CFAAA7",
+        "accentColor": "#E8CFCB",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.4
+      },
+      {
+        "id": "charcoal_border",
+        "label": "Charcoal Border",
+        "type": "colorway",
+        "family": "rug",
+        "previewColor": "#5A5657",
+        "accentColor": "#8E8787",
+        "roughness": 0.98,
+        "metalness": 0,
+        "tintStrength": 0.44
+      }
+    ],
+    "defaultVariantId": "ivory_loop"
   },
   {
     "id": "shelf_small",
@@ -801,7 +2211,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "shelving",
@@ -819,7 +2276,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "sofa",
@@ -837,7 +2341,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E1D7",
+        "accentColor": "#F7F0E8",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.48
+      },
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D7C2A4",
+        "accentColor": "#EADBC7",
+        "roughness": 0.94,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#CFA8A7",
+        "accentColor": "#E5C8C6",
+        "roughness": 0.72,
+        "metalness": 0.03,
+        "tintStrength": 0.52
+      },
+      {
+        "id": "leather_charcoal",
+        "label": "Leather Charcoal",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#5A5552",
+        "accentColor": "#7A7370",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "sofa_compact",
@@ -855,7 +2406,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E1D7",
+        "accentColor": "#F7F0E8",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.48
+      },
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D7C2A4",
+        "accentColor": "#EADBC7",
+        "roughness": 0.94,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#CFA8A7",
+        "accentColor": "#E5C8C6",
+        "roughness": 0.72,
+        "metalness": 0.03,
+        "tintStrength": 0.52
+      },
+      {
+        "id": "leather_charcoal",
+        "label": "Leather Charcoal",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#5A5552",
+        "accentColor": "#7A7370",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "sofa_grand",
@@ -873,7 +2471,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E1D7",
+        "accentColor": "#F7F0E8",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.48
+      },
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D7C2A4",
+        "accentColor": "#EADBC7",
+        "roughness": 0.94,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#CFA8A7",
+        "accentColor": "#E5C8C6",
+        "roughness": 0.72,
+        "metalness": 0.03,
+        "tintStrength": 0.52
+      },
+      {
+        "id": "leather_charcoal",
+        "label": "Leather Charcoal",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#5A5552",
+        "accentColor": "#7A7370",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "sofa_l",
@@ -891,7 +2536,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E1D7",
+        "accentColor": "#F7F0E8",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.48
+      },
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D7C2A4",
+        "accentColor": "#EADBC7",
+        "roughness": 0.94,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#CFA8A7",
+        "accentColor": "#E5C8C6",
+        "roughness": 0.72,
+        "metalness": 0.03,
+        "tintStrength": 0.52
+      },
+      {
+        "id": "leather_charcoal",
+        "label": "Leather Charcoal",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#5A5552",
+        "accentColor": "#7A7370",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "sofa_large",
@@ -909,7 +2601,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E1D7",
+        "accentColor": "#F7F0E8",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.48
+      },
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D7C2A4",
+        "accentColor": "#EADBC7",
+        "roughness": 0.94,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#CFA8A7",
+        "accentColor": "#E5C8C6",
+        "roughness": 0.72,
+        "metalness": 0.03,
+        "tintStrength": 0.52
+      },
+      {
+        "id": "leather_charcoal",
+        "label": "Leather Charcoal",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#5A5552",
+        "accentColor": "#7A7370",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "sofa_medium",
@@ -927,7 +2666,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E1D7",
+        "accentColor": "#F7F0E8",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.48
+      },
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D7C2A4",
+        "accentColor": "#EADBC7",
+        "roughness": 0.94,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#CFA8A7",
+        "accentColor": "#E5C8C6",
+        "roughness": 0.72,
+        "metalness": 0.03,
+        "tintStrength": 0.52
+      },
+      {
+        "id": "leather_charcoal",
+        "label": "Leather Charcoal",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#5A5552",
+        "accentColor": "#7A7370",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "sofa_modern",
@@ -947,7 +2733,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E1D7",
+        "accentColor": "#F7F0E8",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.48
+      },
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D7C2A4",
+        "accentColor": "#EADBC7",
+        "roughness": 0.94,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#CFA8A7",
+        "accentColor": "#E5C8C6",
+        "roughness": 0.72,
+        "metalness": 0.03,
+        "tintStrength": 0.52
+      },
+      {
+        "id": "leather_charcoal",
+        "label": "Leather Charcoal",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#5A5552",
+        "accentColor": "#7A7370",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "sofa_small",
@@ -965,7 +2798,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E1D7",
+        "accentColor": "#F7F0E8",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.48
+      },
+      {
+        "id": "linen_sand",
+        "label": "Linen Sand",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#D7C2A4",
+        "accentColor": "#EADBC7",
+        "roughness": 0.94,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "velvet_blush",
+        "label": "Velvet Blush",
+        "type": "colorway",
+        "family": "velvet",
+        "previewColor": "#CFA8A7",
+        "accentColor": "#E5C8C6",
+        "roughness": 0.72,
+        "metalness": 0.03,
+        "tintStrength": 0.52
+      },
+      {
+        "id": "leather_charcoal",
+        "label": "Leather Charcoal",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#5A5552",
+        "accentColor": "#7A7370",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "stool",
@@ -984,7 +2864,54 @@
     "recommendedRoomTypes": [
       "dining_room",
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "boucle_ivory",
+        "label": "Boucle Ivory",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#E9E0D4",
+        "accentColor": "#F8F0E7",
+        "roughness": 0.96,
+        "metalness": 0.02,
+        "tintStrength": 0.46
+      },
+      {
+        "id": "linen_taupe",
+        "label": "Linen Taupe",
+        "type": "material",
+        "family": "fabric",
+        "previewColor": "#BAA28F",
+        "accentColor": "#D8C5B6",
+        "roughness": 0.93,
+        "metalness": 0.02,
+        "tintStrength": 0.5
+      },
+      {
+        "id": "leather_cognac",
+        "label": "Leather Cognac",
+        "type": "material",
+        "family": "leather",
+        "previewColor": "#946A4A",
+        "accentColor": "#B88A65",
+        "roughness": 0.66,
+        "metalness": 0.04,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#3D3937",
+        "accentColor": "#64605E",
+        "roughness": 0.58,
+        "metalness": 0.14,
+        "tintStrength": 0.72
+      }
+    ],
+    "defaultVariantId": "boucle_ivory"
   },
   {
     "id": "table_coffee",
@@ -1002,7 +2929,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D4B28D",
+        "accentColor": "#EAD2B6",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B88C63",
+        "accentColor": "#D9B28A",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#6D503C",
+        "accentColor": "#92735D",
+        "roughness": 0.54,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#343232",
+        "accentColor": "#5A5655",
+        "roughness": 0.48,
+        "metalness": 0.18,
+        "tintStrength": 0.75
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "table_round_large",
@@ -1020,7 +2994,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D4B28D",
+        "accentColor": "#EAD2B6",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B88C63",
+        "accentColor": "#D9B28A",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#6D503C",
+        "accentColor": "#92735D",
+        "roughness": 0.54,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#343232",
+        "accentColor": "#5A5655",
+        "roughness": 0.48,
+        "metalness": 0.18,
+        "tintStrength": 0.75
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "table_round_small",
@@ -1038,7 +3059,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D4B28D",
+        "accentColor": "#EAD2B6",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B88C63",
+        "accentColor": "#D9B28A",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#6D503C",
+        "accentColor": "#92735D",
+        "roughness": 0.54,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "matte_black",
+        "label": "Matte Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#343232",
+        "accentColor": "#5A5655",
+        "roughness": 0.48,
+        "metalness": 0.18,
+        "tintStrength": 0.75
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "tv_console",
@@ -1056,7 +3124,54 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "variants": [
+      {
+        "id": "light_oak",
+        "label": "Light Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#D0AE8A",
+        "accentColor": "#E8D4BD",
+        "roughness": 0.62,
+        "metalness": 0.05,
+        "tintStrength": 0.58
+      },
+      {
+        "id": "medium_oak",
+        "label": "Medium Oak",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#B1845F",
+        "accentColor": "#CEA17C",
+        "roughness": 0.58,
+        "metalness": 0.05,
+        "tintStrength": 0.62
+      },
+      {
+        "id": "dark_walnut",
+        "label": "Dark Walnut",
+        "type": "finish",
+        "family": "wood",
+        "previewColor": "#674B3B",
+        "accentColor": "#8C6B56",
+        "roughness": 0.55,
+        "metalness": 0.06,
+        "tintStrength": 0.66
+      },
+      {
+        "id": "ink_black",
+        "label": "Ink Black",
+        "type": "finish",
+        "family": "painted",
+        "previewColor": "#2F2C2C",
+        "accentColor": "#55514F",
+        "roughness": 0.5,
+        "metalness": 0.14,
+        "tintStrength": 0.74
+      }
+    ],
+    "defaultVariantId": "light_oak"
   },
   {
     "id": "wall_art_01",

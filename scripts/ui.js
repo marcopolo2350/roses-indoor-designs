@@ -346,6 +346,7 @@ function buildFurnitureClipboard(records=selectedFurnitureRecords()){
       elevation:item.elevation,
       assetKey:item.assetKey,
       yOffset:item.yOffset,
+      variantId:item.variantId||'',
       finishColor:item.finishColor||'',
       visible:item.visible!==false,
       source:item.source||'new',
@@ -394,6 +395,7 @@ function pasteFurniture(){
       elevation:item.elevation,
       assetKey:item.assetKey,
       yOffset:item.yOffset,
+      variantId:item.variantId,
       finishColor:item.finishColor,
       visible:item.visible,
       source:item.source,
@@ -723,4 +725,3 @@ function toggleUnitSystem(){
   draw();
   showP();
 }
-

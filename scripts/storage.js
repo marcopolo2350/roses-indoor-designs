@@ -204,7 +204,7 @@ const MODEL_PREFLIGHT=new Map();
 const ROOM_RUNTIME_DIAG={items:new Map(),summary:null};
 let runtimeDiagOpen=false,preflightPanelOpen=false;
 let rebuild3DTimer=null;
-const GROUP_CATEGORY_MAP={Seating:'seating',Tables:'tables',Storage:'storage',Lighting:'lighting',Decor:'decor',Rugs:'rugs','Wall Decor':'wall_decor','Window Decor':'window_decor'};
+const GROUP_CATEGORY_MAP={Seating:'seating',Beds:'beds',Tables:'tables',Storage:'storage',Lighting:'lighting',Decor:'decor',Rugs:'rugs','Wall Decor':'wall_decor','Window Decor':'window_decor',Openings:'openings'};
 
 async function loadAll(){
   let d=await dg('projects');
@@ -539,4 +539,3 @@ function normalizeColorValue(value,fallback){
   try{return '#'+safeThreeColor(value,fallback).getHexString();}
   catch(_){return fallback||'#ffffff';}
 }
-

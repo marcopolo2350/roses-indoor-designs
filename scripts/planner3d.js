@@ -690,21 +690,53 @@ function getRoomAssetTargetSize(f,r,placement,reg){
   }
   return {w,d,h};
 }
+function furnitureMaterialProfile(f){
+  const variant=typeof getFurnitureVariant==='function'?getFurnitureVariant(f):null;
+  const tintColor=(variant?.previewColor)||f?.finishColor||'';
+  if(!tintColor)return null;
+  return {
+    tint:safeThreeColor(tintColor,'#D7C4B2'),
+    accent:safeThreeColor(variant?.accentColor||tintColor,'#E8DCCF'),
+    family:variant?.family||'finish',
+    roughness:Number.isFinite(variant?.roughness)?variant.roughness:.74,
+    metalness:Number.isFinite(variant?.metalness)?variant.metalness:.05,
+    tintStrength:Number.isFinite(variant?.tintStrength)?variant.tintStrength:.48,
+  };
+}
+function furnitureBaseTint(f,fallback='#D7C4B2'){
+  return furnitureMaterialProfile(f)?.tint||safeThreeColor(f?.finishColor||fallback,fallback);
+}
+function premiumVariantMat(f,colorOverride,roughOverride=null,metalOverride=null){
+  const profile=furnitureMaterialProfile(f);
+  const color=colorOverride||profile?.tint||safeThreeColor('#D7C4B2','#D7C4B2');
+  return new THREE.MeshStandardMaterial({
+    color,
+    roughness:roughOverride??profile?.roughness??.72,
+    metalness:metalOverride??profile?.metalness??.04
+  });
+}
 function applyFurnitureFinishToModel(obj,f){
-  if(!obj||!f||!f.finishColor)return;
-  const tint=safeThreeColor(f.finishColor,'#D7C4B2');
+  const profile=furnitureMaterialProfile(f);
+  if(!obj||!f||!profile)return;
+  const tint=profile.tint;
   obj.traverse(child=>{
     if(!child.isMesh||!child.material)return;
     if(Array.isArray(child.material)){
       child.material=child.material.map(mat=>{
         const next=mat.clone();
-        if(next.color)next.color.lerp(tint,.42);
+        if(next.color)next.color.lerp(tint,profile.tintStrength);
+        if(typeof next.roughness==='number')next.roughness=(next.roughness+profile.roughness*2)/3;
+        if(typeof next.metalness==='number')next.metalness=(next.metalness+profile.metalness*2)/3;
+        if(typeof next.envMapIntensity==='number'&&profile.family==='metal')next.envMapIntensity=Math.max(next.envMapIntensity||1,1.2);
         if(typeof next.needsUpdate!=='undefined')next.needsUpdate=true;
         return next;
       });
     }else{
       const next=child.material.clone();
-      if(next.color)next.color.lerp(tint,.42);
+      if(next.color)next.color.lerp(tint,profile.tintStrength);
+      if(typeof next.roughness==='number')next.roughness=(next.roughness+profile.roughness*2)/3;
+      if(typeof next.metalness==='number')next.metalness=(next.metalness+profile.metalness*2)/3;
+      if(typeof next.envMapIntensity==='number'&&profile.family==='metal')next.envMapIntensity=Math.max(next.envMapIntensity||1,1.2);
       if(typeof next.needsUpdate!=='undefined')next.needsUpdate=true;
       child.material=next;
     }
@@ -715,53 +747,53 @@ function addPremiumHeroEnhancement(anchor,f,targetW,targetD,targetH){
   if(!anchor||!f)return;
   const key=f.assetKey;
   const g=new THREE.Group();
-  const baseColor=safeThreeColor(f.finishColor||(key==='bed'?'#EEE5D9':key==='bench'?'#A67C58':'#D7C4B2'),'#D7C4B2');
+  const baseColor=furnitureBaseTint(f,key==='bed'?'#EEE5D9':key==='bench'?'#A67C58':'#D7C4B2');
   if(key==='sofa_l'){
     const chaiseW=targetW*.48,chaiseD=targetD*.96,seatD=targetD*.5,seatH=Math.max(.44,targetH*.17),backH=Math.max(.92,targetH*.34),armW=Math.max(.2,targetW*.07);
-    const mainBody=box3(targetW*.96,seatH,seatD,premiumMat(baseColor.clone().offsetHSL(0,.01,-.03),.78,.03));mainBody.position.set(0,seatH*.52,targetD*.22);g.add(mainBody);
-    const chaise=box3(chaiseW,seatH,chaiseD,premiumMat(baseColor.clone().offsetHSL(0,.012,-.02),.8,.03));chaise.position.set(-targetW*.24,seatH*.52,0);g.add(chaise);
-    const back=box3(targetW*.94,backH,targetD*.15,premiumMat(baseColor.clone().offsetHSL(0,.02,-.06),.82,.03));back.position.set(0,seatH+backH*.5,-targetD*.18);g.add(back);
-    const sideBack=box3(targetW*.16,backH,chaiseD*.88,premiumMat(baseColor.clone().offsetHSL(0,.02,-.05),.82,.03));sideBack.position.set(-targetW*.4,seatH+backH*.5,0);g.add(sideBack);
-    const armR=box3(armW,targetH*.36,seatD*.92,premiumMat(baseColor.clone().offsetHSL(0,.015,-.04),.8,.03));armR.position.set(targetW*.45-armW*.5,targetH*.18,targetD*.21);g.add(armR);
-    const chaiseFront=box3(chaiseW*.92,seatH*.54,chaiseD*.62,premiumMat(baseColor.clone().offsetHSL(0,.025,.06),.92,.01));chaiseFront.position.set(-targetW*.23,seatH*.88,targetD*.02);g.add(chaiseFront);
-    const mainSeat=box3(targetW*.56,seatH*.56,seatD*.62,premiumMat(baseColor.clone().offsetHSL(0,.025,.06),.92,.01));mainSeat.position.set(targetW*.14,seatH*.88,targetD*.21);g.add(mainSeat);
-    const pillow1=box3(targetW*.26,backH*.42,targetD*.14,premiumMat(baseColor.clone().offsetHSL(0,.02,.12),.9,.01));pillow1.position.set(targetW*.16,seatH+backH*.45,-targetD*.04);g.add(pillow1);
-    const pillow2=box3(targetW*.2,backH*.42,targetD*.14,premiumMat(baseColor.clone().offsetHSL(0,.02,.12),.9,.01));pillow2.position.set(-targetW*.16,seatH+backH*.45,-targetD*.04);g.add(pillow2);
-    const legMat=premiumMat('#5A4A3E',.46,.16);
+    const mainBody=box3(targetW*.96,seatH,seatD,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.01,-.03),.78,.03));mainBody.position.set(0,seatH*.52,targetD*.22);g.add(mainBody);
+    const chaise=box3(chaiseW,seatH,chaiseD,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.012,-.02),.8,.03));chaise.position.set(-targetW*.24,seatH*.52,0);g.add(chaise);
+    const back=box3(targetW*.94,backH,targetD*.15,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.02,-.06),.82,.03));back.position.set(0,seatH+backH*.5,-targetD*.18);g.add(back);
+    const sideBack=box3(targetW*.16,backH,chaiseD*.88,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.02,-.05),.82,.03));sideBack.position.set(-targetW*.4,seatH+backH*.5,0);g.add(sideBack);
+    const armR=box3(armW,targetH*.36,seatD*.92,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.015,-.04),.8,.03));armR.position.set(targetW*.45-armW*.5,targetH*.18,targetD*.21);g.add(armR);
+    const chaiseFront=box3(chaiseW*.92,seatH*.54,chaiseD*.62,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.025,.06),.92,.01));chaiseFront.position.set(-targetW*.23,seatH*.88,targetD*.02);g.add(chaiseFront);
+    const mainSeat=box3(targetW*.56,seatH*.56,seatD*.62,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.025,.06),.92,.01));mainSeat.position.set(targetW*.14,seatH*.88,targetD*.21);g.add(mainSeat);
+    const pillow1=box3(targetW*.26,backH*.42,targetD*.14,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.02,.12),.9,.01));pillow1.position.set(targetW*.16,seatH+backH*.45,-targetD*.04);g.add(pillow1);
+    const pillow2=box3(targetW*.2,backH*.42,targetD*.14,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.02,.12),.9,.01));pillow2.position.set(-targetW*.16,seatH+backH*.45,-targetD*.04);g.add(pillow2);
+    const legMat=premiumVariantMat(f,safeThreeColor('#5A4A3E','#5A4A3E'),.46,.16);
     [[targetW*.4,targetD*.4],[targetW*.4,0],[-targetW*.42,targetD*.4],[-targetW*.42,-targetD*.38],[0,-targetD*.38]].forEach(([x,z])=>{const leg=cy3(.045,Math.max(.18,targetH*.1),legMat);leg.position.set(x,.09,z);g.add(leg)});
   }else if(['sofa','sofa_small','sofa_compact','sofa_medium','sofa_large','sofa_modern','sofa_grand'].includes(key)){
     const seatH=Math.max(.44,targetH*.17),backH=Math.max(.92,targetH*.34),armW=Math.max(.2,targetW*.08);
-    const body=box3(targetW*.96,seatH,targetD*.88,premiumMat(baseColor.clone().offsetHSL(0,.01,-.03),.78,.03));body.position.set(0,seatH*.52,0);g.add(body);
-    const back=box3(targetW*.94,backH,targetD*.16,premiumMat(baseColor.clone().offsetHSL(0,.02,-.06),.82,.03));back.position.set(0,seatH+backH*.5,-targetD*.36);g.add(back);
-    const armL=box3(armW,targetH*.36,targetD*.8,premiumMat(baseColor.clone().offsetHSL(0,.015,-.04),.8,.03));armL.position.set(-targetW*.47+armW*.5,targetH*.18,-targetD*.01);g.add(armL);
+    const body=box3(targetW*.96,seatH,targetD*.88,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.01,-.03),.78,.03));body.position.set(0,seatH*.52,0);g.add(body);
+    const back=box3(targetW*.94,backH,targetD*.16,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.02,-.06),.82,.03));back.position.set(0,seatH+backH*.5,-targetD*.36);g.add(back);
+    const armL=box3(armW,targetH*.36,targetD*.8,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.015,-.04),.8,.03));armL.position.set(-targetW*.47+armW*.5,targetH*.18,-targetD*.01);g.add(armL);
     const armR=armL.clone();armR.position.x*=-1;g.add(armR);
     const cushions=targetW>5.4?3:2,cushW=(targetW*.76)/cushions;
     for(let i=0;i<cushions;i++){
       const x=(-targetW*.38)+(i+.5)*cushW;
-      const seat=box3(cushW*.92,seatH*.56,targetD*.54,premiumMat(baseColor.clone().offsetHSL(0,.025,.06),.92,.01));seat.position.set(x,seatH*.9,targetD*.03);g.add(seat);
-      const pillow=box3(cushW*.82,backH*.42,targetD*.14,premiumMat(baseColor.clone().offsetHSL(0,.02,.12),.9,.01));pillow.position.set(x,seatH+backH*.45,-targetD*.22);g.add(pillow);
+      const seat=box3(cushW*.92,seatH*.56,targetD*.54,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.025,.06),.92,.01));seat.position.set(x,seatH*.9,targetD*.03);g.add(seat);
+      const pillow=box3(cushW*.82,backH*.42,targetD*.14,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.02,.12),.9,.01));pillow.position.set(x,seatH+backH*.45,-targetD*.22);g.add(pillow);
     }
-    const legMat=premiumMat('#5A4A3E',.46,.16),lx=targetW*.41,lz=targetD*.31;
+    const legMat=premiumVariantMat(f,safeThreeColor('#5A4A3E','#5A4A3E'),.46,.16),lx=targetW*.41,lz=targetD*.31;
     [[-lx,lz],[lx,lz],[-lx,-lz],[lx,-lz]].forEach(([x,z])=>{const leg=cy3(.045,Math.max(.18,targetH*.1),legMat);leg.position.set(x,.09,z);g.add(leg)});
   }else if(['bed','bed_king','bed_twin'].includes(key)){
-    const wood=premiumMat('#8A6A52',.56,.06);
-    const head=box3(targetW*.98,Math.max(1.7,targetH*.62),targetD*.08,premiumMat('#C8B29E',.78,.03));head.position.set(0,targetH*.34,-targetD*.44);g.add(head);
-    const foot=box3(targetW*.95,Math.max(.55,targetH*.2),targetD*.07,premiumMat('#BBA58F',.72,.03));foot.position.set(0,targetH*.11,targetD*.44);g.add(foot);
+    const wood=premiumVariantMat(f,safeThreeColor('#8A6A52','#8A6A52'),.56,.06);
+    const head=box3(targetW*.98,Math.max(1.7,targetH*.62),targetD*.08,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.01,-.02),.78,.03));head.position.set(0,targetH*.34,-targetD*.44);g.add(head);
+    const foot=box3(targetW*.95,Math.max(.55,targetH*.2),targetD*.07,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.015,-.05),.72,.03));foot.position.set(0,targetH*.11,targetD*.44);g.add(foot);
     const frame=box3(targetW*.98,Math.max(.24,targetH*.09),targetD*.96,wood);frame.position.set(0,.12,0);g.add(frame);
     const railL=box3(.08,Math.max(.42,targetH*.16),targetD*.88,wood);railL.position.set(-targetW*.45,.28,0);g.add(railL);
     const railR=railL.clone();railR.position.x*=-1;g.add(railR);
-    const mattress=box3(targetW*.9,Math.max(.44,targetH*.17),targetD*.88,premiumMat('#F3EEE6',.96,0));mattress.position.set(0,.38,0);g.add(mattress);
-    const duvet=box3(targetW*.86,Math.max(.28,targetH*.12),targetD*.52,premiumMat(baseColor.clone().offsetHSL(0,.02,.04),.95,0));duvet.position.set(0,.64,targetD*.09);g.add(duvet);
-    const throwFold=box3(targetW*.84,Math.max(.08,targetH*.035),targetD*.18,premiumMat(baseColor.clone().offsetHSL(0,.025,-.06),.94,0));throwFold.position.set(0,.78,targetD*.23);g.add(throwFold);
+    const mattress=box3(targetW*.9,Math.max(.44,targetH*.17),targetD*.88,premiumVariantMat(f,safeThreeColor('#F3EEE6','#F3EEE6'),.96,0));mattress.position.set(0,.38,0);g.add(mattress);
+    const duvet=box3(targetW*.86,Math.max(.28,targetH*.12),targetD*.52,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.02,.04),.95,0));duvet.position.set(0,.64,targetD*.09);g.add(duvet);
+    const throwFold=box3(targetW*.84,Math.max(.08,targetH*.035),targetD*.18,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.025,-.06),.94,0));throwFold.position.set(0,.78,targetD*.23);g.add(throwFold);
     for(const x of [-targetW*.2,targetW*.2]){
-      const pillow=box3(Math.max(.7,targetW*.22),Math.max(.16,targetH*.07),targetD*.18,premiumMat('#FBF8F4',.98,0));
+      const pillow=box3(Math.max(.7,targetW*.22),Math.max(.16,targetH*.07),targetD*.18,premiumVariantMat(f,safeThreeColor('#FBF8F4','#FBF8F4'),.98,0));
       pillow.position.set(x,.72,-targetD*.18);g.add(pillow);
     }
   }else if(key==='bench'){
-    const wood=premiumMat(baseColor.clone().offsetHSL(0,.01,-.02),.58,.05),dark=premiumMat('#3F3A36',.42,.22);
+    const wood=premiumVariantMat(f,baseColor.clone().offsetHSL(0,.01,-.02),.58,.05),dark=premiumVariantMat(f,safeThreeColor('#3F3A36','#3F3A36'),.42,.22);
     const seat=box3(targetW*.96,Math.max(.14,targetH*.12),targetD*.42,wood);seat.position.set(0,Math.max(.52,targetH*.42),0);g.add(seat);
     for(const x of [-targetW*.26,0,targetW*.26]){
-      const slat=box3(targetW*.26,Math.max(.03,targetH*.02),targetD*.44,premiumMat(baseColor.clone().offsetHSL(0,.015,.06),.56,.04));
+      const slat=box3(targetW*.26,Math.max(.03,targetH*.02),targetD*.44,premiumVariantMat(f,baseColor.clone().offsetHSL(0,.015,.06),.56,.04));
       slat.position.set(x,seat.position.y+.06,0);g.add(slat);
     }
     [[-targetW*.34,targetD*.12],[targetW*.34,targetD*.12],[-targetW*.34,-targetD*.12],[targetW*.34,-targetD*.12]].forEach(([x,z])=>{
@@ -1021,7 +1053,7 @@ function cycleVerificationAssets(){
 function buildFurniture3D(f, rH) {
   const g = new THREE.Group();
   const type = resolveLabel(f.label);
-  const sc = new THREE.Color('#C9B99A');
+  const sc = furnitureBaseTint(f, '#C9B99A');
 
   try {
   if (type === 'sofa') {

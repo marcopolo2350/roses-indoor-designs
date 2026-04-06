@@ -13,7 +13,7 @@ It includes:
 - 2D room drawing with walls, doors, windows, closets, partitions, and measurements
 - 3D room viewing with orbit and walk modes
 - polished local walkthrough presets: `Dollhouse`, `Stroll`, `Corner Reveal`, `Before / After Flythrough`, and `Romantic Reveal`
-- furniture placement with multi-select, copy/paste, snap-to-grid, and finish colors
+- furniture placement with multi-select, copy/paste, snap-to-grid, and material variants
 - premium catalog browsing with stronger category taxonomy, collection filters, favorites, recents, and real generated product thumbnails
 - existing-room redesign planning with `keep / move / replace / remove`
 - option-based redesign workflows with notes, thumbnails, and comparison views
@@ -46,7 +46,7 @@ Open the folder and serve it with any simple static server.
 - `scripts/app.js` - module bootstrap loader
 - `scripts/state.js` - shared state and planner model helpers
 - `scripts/storage.js` - IndexedDB/local profile persistence and catalog/storage utilities
-- `scripts/catalog.js` - manifest-backed catalog, picker, and furniture-side props
+- `scripts/catalog.js` - manifest-backed catalog, picker, variant selection, and furniture-side props
 - `scripts/planner2d.js` - 2D plan rendering and editor interactions
 - `scripts/planner3d.js` - 3D scene, camera behavior, and walkthrough presets
 - `scripts/walkthrough.js` - emotional layer, self-test boot, and guided story behavior
@@ -94,4 +94,5 @@ This uses `scripts/thumbgen.html` as a consistent local render stage and writes 
 - profile-aware local persistence for Rose and Marco
 - collection-aware asset browsing with manifest-backed catalog metadata
 - category-first premium picker with favorites, recents, collection chips, and real thumbnail cards
+- manifest-driven product/material variants for major furniture, storage, rug, and lighting categories
 - smoother 3D camera behavior with double-click focus and walkthrough presets

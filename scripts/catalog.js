@@ -74,6 +74,7 @@ let activeCatalogCollection='all';
 let activeCatalogCategory='all';
 let catalogFavorites=[];
 let catalogRecent=[];
+let catalogVariantSelection={};
 function normalizeArrayValue(value){
   if(Array.isArray(value))return value.filter(Boolean);
   if(value===null||value===undefined||value==='')return [];
@@ -83,6 +84,100 @@ function uniqueList(values){return [...new Set((values||[]).filter(Boolean))]}
 function normalizeCatalogGroup(group){return CATEGORY_ALIAS_MAP[group]||group||'Decor'}
 function catalogCategoryList(){return ['all',...CATALOG_CATEGORY_ORDER]}
 function catalogStorageKey(name){return 'catalog_'+name}
+function normalizeVariantsValue(value){
+  if(!Array.isArray(value))return [];
+  return value.filter(Boolean).map((variant,idx)=>({
+    id:variant.id||`variant_${idx+1}`,
+    label:variant.label||`Variant ${idx+1}`,
+    type:variant.type||'material',
+    family:variant.family||'finish',
+    previewColor:variant.previewColor||variant.color||'',
+    accentColor:variant.accentColor||variant.previewColor||variant.color||'',
+    roughness:Number.isFinite(variant.roughness)?variant.roughness:null,
+    metalness:Number.isFinite(variant.metalness)?variant.metalness:null,
+    tintStrength:Number.isFinite(variant.tintStrength)?variant.tintStrength:null,
+    thumbnailPath:variant.thumbnailPath||'',
+  }));
+}
+function getItemVariants(item){
+  return Array.isArray(item?.variants)?item.variants:[];
+}
+function itemSupportsVariants(item){
+  return getItemVariants(item).length>0;
+}
+function getVariantById(item,variantId){
+  return getItemVariants(item).find(variant=>variant.id===variantId)||null;
+}
+function getDefaultVariant(item){
+  const variants=getItemVariants(item);
+  if(!variants.length)return null;
+  return getVariantById(item,item?.defaultVariantId)||variants[0];
+}
+function ensureCatalogVariantSelection(item){
+  if(!item?.assetKey||!itemSupportsVariants(item))return '';
+  const current=catalogVariantSelection[item.assetKey];
+  if(current&&getVariantById(item,current))return current;
+  const fallback=getDefaultVariant(item)?.id||'';
+  catalogVariantSelection[item.assetKey]=fallback;
+  return fallback;
+}
+function getSelectedCatalogVariant(item){
+  return getVariantById(item,ensureCatalogVariantSelection(item))||getDefaultVariant(item);
+}
+function getFurnitureVariant(record,itemOverride=null){
+  const item=itemOverride||getFurnitureCatalogItem(record);
+  if(!itemSupportsVariants(item))return null;
+  return getVariantById(item,record?.variantId)||getDefaultVariant(item);
+}
+function variantDisplayColor(record,itemOverride=null){
+  const variant=getFurnitureVariant(record,itemOverride);
+  if(record?.finishColor&&!record?.variantId)return record.finishColor;
+  return variant?.previewColor||record?.finishColor||'';
+}
+function furnitureVariantFamily(record,itemOverride=null){
+  return getFurnitureVariant(record,itemOverride)?.family||'';
+}
+function setCatalogVariant(assetKey,variantId){
+  const item=FURN_ITEM_BY_KEY.get(assetKey);
+  if(!item)return;
+  const variant=getVariantById(item,variantId);
+  if(!variant)return;
+  catalogVariantSelection[assetKey]=variant.id;
+  if((pendingFurniturePreviewItemRecord()?.assetKey||'')===assetKey){
+    updateCatalogPendingUi();
+    if(typeof draw==='function')draw();
+  }
+}
+function variantSwatchMarkup(variant){
+  const base=variant.previewColor||'#D8CBB8';
+  const accent=variant.accentColor||base;
+  return `linear-gradient(135deg,${base},${accent})`;
+}
+function catalogVariantDots(item,limit=4){
+  const variants=getItemVariants(item);
+  if(!variants.length)return '';
+  const dots=variants.slice(0,limit).map(variant=>`<span class="catalog-variant-dot" style="background:${variantSwatchMarkup(variant)}"></span>`).join('');
+  const extra=variants.length>limit?`<span class="catalog-variant-count">+${variants.length-limit}</span>`:'';
+  return `<span class="catalog-variant-dots">${dots}${extra}</span>`;
+}
+function buildVariantSelector(item,selectedId,handlerName,scope='catalog'){
+  const variants=getItemVariants(item);
+  if(!variants.length)return '';
+  return `<div class="variant-row">${variants.map(variant=>`<button class="variant-chip${variant.id===selectedId?' sel':''}" type="button" onclick="${handlerName}('${esc(item.assetKey||'')}','${esc(variant.id)}');${scope==='catalog'?'event.stopPropagation();':''}"><span class="variant-chip-dot" style="background:${variantSwatchMarkup(variant)}"></span><span>${esc(variant.label)}</span></button>`).join('')}</div>`;
+}
+function selectedVariantController(records){
+  if(!records.length)return null;
+  const items=[...new Set(records.map(record=>getFurnitureCatalogItem(record)?.assetKey).filter(Boolean))];
+  if(items.length!==1)return null;
+  const item=FURN_ITEM_BY_KEY.get(items[0]);
+  if(!itemSupportsVariants(item))return null;
+  return item;
+}
+function applyVariantToFurnitureRecord(record,item,variant){
+  if(!record||!item||!variant)return;
+  record.variantId=variant.id;
+  record.finishColor=variant.previewColor||record.finishColor||'';
+}
 async function loadCatalogPrefs(){
   catalogFavorites=normalizeArrayValue(await dg(catalogStorageKey('favorites')));
   catalogRecent=normalizeArrayValue(await dg(catalogStorageKey('recent')));
@@ -123,7 +218,7 @@ function getFurnitureCatalogItem(record){
   return (record?.assetKey&&FURN_ITEM_BY_KEY.get(record.assetKey))||FURN_ITEM_BY_LABEL.get(((record?.label)||'').toLowerCase())||null;
 }
 function catalogSearchText(item){
-  return [item.label,item.group,item.category,...(item.tags||[]),...(item.collections||[]),...(item.recommendedRoomTypes||[])].join(' ').toLowerCase();
+  return [item.label,item.group,item.category,...(item.tags||[]),...(item.collections||[]),...(item.recommendedRoomTypes||[]),...getItemVariants(item).flatMap(variant=>[variant.label,variant.type,variant.family])].join(' ').toLowerCase();
 }
 function catalogCardTone(item){
   const collection=(item.collections||[])[0]||'Everyday Staples';
@@ -136,7 +231,9 @@ function catalogPlaceholderMarkup(item){
 function buildCatalogOptionCard(item,index,compact=false){
   const collection=(item.collections||[])[0]||'Everyday Staples';
   const favClass=isFavoriteCatalogItem(item.assetKey)?' active':'';
-  return `<button class="catalog-card furn-option${compact?' compact':''}" type="button" data-asset-key="${esc(item.assetKey||'')}" data-group="${esc(item.group)}" data-category="${esc(normalizeCatalogGroup(item.group))}" data-collection="${esc((item.collections||[]).join('|'))}" data-label="${esc(catalogSearchText(item))}" onclick="chooseOrPlaceFurn(${index})" onpointerenter="setPendingFurniturePreview(FURN_ITEMS[${index}],${index})" onfocus="setPendingFurniturePreview(FURN_ITEMS[${index}],${index})"><span class="catalog-fav${favClass}" onclick="event.stopPropagation();toggleFavoriteCatalogItem('${esc(item.assetKey||'')}')">&#9733;</span><span class="catalog-thumb" style="background:${catalogCardTone(item)}">${catalogPlaceholderMarkup(item)}</span><span class="catalog-meta"><span class="catalog-title">${esc(item.label)}</span><span class="catalog-sub">${esc(collection)}</span></span></button>`;
+  const selectedVariant=getSelectedCatalogVariant(item);
+  const variantMeta=itemSupportsVariants(item)?`<span class="catalog-subline">${catalogVariantDots(item)}<span>${esc(selectedVariant?.label||`${getItemVariants(item).length} finishes`)}</span></span>`:'';
+  return `<button class="catalog-card furn-option${compact?' compact':''}" type="button" data-asset-key="${esc(item.assetKey||'')}" data-group="${esc(item.group)}" data-category="${esc(normalizeCatalogGroup(item.group))}" data-collection="${esc((item.collections||[]).join('|'))}" data-label="${esc(catalogSearchText(item))}" onclick="chooseOrPlaceFurn(${index})" onpointerenter="setPendingFurniturePreview(FURN_ITEMS[${index}],${index})" onfocus="setPendingFurniturePreview(FURN_ITEMS[${index}],${index})"><span class="catalog-fav${favClass}" onclick="event.stopPropagation();toggleFavoriteCatalogItem('${esc(item.assetKey||'')}')">&#9733;</span><span class="catalog-thumb" style="background:${catalogCardTone(item)}">${catalogPlaceholderMarkup(item)}</span><span class="catalog-meta"><span class="catalog-title">${esc(item.label)}</span><span class="catalog-sub">${esc(collection)}</span>${variantMeta}</span></button>`;
 }
 function catalogItemsForKeys(keys){return keys.map(key=>FURN_ITEM_BY_KEY.get(key)).filter(Boolean)}
 async function loadAssetManifest(){
@@ -150,7 +247,8 @@ async function loadAssetManifest(){
       category:normalizeCatalogGroup(entry.category),
       tags:normalizeArrayValue(entry.tags),
       collections:normalizeArrayValue(entry.collections),
-      recommendedRoomTypes:normalizeArrayValue(entry.recommendedRoomTypes)
+      recommendedRoomTypes:normalizeArrayValue(entry.recommendedRoomTypes),
+      variants:normalizeVariantsValue(entry.variants),
     }));
     window.assetManifest=assetManifest;
     assetMetaByKey=new Map(assetManifest.map(entry=>[entry.id,entry]));
@@ -165,6 +263,8 @@ async function loadAssetManifest(){
       item.collections=uniqueList([...(item.collections||[]),...(meta?.collections||[])]);
       item.recommendedRoomTypes=uniqueList([...(item.recommendedRoomTypes||[]),...(meta?.recommendedRoomTypes||[])]);
       item.thumbnailPath=meta?.thumbnailPath||item.thumbnailPath||'';
+      item.variants=meta?.variants||item.variants||[];
+      item.defaultVariantId=meta?.defaultVariantId||item.defaultVariantId||(item.variants?.[0]?.id||'');
     });
     await loadCatalogPrefs();
   }catch(_){}
@@ -178,6 +278,7 @@ function normalizeFurnitureRecord(f){
   const mountType=f.mountType||catalog?.mountType||reg?.mountType||'floor';
   const type=resolveLabel(f.label||catalog?.label);
   const redesignAction=EXISTING_ACTIONS[f.redesignAction]?f.redesignAction:'keep';
+  const variant=getVariantById(catalog,f.variantId)||(!f.finishColor?getDefaultVariant(catalog):null);
   return {
     id:f.id||uid(),
     label:f.label||catalog?.label||'Item',
@@ -191,7 +292,8 @@ function normalizeFurnitureRecord(f){
     elevation:Number.isFinite(f.elevation)?f.elevation:defaultElevation(mountType,assetKey,type),
     assetKey,
     yOffset:Number.isFinite(f.yOffset)?f.yOffset:(reg?.yOffset||0),
-    finishColor:f.finishColor||'',
+    finishColor:f.finishColor||(variant?.previewColor||''),
+    variantId:f.variantId||(variant?.id||''),
     visible:f.visible!==false,
     source:f.source==='existing'?'existing':'new',
     redesignAction,
@@ -214,10 +316,14 @@ function pendingFurnitureBarMarkup(item,state){
   const location=state?.snapped?`${formatDistance(state.snapped.x,'compact')} · ${formatDistance(state.snapped.z,'compact')}`:'Choose a spot in the room';
   const statusText=state?.valid?'Ready to place':(state?.reason||'Move the target inside the room');
   const statusClass=state?.valid?'valid':'invalid';
+  const selectedVariant=getSelectedCatalogVariant(item);
   const mobileCta=isTouchUi()&&window.innerWidth<=760
     ? `<button class="mini-chip${state?.valid?'':' secondary'}" type="button" ${state?.valid?'onclick="confirmPendingFurniturePlacement()"':'disabled'}>${state?.valid?'Place Here':'Adjust Target'}</button>`
     : `<div class="catalog-placement-inline">${state?.valid?'Click the card again to place it.':'Move the target in the room, then click again.'}</div>`;
-  return `<div class="catalog-placement-bar ${statusClass}"><div class="catalog-placement-meta"><div class="catalog-placement-title">${esc(item.label)}</div><div class="catalog-placement-copy">${esc(statusText)} · ${esc(location)}</div></div>${mobileCta}</div>`;
+  const variantUi=itemSupportsVariants(item)
+    ? `<div class="catalog-placement-variants"><div class="catalog-placement-copy">Style Variant · ${esc(selectedVariant?.label||'')}</div>${buildVariantSelector(item,selectedVariant?.id||'', 'setCatalogVariant','catalog')}</div>`
+    : '';
+  return `<div class="catalog-placement-bar ${statusClass}"><div class="catalog-placement-meta"><div class="catalog-placement-title">${esc(item.label)}</div><div class="catalog-placement-copy">${esc(statusText)} · ${esc(location)}</div>${variantUi}</div>${mobileCta}</div>`;
 }
 function updateCatalogPendingUi(){
   const item=pendingFurniturePreviewItemRecord();
@@ -233,6 +339,7 @@ function setPendingFurniturePreview(item,idx=-1){
   pendFurnPreviewKey=item?.assetKey||'';
   pendFurnPreviewLabel=item?.label||'';
   pendFurnPreviewIdx=Number.isFinite(idx)&&idx>=0?idx:FURN_ITEMS.indexOf(item);
+  ensureCatalogVariantSelection(item);
   updateCatalogPendingUi();
   if(typeof draw==='function')draw();
 }
@@ -334,6 +441,7 @@ function placeFurn(itemIdx){
   if(!pendFurnPos||!curRoom)return;
   const item=FURN_ITEMS[itemIdx];
   if(!item)return;
+  const variant=getSelectedCatalogVariant(item);
   const state=typeof getPendingFurniturePlacementState==='function'?getPendingFurniturePlacementState(curRoom):null;
   if(state&&!state.valid){
     toast(state.reason||'Move the target inside the room');
@@ -356,6 +464,8 @@ function placeFurn(itemIdx){
     elevation:Number.isFinite(item.elevation)?item.elevation:defaultElevation(item.mountType||reg?.mountType||'floor',item.assetKey,resolveLabel(item.label)),
     assetKey:item.assetKey,
     yOffset:reg?.yOffset||0,
+    variantId:variant?.id||'',
+    finishColor:variant?.previewColor||'',
     visible:true
   }));
   const idx=curRoom.furniture.length-1;
@@ -486,6 +596,19 @@ function setClosetStyle(id){
   curRoom.structures.forEach(st=>{if(st.type==='closet'&&st.rect)st.finish=id});
   pushU();draw();showP();if(is3D)rebuild3D();
 }
+function setSelectedFurnitureVariant(_assetKey,variantId){
+  const records=selectedFurnitureRecords();
+  if(!records.length)return;
+  const item=selectedVariantController(records)||getFurnitureCatalogItem(records[0]);
+  if(!item)return;
+  const variant=getVariantById(item,variantId);
+  if(!variant)return;
+  records.forEach(record=>applyVariantToFurnitureRecord(record,item,variant));
+  pushU();
+  draw();
+  showP();
+  scheduleRebuild3D();
+}
 function setFurnitureFinish(color){
   const records=selectedFurnitureRecords();
   if(!records.length)return;
@@ -578,13 +701,20 @@ function showP(){
     if(records.length>1){
       const centroid=selectionCentroid(records);
       const existingCount=records.filter(item=>item.source==='existing').length;
-      h=cBtn.replace('$T',`${records.length} Pieces Selected`)+`<div class="prop-tip">Tap more furniture while Multi-Select is on, then move the group together by dragging any selected piece.</div><div class="pr"><div><label>CENTER X (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.5)}" value="${distanceInputValue(centroid.x)}" disabled></div><div><label>CENTER Y (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.5)}" value="${distanceInputValue(centroid.z)}" disabled></div></div><div class="quick-rotate-row"><button class="pbtn soft" onclick="copySelectedFurniture()">Copy</button><button class="pbtn soft" onclick="duplicateSelectedFurniture()">Duplicate</button><button class="pbtn soft" onclick="pasteFurniture()">Paste</button></div><div class="quick-rotate-row"><button class="pbtn soft" onclick="rotateSelectedFurniture(-15)">Rotate Left</button><button class="pbtn soft" onclick="turnAroundSelectedFurniture()">Turn Around</button><button class="pbtn soft" onclick="rotateSelectedFurniture(15)">Rotate Right</button></div><div class="quick-rotate-row"><button class="pbtn soft" onclick="setSelectedFurnitureSource('existing')">Mark Existing</button><button class="pbtn soft" onclick="setSelectedFurnitureSource('new')">Mark New</button><button class="pbtn soft" onclick="toggleSelectedFurnitureLock()">${records.every(item=>item.locked)?'Unlock':'Lock'}</button></div>${existingCount?`<label>PLAN ACTION</label><div class="mat-grid tall">${Object.entries(EXISTING_ACTIONS).map(([key,meta])=>`<button class="mat-btn" onclick="setSelectedRedesignAction('${key}')">${meta.label}</button>`).join('')}</div><div class="quick-rotate-row"><button class="pbtn soft" onclick="duplicateForRedesign()">Make Redesign Copy</button><button class="pbtn soft" onclick="pairSelectedReplacement()">Pair Replacement</button><button class="pbtn soft" onclick="clearSelectedReplacementPair()">Clear Pair</button></div>`:''}<label>FINISH COLOR</label><div class="asset-color-grid"><button class="asset-color-chip" style="background:linear-gradient(135deg,#fff,#efe7db)" onclick="setFurnitureFinish('')"></button>${ASSET_FINISHES.map(c=>`<button class="asset-color-chip" style="background:${c}" onclick="setFurnitureFinish('${c}')"></button>`).join('')}</div><button class="pbtn dng" onclick="dF()">Delete Selection</button>`;
+      const multiVariantItem=selectedVariantController(records);
+      const variantSection=multiVariantItem?`<label>STYLE VARIANT</label>${buildVariantSelector(multiVariantItem,getFurnitureVariant(records[0],multiVariantItem)?.id||getDefaultVariant(multiVariantItem)?.id||'','setSelectedFurnitureVariant','panel')}<div class="prop-tip">Apply one curated material direction across this selected set.</div>`:`<label>FINISH COLOR</label><div class="asset-color-grid"><button class="asset-color-chip" style="background:linear-gradient(135deg,#fff,#efe7db)" onclick="setFurnitureFinish('')"></button>${ASSET_FINISHES.map(c=>`<button class="asset-color-chip" style="background:${c}" onclick="setFurnitureFinish('${c}')"></button>`).join('')}</div>`;
+      h=cBtn.replace('$T',`${records.length} Pieces Selected`)+`<div class="prop-tip">Tap more furniture while Multi-Select is on, then move the group together by dragging any selected piece.</div><div class="pr"><div><label>CENTER X (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.5)}" value="${distanceInputValue(centroid.x)}" disabled></div><div><label>CENTER Y (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.5)}" value="${distanceInputValue(centroid.z)}" disabled></div></div><div class="quick-rotate-row"><button class="pbtn soft" onclick="copySelectedFurniture()">Copy</button><button class="pbtn soft" onclick="duplicateSelectedFurniture()">Duplicate</button><button class="pbtn soft" onclick="pasteFurniture()">Paste</button></div><div class="quick-rotate-row"><button class="pbtn soft" onclick="rotateSelectedFurniture(-15)">Rotate Left</button><button class="pbtn soft" onclick="turnAroundSelectedFurniture()">Turn Around</button><button class="pbtn soft" onclick="rotateSelectedFurniture(15)">Rotate Right</button></div><div class="quick-rotate-row"><button class="pbtn soft" onclick="setSelectedFurnitureSource('existing')">Mark Existing</button><button class="pbtn soft" onclick="setSelectedFurnitureSource('new')">Mark New</button><button class="pbtn soft" onclick="toggleSelectedFurnitureLock()">${records.every(item=>item.locked)?'Unlock':'Lock'}</button></div>${existingCount?`<label>PLAN ACTION</label><div class="mat-grid tall">${Object.entries(EXISTING_ACTIONS).map(([key,meta])=>`<button class="mat-btn" onclick="setSelectedRedesignAction('${key}')">${meta.label}</button>`).join('')}</div><div class="quick-rotate-row"><button class="pbtn soft" onclick="duplicateForRedesign()">Make Redesign Copy</button><button class="pbtn soft" onclick="pairSelectedReplacement()">Pair Replacement</button><button class="pbtn soft" onclick="clearSelectedReplacementPair()">Clear Pair</button></div>`:''}${variantSection}<button class="pbtn dng" onclick="dF()">Delete Selection</button>`;
     }else{
       const f=r.furniture[sel.idx];
+      const variantItem=getFurnitureCatalogItem(f);
+      const variant=getFurnitureVariant(f,variantItem);
       const pairText=f.source==='existing'
         ? (pairedReplacementFor(f,r)?.label?`Paired with: ${pairedReplacementFor(f,r).label}`:'No replacement paired yet.')
         : (linkedExistingFor(f,r)?.label?`Replaces: ${linkedExistingFor(f,r).label}`:'Not paired to an existing piece.');
-      h=cBtn.replace('$T',f.label||'Item')+`<label>LABEL</label><input value="${esc(f.label||'')}" onchange="uF('label',this.value)"><div class="pr"><div><label>W (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.5)}" value="${distanceInputValue(f.w||2)}" onchange="uF('w',this.value)"></div><div><label>D (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.5)}" value="${distanceInputValue(f.d||1.5)}" onchange="uF('d',this.value)"></div></div><label>ROTATION</label><input type="number" step="15" value="${f.rotation||0}" onchange="uF('rotation',this.value)"><div class="prop-tip">The little triangle in 2D shows the front of the piece.</div><div class="quick-rotate-row"><button class="pbtn soft" onclick="copySelectedFurniture()">Copy</button><button class="pbtn soft" onclick="duplicateSelectedFurniture()">Duplicate</button><button class="pbtn soft" onclick="pasteFurniture()">Paste</button></div><div class="quick-rotate-row"><button class="pbtn soft" onclick="rotateSelectedFurniture(-15)">Rotate Left</button><button class="pbtn soft" onclick="turnAroundSelectedFurniture()">Turn Around</button><button class="pbtn soft" onclick="rotateSelectedFurniture(15)">Rotate Right</button></div><label>MOUNT</label><select onchange="uF('mountType',this.value)"><option value="floor"${f.mountType==='floor'?' selected':''}>Floor</option><option value="wall"${f.mountType==='wall'?' selected':''}>Wall</option><option value="surface"${f.mountType==='surface'?' selected':''}>Surface</option><option value="ceiling"${f.mountType==='ceiling'?' selected':''}>Ceiling</option></select><label>ELEVATION (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.25)}" value="${distanceInputValue(f.elevation||0)}" onchange="uF('elevation',this.value)"><label>ROOM ROLE</label><div class="mat-grid tall"><button class="mat-btn${f.source==='existing'?' sel':''}" onclick="setSelectedFurnitureSource('existing')">Existing Piece</button><button class="mat-btn${f.source!=='existing'?' sel':''}" onclick="setSelectedFurnitureSource('new')">New Piece</button><button class="mat-btn${f.locked?' sel':''}" onclick="toggleSelectedFurnitureLock()">${f.locked?'Locked':'Unlocked'}</button></div>${f.source==='existing'?`<label>PLAN ACTION</label><div class="mat-grid tall">${Object.entries(EXISTING_ACTIONS).map(([key,meta])=>`<button class="mat-btn${f.redesignAction===key?' sel':''}" onclick="setSelectedRedesignAction('${key}')">${meta.label}</button>`).join('')}</div><div class="quick-rotate-row"><button class="pbtn soft" onclick="duplicateForRedesign()">Make Redesign Copy</button><button class="pbtn soft" onclick="pairSelectedReplacement()">Pair Replacement</button><button class="pbtn soft" onclick="clearSelectedReplacementPair()">Clear Pair</button></div><div class="prop-tip">${pairText}</div>`:`<div class="quick-rotate-row"><button class="pbtn soft" onclick="pairSelectedReplacement()">Pair To Existing</button><button class="pbtn soft" onclick="clearSelectedReplacementPair()">Clear Pair</button><button class="pbtn soft" onclick="setSelectedFurnitureSource('new')">Keep As New</button></div><div class="prop-tip">${pairText}</div>`}<label>FINISH COLOR</label><div class="asset-color-grid"><button class="asset-color-chip${!f.finishColor?' sel':''}" style="background:linear-gradient(135deg,#fff,#efe7db)" onclick="setFurnitureFinish('')"></button>${ASSET_FINISHES.map(c=>`<button class="asset-color-chip${f.finishColor===c?' sel':''}" style="background:${c}" onclick="setFurnitureFinish('${c}')"></button>`).join('')}</div><button class="pbtn dng" onclick="dF()">Delete</button>`;
+      const finishSection=itemSupportsVariants(variantItem)
+        ? `<label>STYLE VARIANT</label>${buildVariantSelector(variantItem,variant?.id||getDefaultVariant(variantItem)?.id||'','setSelectedFurnitureVariant','panel')}<div class="prop-tip">Switch the finish family without replacing the piece.</div>`
+        : `<label>FINISH COLOR</label><div class="asset-color-grid"><button class="asset-color-chip${!f.finishColor?' sel':''}" style="background:linear-gradient(135deg,#fff,#efe7db)" onclick="setFurnitureFinish('')"></button>${ASSET_FINISHES.map(c=>`<button class="asset-color-chip${f.finishColor===c?' sel':''}" style="background:${c}" onclick="setFurnitureFinish('${c}')"></button>`).join('')}</div>`;
+      h=cBtn.replace('$T',f.label||'Item')+`<label>LABEL</label><input value="${esc(f.label||'')}" onchange="uF('label',this.value)"><div class="pr"><div><label>W (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.5)}" value="${distanceInputValue(f.w||2)}" onchange="uF('w',this.value)"></div><div><label>D (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.5)}" value="${distanceInputValue(f.d||1.5)}" onchange="uF('d',this.value)"></div></div><label>ROTATION</label><input type="number" step="15" value="${f.rotation||0}" onchange="uF('rotation',this.value)"><div class="prop-tip">The little triangle in 2D shows the front of the piece.</div><div class="quick-rotate-row"><button class="pbtn soft" onclick="copySelectedFurniture()">Copy</button><button class="pbtn soft" onclick="duplicateSelectedFurniture()">Duplicate</button><button class="pbtn soft" onclick="pasteFurniture()">Paste</button></div><div class="quick-rotate-row"><button class="pbtn soft" onclick="rotateSelectedFurniture(-15)">Rotate Left</button><button class="pbtn soft" onclick="turnAroundSelectedFurniture()">Turn Around</button><button class="pbtn soft" onclick="rotateSelectedFurniture(15)">Rotate Right</button></div><label>MOUNT</label><select onchange="uF('mountType',this.value)"><option value="floor"${f.mountType==='floor'?' selected':''}>Floor</option><option value="wall"${f.mountType==='wall'?' selected':''}>Wall</option><option value="surface"${f.mountType==='surface'?' selected':''}>Surface</option><option value="ceiling"${f.mountType==='ceiling'?' selected':''}>Ceiling</option></select><label>ELEVATION (${distanceLabel()})</label><input type="number" step="${distanceInputStep(.25)}" value="${distanceInputValue(f.elevation||0)}" onchange="uF('elevation',this.value)"><label>ROOM ROLE</label><div class="mat-grid tall"><button class="mat-btn${f.source==='existing'?' sel':''}" onclick="setSelectedFurnitureSource('existing')">Existing Piece</button><button class="mat-btn${f.source!=='existing'?' sel':''}" onclick="setSelectedFurnitureSource('new')">New Piece</button><button class="mat-btn${f.locked?' sel':''}" onclick="toggleSelectedFurnitureLock()">${f.locked?'Locked':'Unlocked'}</button></div>${f.source==='existing'?`<label>PLAN ACTION</label><div class="mat-grid tall">${Object.entries(EXISTING_ACTIONS).map(([key,meta])=>`<button class="mat-btn${f.redesignAction===key?' sel':''}" onclick="setSelectedRedesignAction('${key}')">${meta.label}</button>`).join('')}</div><div class="quick-rotate-row"><button class="pbtn soft" onclick="duplicateForRedesign()">Make Redesign Copy</button><button class="pbtn soft" onclick="pairSelectedReplacement()">Pair Replacement</button><button class="pbtn soft" onclick="clearSelectedReplacementPair()">Clear Pair</button></div><div class="prop-tip">${pairText}</div>`:`<div class="quick-rotate-row"><button class="pbtn soft" onclick="pairSelectedReplacement()">Pair To Existing</button><button class="pbtn soft" onclick="clearSelectedReplacementPair()">Clear Pair</button><button class="pbtn soft" onclick="setSelectedFurnitureSource('new')">Keep As New</button></div><div class="prop-tip">${pairText}</div>`}${finishSection}<button class="pbtn dng" onclick="dF()">Delete</button>`;
     }
   }
   p.innerHTML=h;p.classList.add('on')}
