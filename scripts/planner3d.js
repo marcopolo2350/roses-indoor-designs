@@ -52,9 +52,9 @@ function toggle3D(){
   document.getElementById('cmCompare').classList.remove('act');
   document.getElementById('cmPhoto')?.classList.remove('act');
   document.getElementById('scrEd').classList.add('mode-3d');
-  hideP();build3D();setTimeout(()=>{if(is3D)setViewPreset('overview')},80);updateWalkthroughTray();updatePhotoTray();findEgg(5)}
+  hideP();build3D();setTimeout(()=>{if(is3D){setViewPreset('overview');showViewChip('3D View · Orbit');}},80);updateWalkthroughTray();updatePhotoTray();findEgg(5)}
 
-function exit3DView(){stop3D();is3D=false;camMode='orbit';presentationMode=false;compare3DMode=false;photoMode=false;photoTrayOpen=false;cameraScript=null;walkthroughTrayOpen=false;document.getElementById('scrEd').classList.remove('mode-3d','presentation','photo-mode');document.getElementById('threeC').classList.remove('on');document.getElementById('b3d').classList.remove('on');document.getElementById('vLbl').textContent='2D Plan';document.getElementById('camBtns').classList.remove('on');document.getElementById('walkHint').classList.remove('on');document.getElementById('presentPill').classList.remove('on');document.getElementById('presentPill').textContent='Presentation Mode';document.getElementById('photoPill')?.classList.remove('on');document.getElementById('cmCompare').classList.remove('act');document.getElementById('cmTour')?.classList.remove('act');document.getElementById('cmPhoto')?.classList.remove('act');updateWalkthroughTray();updatePhotoTray();resetRoomDebug();initCan();draw();showP()}
+function exit3DView(){stop3D();hideViewChip();is3D=false;camMode='orbit';presentationMode=false;compare3DMode=false;photoMode=false;photoTrayOpen=false;cameraScript=null;walkthroughTrayOpen=false;document.getElementById('scrEd').classList.remove('mode-3d','presentation','photo-mode');document.getElementById('threeC').classList.remove('on');document.getElementById('b3d').classList.remove('on');document.getElementById('vLbl').textContent='2D Plan';document.getElementById('camBtns').classList.remove('on');document.getElementById('walkHint').classList.remove('on');document.getElementById('presentPill').classList.remove('on');document.getElementById('presentPill').textContent='Presentation Mode';document.getElementById('photoPill')?.classList.remove('on');document.getElementById('cmCompare').classList.remove('act');document.getElementById('cmTour')?.classList.remove('act');document.getElementById('cmPhoto')?.classList.remove('act');updateWalkthroughTray();updatePhotoTray();resetRoomDebug();initCan();draw();showP()}
 
 function presentationShotLabel(mode){
   return ({
@@ -64,6 +64,47 @@ function presentationShotLabel(mode){
     intimate:'Intimate View',
     before_after:'Before / After',
   })[mode]||'Hero View';
+}
+let viewChipTimer=null;
+function walkthroughPresetLabel(id){
+  return ({
+    favorite_corner:'Favorite Corner',
+    dollhouse:'Dollhouse',
+    stroll:'Stroll',
+    corner_reveal:'Corner Reveal',
+    before_after:'Before / After',
+    romantic_reveal:'Romantic Reveal',
+  })[id]||'Walkthrough';
+}
+function photoPresetLabel(mode){
+  return ({
+    hero:'Hero Shot',
+    favorite:'Favorite Corner',
+    intimate:'Intimate',
+    overhead:'Overhead',
+  })[mode]||'Hero Shot';
+}
+function viewPresetLabel(mode){
+  return ({
+    hero:'Hero View',
+    overview:'Overview',
+    corner:'Favorite Corner',
+    eye:'Intimate View',
+  })[mode]||'Orbit';
+}
+function showViewChip(label,ms=3400){
+  const chip=document.getElementById('viewChip');
+  if(!chip||!label)return;
+  chip.textContent=label;
+  chip.classList.add('show');
+  if(viewChipTimer)clearTimeout(viewChipTimer);
+  viewChipTimer=setTimeout(()=>chip.classList.remove('show'),ms);
+}
+function hideViewChip(){
+  const chip=document.getElementById('viewChip');
+  if(viewChipTimer)clearTimeout(viewChipTimer);
+  viewChipTimer=null;
+  chip?.classList.remove('show');
 }
 function roomStoryLine(room=curRoom){
   if(!room)return 'A polished view for reviewing the current design direction.';
@@ -160,22 +201,27 @@ function setViewPreset(mode){
   if(mode==='hero'){
     const pose=heroRoomPose(curRoom);
     cYaw=pose.yaw;cPitch=pose.pitch;cDist=pose.dist;orbitTarget={...pose.target};
+    showViewChip(`3D View · ${viewPresetLabel(mode)}`);
     return;
   }
   if(mode==='overview'){
     const pose=overviewRoomPose(curRoom);
     cYaw=pose.yaw;cPitch=pose.pitch;cDist=pose.dist;orbitTarget={...pose.target};
+    showViewChip(`3D View · ${viewPresetLabel(mode)}`);
     return;
   }else if(mode==='corner'){
     const pose=favoriteCornerPose(curRoom);
     cYaw=pose.yaw;cPitch=pose.pitch;cDist=Math.max(12,Math.min(30,pose.dist*1.02));orbitTarget={...pose.target};
+    showViewChip(`3D View · ${viewPresetLabel(mode)}`);
     return;
   }else if(mode==='eye'){
     const pose=intimateRoomPose(curRoom);
     cYaw=pose.yaw;cPitch=Math.max(.18,pose.pitch-.02);cDist=Math.max(9.5,Math.min(20,pose.dist*1.05));orbitTarget={x:focus.x,y:curRoom.height*.34,z:-focus.y};
+    showViewChip(`3D View · ${viewPresetLabel(mode)}`);
     return;
   }
   orbitTarget={x:focus.x,y:curRoom.height*.42,z:-focus.y};
+  showViewChip(`3D View · ${viewPresetLabel(mode)}`);
 }
 function focusFurniture3D(itemOrId){
   if(!is3D||!curRoom)return;
@@ -383,6 +429,7 @@ function setCamMode(m){
     if(scene){scene.traverse(obj=>{if(obj.name==='roomCeiling')obj.visible=true})};
     document.getElementById('walkHint').classList.add('on');setTimeout(()=>document.getElementById('walkHint').classList.remove('on'),2500);findEgg(6)}
   else{cYaw=Math.PI*.18;cPitch=.52;cDist=Math.max(11,Math.min(42,Math.max(cDist||17,focus.maxD*2.35,Math.max(focus.width||0,focus.height||0,r.height*.9)*1.65,r.height*1.45)));orbitVel={yaw:0,pitch:0,zoom:0}}
+  showViewChip(`3D View · ${m==='walk'?'Walk':'Orbit'}`);
   updateWalkUI();updateWalkthroughTray()}
 function startWalkMove(dir){activeWalkDir=dir||0}
 function stopWalkMove(){activeWalkDir=0}
@@ -1471,6 +1518,7 @@ const wc2=document.getElementById('walkCtrl');if(wc2)wc2.remove();stopWalkMove()
 // Presentation / reveal polish overrides
 exit3DView=function(){
   stop3D();
+  hideViewChip();
   is3D=false;camMode='orbit';presentationMode=false;compare3DMode=false;photoMode=false;photoTrayOpen=false;cameraScript=null;walkthroughTrayOpen=false;
   document.getElementById('scrEd').classList.remove('mode-3d','presentation','photo-mode');
   document.getElementById('threeC').classList.remove('on');
@@ -1562,6 +1610,7 @@ setPhotoPreset=function(mode){
     overhead:{yaw:Math.PI*.12,pitch:.86,dist:Math.max(16,Math.min(30,Math.max(focus.width,focus.height,curRoom.height)*1.32)),target:{x:focus.x,y:curRoom.height*.46,z:-focus.y}}
   };
   const next=poses[mode]||poses.hero;
+  showViewChip(`Photo Mode · ${photoPresetLabel(mode)}`);
   playCameraSequence([{duration:1100,apply:t=>applyCameraTween(current,next,t)}]);
 }
 function capturePresentationStill(){
@@ -1615,6 +1664,7 @@ favoriteCornerPose=function(room){
 function setPresentationShot(mode){
   if(!is3D||!curRoom)return;
   presentationShot=mode;
+  showViewChip(`Presentation · ${presentationShotLabel(mode)}`);
   refreshPresentationPill();
   updatePresentationTray();
   if(mode==='before_after'){
@@ -1635,6 +1685,7 @@ function setPresentationShot(mode){
 startWalkthroughPreset=function(id){
   if(!is3D||!curRoom)return;
   walkthroughTrayOpen=false;updateWalkthroughTray();
+  showViewChip(`Walkthrough · ${walkthroughPresetLabel(id)}`);
   const focus=getRoomFocus(curRoom);
   const current={yaw:cYaw,pitch:cPitch,dist:cDist,target:{...(orbitTarget||{x:focus.x,y:curRoom.height*.42,z:-focus.y})}};
   const overview=overviewRoomPose(curRoom);

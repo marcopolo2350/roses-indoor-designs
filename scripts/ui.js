@@ -101,6 +101,26 @@ let createRoomContext={mode:'new_project',projectId:null,projectName:'',floorId:
 function setCreateRoomContext(ctx={}){
   createRoomContext={mode:'new_project',projectId:null,projectName:'',floorId:'floor_1',floorLabel:'Floor 1',floorOrder:0,...ctx};
 }
+let createRoomLayoutMode='empty';
+function loadCreateRoomLayoutMode(){
+  const saved=getLocal?.('create_room_layout_mode',{global:true});
+  createRoomLayoutMode=saved==='starter'?'starter':'empty';
+}
+function syncCreateRoomLayoutModeUI(){
+  const emptyBtn=document.getElementById('crLayoutEmpty');
+  const starterBtn=document.getElementById('crLayoutStarter');
+  const hint=document.getElementById('crLayoutHint');
+  if(emptyBtn)emptyBtn.classList.toggle('sel',createRoomLayoutMode==='empty');
+  if(starterBtn)starterBtn.classList.toggle('sel',createRoomLayoutMode==='starter');
+  if(hint)hint.textContent=createRoomLayoutMode==='starter'
+    ? 'Suggested furniture will be staged for this room type.'
+    : 'The room will open blank so you can place everything intentionally.';
+}
+function setCreateRoomLayoutMode(mode='empty'){
+  createRoomLayoutMode=mode==='starter'?'starter':'empty';
+  setLocal?.('create_room_layout_mode',createRoomLayoutMode,{global:true});
+  syncCreateRoomLayoutModeUI();
+}
 
 // ── HOME ──
 function renderHome(){
@@ -225,11 +245,13 @@ function selPre(id,el){
 function openCrModal(starterId='living_room',ctx=null){
   const starter=ROOM_STARTERS.find(s=>s.id===starterId)||ROOM_STARTERS[0];
   if(ctx)setCreateRoomContext(ctx);else setCreateRoomContext({mode:'new_project'});
+  loadCreateRoomLayoutMode();
   selPreset=starter.id;
   document.getElementById('crN').value=createRoomContext.mode==='project_room'
     ? starter.name
     : (starter.name==="Bedroom"?defaultPersonalRoomName():starter.name);
-  document.getElementById('crW').value=starter.width;document.getElementById('crL').value=starter.depth;document.getElementById('crH').value=starter.height;popPresets();document.getElementById('crMod').classList.add('on')
+  document.getElementById('crW').value=starter.width;document.getElementById('crL').value=starter.depth;document.getElementById('crH').value=starter.height;popPresets();document.getElementById('crMod').classList.add('on');
+  syncCreateRoomLayoutModeUI();
 }
 function closeCr(){document.getElementById('crMod').classList.remove('on')}
 document.getElementById('crMod').onclick=function(e){if(e.target===this)closeCr()};
@@ -280,7 +302,7 @@ function createFromPreset(){
   const room=normalizeRoom({id:uid(),name:nm,height:h,wallThickness:.5,polygon:poly,openings:[],structures:[],furniture:[],
     projectId,projectName,floorId,floorLabel,floorOrder,roomOrder:projectMainRooms(projectId).length,
     roomType:starter.roomType||'living_room',designPreset:starter.designPreset||'',materials:{wall:WALL_PALETTES[0].color,wallFinish:'warm_white',floor:FLOOR_TYPES[0].color,floorType:FLOOR_TYPES[0].id,ceiling:'#FAF7F2',trim:TRIM_COLORS[0],ceilingBrightness:1,lightingPreset:'daylight'},createdAt:Date.now(),updatedAt:Date.now(),favorite:false});
-  room.furniture=buildStarterFurniture(starter,w,l);
+  room.furniture=createRoomLayoutMode==='starter'?buildStarterFurniture(starter,w,l):[];
   if(starter.designPreset)applyDesignPresetToRoom(room,starter.designPreset);
   projects.push(room);saveAll();closeCr();openEd(room);
   // Easter egg: first room creation
