@@ -167,6 +167,23 @@
 <button class="ms" onclick="startFreeDraw()">Free-Draw Instead</button>
 </div></div>
 
+<div class="modal-bg" id="refCalMod">
+  <div class="msh ref-cal-sheet">
+    <div class="mhn"></div>
+    <div class="mt">Calibrate Reference</div>
+    <div class="ref-cal-copy">Enter the real-world distance between the two points you just marked. This sets the tracing overlay to the right scale for the whole room.</div>
+    <div class="mf">
+      <label>MEASURED DISTANCE</label>
+      <input id="refCalInput" type="text" inputmode="decimal" placeholder="12 ft or 3.6 m">
+    </div>
+    <div class="prop-state ref-cal-state" id="refCalState"></div>
+    <div class="quick-rotate-row ref-cal-actions">
+      <button class="pbtn soft" type="button" onclick="cancelReferenceCalibrationModal()">Cancel</button>
+      <button class="pbtn" type="button" onclick="submitReferenceCalibration()">Apply Scale</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <div class="debug-badge dev-only" id="debugBadge"></div>
 <button class="diag-toggle dev-only" id="assetDiagToggle" onclick="togglePreflightPanel()">Model Status</button>

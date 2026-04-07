@@ -252,6 +252,8 @@ input,select{font-family:var(--fb)}
   .props{top:auto;bottom:74px;left:8px;right:8px;width:auto;max-height:min(48vh,420px);border-radius:18px}
   .props-tab{top:auto;bottom:calc(132px + env(safe-area-inset-bottom,0));right:10px}
   .runtime-actions{max-width:calc(100vw - 16px)}
+  .ref-cal-sheet{max-width:none}
+  .ref-cal-actions{grid-template-columns:1fr}
 }
 .debug-badge.show{display:block}
 .debug-badge.fail{background:rgba(120,32,32,.94)}
@@ -340,6 +342,11 @@ input,select{font-family:var(--fb)}
 .mf label{display:block;font-size:10px;font-weight:600;color:var(--taupe);margin-bottom:3px;letter-spacing:.3px}
 .mf input{width:100%;padding:10px 12px;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:13px;outline:none;background:var(--white)}
 .mf input:focus{border-color:var(--rose)}
+.ref-cal-sheet{max-width:440px}
+.ref-cal-copy{font-size:12px;color:var(--taupe);line-height:1.55;margin-bottom:12px}
+.ref-cal-state{margin-top:4px}
+.ref-cal-actions{margin-top:12px}
+.ref-cal-actions .pbtn{margin-top:0}
 .mr{display:flex;gap:8px}
 .mr>*{flex:1}
 .pg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}

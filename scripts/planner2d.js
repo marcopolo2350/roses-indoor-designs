@@ -79,6 +79,7 @@ function floorPattern2D(mat){
 }
 const referenceImageCache=new Map();
 let referenceDragStart=null;
+let referenceCalibrationPendingDistance=0;
 function roomReference(room=curRoom){
   return room?.referenceOverlay||null;
 }
@@ -395,12 +396,44 @@ async function setReferencePdfPage(nextPage){
     toast('Could not switch PDF page');
   }
 }
+function updateReferenceCalibrationState(message,isError=false){
+  const el=document.getElementById('refCalState');
+  if(!el)return;
+  el.classList.toggle('custom',!!isError);
+  el.textContent=message||'';
+}
+function resetReferenceCalibrationFlow(ref,toastMessage=''){
+  if(!ref)return;
+  ref.calibrationActive=false;
+  ref.calibrationPoints=[];
+  referenceCalibrationPendingDistance=0;
+  document.getElementById('refCalMod')?.classList.remove('on');
+  if(toastMessage)toast(toastMessage);
+  draw();
+  showP();
+}
+function openReferenceCalibrationModal(currentDistance){
+  referenceCalibrationPendingDistance=currentDistance;
+  const modal=document.getElementById('refCalMod');
+  const input=document.getElementById('refCalInput');
+  if(!modal||!input)return;
+  modal.classList.add('on');
+  input.value=distanceInputValue(currentDistance);
+  updateReferenceCalibrationState(`Overlay line reads ${formatDistance(currentDistance,'friendly')}. Enter the real measured length to lock the tracing scale.`);
+  setTimeout(()=>{input.focus();input.select();},30);
+}
 function startReferenceCalibration(){
   const ref=roomReference();
   if(!ref?.src)return;
   ref.calibrationActive=true;
   ref.locked=true;
   ref.calibrationPoints=[];
+  referenceCalibrationPendingDistance=0;
+  updateReferenceCalibrationState('');
+  if(typeof isTouchUi==='function'&&isTouchUi()&&window.innerWidth<=760){
+    panelHidden=true;
+    hideP?.();
+  }
   draw();
   showP();
   toast('Tap two points on the reference');
@@ -408,10 +441,7 @@ function startReferenceCalibration(){
 function cancelReferenceCalibration(){
   const ref=roomReference();
   if(!ref)return;
-  ref.calibrationActive=false;
-  ref.calibrationPoints=[];
-  draw();
-  showP();
+  resetReferenceCalibrationFlow(ref,'Calibration cancelled');
 }
 function finishReferenceCalibration(){
   const ref=roomReference();
@@ -422,25 +452,32 @@ function finishReferenceCalibration(){
   const currentDistance=Math.hypot(dx,dy);
   if(!(currentDistance>.05)){
     toast('Choose two distinct points to calibrate');
-    ref.calibrationActive=false;
-    ref.calibrationPoints=[];
-    draw();
-    showP();
+    resetReferenceCalibrationFlow(ref);
     return;
   }
-  const raw=prompt('Enter the real-world distance between those points (feet or meters):', currentDistance.toFixed(1));
-  const realDistance=parseDistanceInput(raw,currentDistance);
+  openReferenceCalibrationModal(currentDistance);
+}
+function cancelReferenceCalibrationModal(){
+  const ref=roomReference();
+  if(!ref)return;
+  resetReferenceCalibrationFlow(ref,'Calibration cancelled');
+}
+function submitReferenceCalibration(){
+  const ref=roomReference();
+  const input=document.getElementById('refCalInput');
+  if(!ref||!input)return;
+  const currentDistance=referenceCalibrationPendingDistance||0;
+  const realDistance=parseDistanceInput(input.value,currentDistance);
   if(!(realDistance>0)){
-    toast('Calibration cancelled');
-    ref.calibrationActive=false;
-    ref.calibrationPoints=[];
-    draw();
-    showP();
+    updateReferenceCalibrationState('Enter a positive measured distance like 12 ft or 3.6 m.',true);
     return;
   }
   ref.scale*=realDistance/currentDistance;
   ref.calibrationDistance=realDistance;
+  document.getElementById('refCalMod')?.classList.remove('on');
   ref.calibrationActive=false;
+  ref.calibrationPoints=[];
+  referenceCalibrationPendingDistance=0;
   pushU();
   draw();
   showP();
@@ -460,6 +497,11 @@ function handleReferenceCalibrationClick(wp){
   if(ref.calibrationPoints.length===2)finishReferenceCalibration();
   return true;
 }
+document.getElementById('refCalMod')?.addEventListener('click',e=>{if(e.target===e.currentTarget)cancelReferenceCalibrationModal();});
+document.getElementById('refCalInput')?.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();submitReferenceCalibration();}
+  if(e.key==='Escape'){e.preventDefault();cancelReferenceCalibrationModal();}
+});
 
 // ── FURNITURE 2D TINT ──
 const FURN_GROUP_TINTS={
