@@ -1,7 +1,13 @@
 // ── EDITOR ──
 async function openEd(room){
   normalizeRoom(room);
+  // Persist the previous room's undo stack before navigating away
+  if(curRoom&&curRoom.id!==room.id)persistRoomHistory();
   curRoom=room;activeProjectFloorId=room.floorId||'floor_1';sel={type:null,idx:-1};tool='select';undoSt=[];redoSt=[];multiSelFurnitureIds=[];is3D=false;drawMode=false;
+  // Reset panel state so every room opens on the Build tab with design presets collapsed
+  roomPanelGroup='build';
+  designPresetPanelOpen=false;
+  pendingDesignPresetId='';
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scrEd').classList.add('on');
   document.getElementById('edT').textContent=room.optionName&&room.optionName!=='Main'?`${room.name} · ${room.optionName}`:room.name;document.getElementById('dBar').classList.remove('on');document.getElementById('mTbar').style.display='';
   document.getElementById('edT').textContent=`${(room.projectName&&room.projectName!==room.name)?`${room.projectName} · `:''}${room.name}${room.optionName&&room.optionName!=='Main'?` · ${room.optionName}`:''}${room.floorLabel?` · ${room.floorLabel}`:''}`;
