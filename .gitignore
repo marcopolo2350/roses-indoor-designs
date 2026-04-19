@@ -30,4 +30,8 @@ assets/*.zip
 assets/*.fbx
 assets/*.glb
 assets/kenney_*/
+assets/kenney_*.zip
 assets/models/tmp_ph/
+
+presentation-*.png
+
