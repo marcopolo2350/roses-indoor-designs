@@ -58,19 +58,10 @@ async function generateStory() { return ''; }
 async function loadRoomNotes() { return []; }
 async function saveRoomNote() {}
 async function maybeSurfaceNote() {}
-const MOODS = ['Cozy','Dreamy','Elegant','Feels like home','Keep forever','Peaceful','Romantic','Bright','Moody'];
-function setRoomMood(mood) {
-  if (!curRoom) return;
-  curRoom.mood = curRoom.mood === mood ? '' : mood;
-  saveAll();
-  document.querySelectorAll('.mood-tag').forEach(tag => {
-    tag.classList.toggle('sel', tag.textContent.toLowerCase() === curRoom.mood);
-  });
-  if (curRoom.mood) toast(curRoom.mood.charAt(0).toUpperCase() + curRoom.mood.slice(1));
-}
-function showMoodHelp() {
-  toast('Mood tags help label the feeling of this room in summaries and presentation views.');
-}
+// Mood tags and Style Moves removed — concrete material/lighting controls handle this directly.
+const MOODS = [];
+function setRoomMood() {}
+function showMoodHelp() {}
 function getSeasonalTouch() { return null; }
 function recordWalkUsage() {}
 

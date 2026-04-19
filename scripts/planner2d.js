@@ -28,7 +28,21 @@ function initCan(){
   function rs(){canvas.width=w.clientWidth;canvas.height=w.clientHeight;if(!drawMode&&curRoom&&curRoom.polygon.length)autoFit();draw()}
   if(resH)window.removeEventListener('resize',resH);resH=rs;window.addEventListener('resize',resH);rs();
   canvas.onpointerdown=onD;canvas.onpointermove=onM;canvas.onpointerup=onU;canvas.addEventListener('wheel',onW,{passive:false})}
-function autoFit(){if(!curRoom||!canvas||!curRoom.polygon.length)return;const b=getRoomBounds2D(curRoom),pd=64;const nextScale=Math.min(Math.max(120,canvas.width-pd*2)/(b.width||1),Math.max(120,canvas.height-pd*2)/(b.height||1),40);vScale=Math.max(5,nextScale);vOff.x=canvas.width/2-b.cx*vScale;vOff.y=canvas.height/2-b.cy*vScale}
+function autoFit(){
+  if(!curRoom||!canvas||!curRoom.polygon.length)return;
+  // Multi-room home layout: fit the whole floor if there's more than one room,
+  // so sibling-room ghosts stay in frame around the active room.
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  let siblings=[curRoom];
+  try{if(typeof currentFloorRooms==='function'){const s=currentFloorRooms(curRoom,curRoom.floorId);if(s&&s.length)siblings=s;}}catch(_){}
+  siblings.forEach(room=>{if(!room||!room.polygon)return;room.polygon.forEach(p=>{if(p.x<minX)minX=p.x;if(p.y<minY)minY=p.y;if(p.x>maxX)maxX=p.x;if(p.y>maxY)maxY=p.y;});});
+  if(!isFinite(minX)){const b=getRoomBounds2D(curRoom);minX=b.x0;maxX=b.x1;minY=b.y0;maxY=b.y1;}
+  const width=Math.max(1,maxX-minX),height=Math.max(1,maxY-minY),cx=(minX+maxX)/2,cy=(minY+maxY)/2,pd=64;
+  const nextScale=Math.min(Math.max(120,canvas.width-pd*2)/width,Math.max(120,canvas.height-pd*2)/height,40);
+  vScale=Math.max(5,nextScale);
+  vOff.x=canvas.width/2-cx*vScale;
+  vOff.y=canvas.height/2-cy*vScale;
+}
 function tS(p){return{x:p.x*vScale+vOff.x,y:p.y*vScale+vOff.y}}
 function tW(x,y){return{x:(x-vOff.x)/vScale,y:(y-vOff.y)/vScale}}
 function floorPattern2D(mat){
@@ -703,8 +717,69 @@ function drawPendingFurniturePlacement(room){
 }
 
 // ── DRAW 2D ──
+// Whole-home ghost layer: when the current project has multiple rooms on the
+// same floor, render the sibling rooms behind the active room as faded outlines
+// with labels. This lets the user see the whole house layout while they edit
+// one room at a time, so "Add Room" no longer feels like it "wipes" the view.
+function drawHomeLayoutGhosts(){
+  if(!curRoom||typeof currentFloorRooms!=='function')return;
+  let siblings;
+  try{siblings=currentFloorRooms(curRoom,curRoom.floorId);}catch(_){return;}
+  if(!siblings||siblings.length<2)return;
+  const activeId=curRoom.id;
+  siblings.forEach(room=>{
+    if(!room||room.id===activeId||!room.polygon||room.polygon.length<3)return;
+    ctx.save();
+    ctx.beginPath();
+    room.polygon.forEach((p,i)=>{const s=tS(p);if(!i)ctx.moveTo(s.x,s.y);else ctx.lineTo(s.x,s.y);});
+    ctx.closePath();
+    ctx.fillStyle=room.materials?.floor||'#EDE4D8';
+    ctx.globalAlpha=.18;
+    ctx.fill();
+    ctx.globalAlpha=.55;
+    ctx.strokeStyle='rgba(92,77,66,.45)';
+    ctx.lineWidth=Math.max(1.2,vScale*.06);
+    ctx.setLineDash([6,4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // Room label at centroid
+    let cx=0,cy=0;room.polygon.forEach(p=>{cx+=p.x;cy+=p.y;});
+    cx/=room.polygon.length;cy/=room.polygon.length;
+    const sc=tS({x:cx,y:cy});
+    ctx.globalAlpha=.7;
+    ctx.fillStyle='rgba(51,41,34,.75)';
+    ctx.font=`500 ${Math.max(10,vScale*.32)}px Outfit,sans-serif`;
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText(room.name||'Room',sc.x,sc.y-8);
+    ctx.font=`400 ${Math.max(8,vScale*.22)}px Outfit,sans-serif`;
+    ctx.fillStyle='rgba(92,77,66,.7)';
+    ctx.fillText('tap to edit',sc.x,sc.y+8);
+    ctx.restore();
+  });
+}
+// Hit-test sibling ghosts so users can tap to jump into another room on the floor.
+function hitTestHomeLayoutGhost(wp){
+  if(!curRoom||typeof currentFloorRooms!=='function')return null;
+  let siblings;try{siblings=currentFloorRooms(curRoom,curRoom.floorId);}catch(_){return null;}
+  if(!siblings||siblings.length<2)return null;
+  for(const room of siblings){
+    if(!room||room.id===curRoom.id||!room.polygon||room.polygon.length<3)continue;
+    // Simple point-in-polygon
+    let inside=false;
+    for(let i=0,j=room.polygon.length-1;i<room.polygon.length;j=i++){
+      const pi=room.polygon[i],pj=room.polygon[j];
+      const intersect=((pi.y>wp.y)!==(pj.y>wp.y))&&(wp.x<(pj.x-pi.x)*(wp.y-pi.y)/((pj.y-pi.y)||1e-9)+pi.x);
+      if(intersect)inside=!inside;
+    }
+    if(inside)return room;
+  }
+  return null;
+}
 function draw(){
   if(!ctx)return;ctx.clearRect(0,0,canvas.width,canvas.height);drawGrid();
+  // Multi-room home layout ghosts (other rooms on this floor, behind current)
+  if(curRoom&&curRoom.polygon?.length&&!drawMode)drawHomeLayoutGhosts();
   // Phase ✨ — empty state
   try{
     const es=document.getElementById('emptyState');
@@ -1038,6 +1113,16 @@ function onD(e){const p=gP(e),wp=tW(p.x,p.y);isDrag=true;dStart=p;pendEnd=null;
       }
       showP();
     }else{
+      // Multi-room home layout: tap on a ghost sibling room to jump into it.
+      const ghostRoom=hitTestHomeLayoutGhost(wp);
+      if(ghostRoom){
+        clearFurnitureSelection();
+        isDrag=false;dOrig=null;
+        if(typeof openEd==='function')openEd(ghostRoom);
+        else curRoom=ghostRoom;
+        if(typeof toast==='function')toast(`Editing ${ghostRoom.name||'room'}`);
+        return;
+      }
       if(referenceHitUnlocked(wp,curRoom)){
         clearFurnitureSelection();
         sel={type:null,idx:-1};

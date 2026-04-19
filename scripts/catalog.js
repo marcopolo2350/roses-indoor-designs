@@ -22,8 +22,6 @@ function categoryGlyphMarkup(cat){
 }
 const CATEGORY_ALIAS_MAP={'Window Decor':'Openings'};
 const COLLECTION_THEMES={
-  'Cozy Rose':'linear-gradient(135deg,#fff4f1,#edd7d0)',
-  'Soft Romantic':'linear-gradient(135deg,#fff6f6,#eadde6)',
   'Quiet Luxury':'linear-gradient(135deg,#f7f4ef,#ddd2c2)',
   'Warm Modern':'linear-gradient(135deg,#fbf2e7,#dcc3ab)',
   'Tailored Calm':'linear-gradient(135deg,#f3f0ee,#d4dce0)',
@@ -174,7 +172,7 @@ const FURN_ITEMS=[
   {label:'Large Trashcan',w:1.2,d:1.2,icon:'ðŸ—‘',symbol:'TL',assetKey:'trashcan_large',group:'Decor'},
   {label:'Square Plate',w:0.9,d:0.9,icon:'â–£',symbol:'SP',assetKey:'square_plate',group:'Decor'},
 ];
-const DEFAULT_COLLECTIONS=['all','Cozy Rose','Soft Romantic','Quiet Luxury','Warm Modern','Tailored Calm'];
+const DEFAULT_COLLECTIONS=['all','Quiet Luxury','Warm Modern','Tailored Calm'];
 let assetManifest=[];
 let assetMetaByKey=new Map();
 let activeCatalogCollection='all';
@@ -658,19 +656,8 @@ function setLightCharacter(v){
   roomStyleChanged();
 }
 function setRoomType(id){if(!curRoom)return;curRoom.roomType=id;pushU();draw();showP()}
-function nudgeStyle(action){
-  if(!curRoom)return;
-  const moves={
-    softer:()=>{setWallFinish('dusty_rose');setFloorType('light_oak');setLightingPreset('warm_evening')},
-    warmer:()=>{setWallFinish('soft_beige');setFloorType('medium_oak');setLightingPreset('warm_evening')},
-    brighter:()=>{setWallFinish('warm_white');setFloorType('light_oak');setLightingPreset('bright_studio');setCeilingBrightness(1.18)},
-    cozier:()=>{setWallFinish('greige');setFloorType('dark_walnut');setLightingPreset('soft_lamp_glow')},
-    romantic:()=>{applyDesignPreset('soft_romantic')},
-    elegant:()=>{applyDesignPreset('quiet_luxury')},
-    minimal:()=>{applyDesignPreset('airy_minimal')}
-  };
-  if(moves[action])moves[action]();
-}
+// Style Moves removed — use Wall Style / Floor Style / Lighting Mood directly.
+function nudgeStyle(){}
 function applyDesignPresetToRoom(room,id){
   if(!room)return;
   const preset=DESIGN_PRESETS.find(p=>p.id===id);
@@ -857,14 +844,13 @@ function renderRoomPanelNoSelection(r,{cBtn,activeLightingPreset,ref,refLoaded,r
   const redesignSection=propSection('Redesign Planning',`<div class="mat-grid tall"><button class="mat-btn${r.existingRoomMode?' sel':''}" onclick="toggleExistingRoomMode()">Existing Room Mode ${r.existingRoomMode?'On':'Off'}</button><button class="mat-btn${r.ghostExisting?' sel':''}" onclick="toggleGhostExisting()">Fade Existing Pieces ${r.ghostExisting?'On':'Off'}</button><button class="mat-btn${r.hideRemovedExisting?' sel':''}" onclick="toggleHideRemovedExisting()">Hide Removed ${r.hideRemovedExisting?'On':'Off'}</button><button class="mat-btn${r.showPlanLegend?' sel':''}" onclick="togglePlanLegend()">Legend ${r.showPlanLegend?'On':'Off'}</button></div><label style="margin-top:8px">WHAT TO SHOW IN PLAN</label><div class="mat-grid tall">${Object.entries(PLAN_VIEW_MODES).map(([mode,label])=>`<button class="mat-btn${currentPlanViewMode(r)===mode?' sel':''}" onclick="setPlanViewMode('${mode}')">${label}</button>`).join('')}</div><div class="prop-tip">${planViewMeaning(currentPlanViewMode(r))}</div><div class="quick-rotate-row"><button class="pbtn soft" onclick="setSelectedFurnitureSource('existing')">Mark Selected Existing</button><button class="pbtn soft" onclick="setSelectedFurnitureSource('new')">Mark Selected New</button><button class="pbtn soft" onclick="duplicateForRedesign()">Make Redesign Copy</button></div><button class="pbtn soft" style="width:100%;margin-top:8px" onclick="exportComparisonSheet()">Export Before / After Story</button><div class="prop-tip">Use this when the real room is already furnished. Existing pieces get design tags so Rose can plan what stays, moves, gets replaced, or disappears.</div>`);
   const layerSection=propSection('Plan Layers',`<div class="mat-grid tall">${PLAN_LAYER_META.map(layer=>`<button class="mat-btn${roomLayerVisible(r,layer.id)?' sel':''}" onclick="toggleRoomLayer('${layer.id}')">${layer.label} ${roomLayerVisible(r,layer.id)?'On':'Off'}</button>`).join('')}</div><div class="prop-tip">Hide noisy parts of the plan while you trace, present, or focus on one pass of the redesign.</div>`);
   const optionsSection=propSection('Design Options',`<label>OPTION NAME</label><input value="${esc(r.optionName||'Main')}" onchange="renameCurrentOption(this.value)"><label style="margin-top:8px">STORY NOTES</label><textarea rows="4" onchange="setCurrentOptionNotes(this.value)" placeholder="What changes does this option explore?">${esc(r.optionNotes||'')}</textarea><div class="quick-rotate-row"><button class="pbtn soft" onclick="createRoomOptionFromCurrent()">Create New Option</button><button class="pbtn soft" onclick="exportComparisonSheet()">Export Before / After</button><button class="pbtn soft" onclick="exportDesignSummary()">Export Story Summary</button></div><div class="quick-rotate-row"><button class="pbtn soft" style="width:100%" onclick="exportPresentationPDF()">Export Presentation Deck</button></div><div class="mat-grid tall">${optionSiblings(r).sort((a,b)=>(a.optionName||'').localeCompare(b.optionName||'')).map(opt=>`<button class="mat-btn${opt.id===r.id?' sel':''}" onclick="switchToOption('${opt.id}')">${esc(opt.optionName||'Main')}</button>`).join('')}</div><div class="prop-tip">Options let you save alternate redesign directions for the same room without overwriting each other, then present each direction as its own story.</div>`);
-  const moodSection=propSection('Mood',`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px"><div class="prop-tip" style="margin:0">Mood tags guide storytelling and ambiance labels for this room.</div><button class="props-close" style="flex-shrink:0" onclick="showMoodHelp()" title="What do moods do?">?</button></div><div class="mood-tags premium">${MOODS.map(m=>`<button class="mood-tag premium${(r.mood||'')===m.toLowerCase()?' sel':''}" onclick="setRoomMood('${m.toLowerCase()}')">${m}</button>`).join('')}</div>`);
-  const styleMovesSection=propSection('Style Moves',`<div class="mat-grid tall"><button class="mat-btn" onclick="nudgeStyle('softer')">Make It Softer</button><button class="mat-btn" onclick="nudgeStyle('warmer')">Make It Warmer</button><button class="mat-btn" onclick="nudgeStyle('brighter')">Make It Brighter</button><button class="mat-btn" onclick="nudgeStyle('cozier')">Make It Cozier</button><button class="mat-btn" onclick="nudgeStyle('romantic')">Make It More Romantic</button><button class="mat-btn" onclick="nudgeStyle('elegant')">Make It More Elegant</button><button class="mat-btn" onclick="nudgeStyle('minimal')">Make It More Minimal</button></div><div class="prop-tip">Each move shifts multiple finishes and lighting together so the room changes like a design decision, not just a color swap.</div>`);
+  // Mood/Style Moves sections removed — handled by concrete material controls above.
   const editorSection=propSection('Editor Helpers',`<div class="mat-grid tall"><button class="mat-btn${furnitureSnap?' sel':''}" onclick="toggleFurnitureSnap()">Furniture Snap ${furnitureSnap?'On':'Off'}</button><button class="mat-btn${multiSelectMode?' sel':''}" onclick="toggleMultiSelectMode()">Multi-Select ${multiSelectMode?'On':'Off'}</button><button class="mat-btn" onclick="toggleUnitSystem()">Units: ${unitSystem==='metric'?'Metric':'Imperial'}</button>${furnitureClipboard?.items?.length?`<button class="mat-btn" onclick="pasteFurniture()">Paste ${furnitureClipboard.items.length>1?'Selection':'Furniture'}</button>`:''}</div><div class="prop-tip">Use Multi-Select to tap several furniture pieces on touch devices. Paste drops copied pieces near the center of the current view.</div>`);
   const furnishHintSection=propSection('Placing Furniture',`<div class="prop-tip">Tap any item in the catalog below to start placing it. Tap the room to drop it in place, or drag to reposition after placing. Select a piece to adjust size, rotation, mount, and finish.</div>${furnitureClipboard?.items?.length?`<div class="quick-rotate-row" style="margin-top:8px"><button class="pbtn soft" onclick="pasteFurniture()">Paste ${furnitureClipboard.items.length>1?`${furnitureClipboard.items.length} pieces`:'Furniture'}</button></div>`:''}`);
   const presentSection=propSection('Presentation',`<div class="quick-rotate-row"><button class="pbtn soft" onclick="exportPNG()">Export PNG</button><button class="pbtn soft" onclick="exportComparisonSheet()">Before / After</button><button class="pbtn soft" onclick="exportDesignSummary()">Story Summary</button></div><button class="pbtn soft" style="width:100%;margin-top:8px" onclick="exportPresentationPDF()">Export Presentation Deck</button>${is3D?`<div class="quick-rotate-row" style="margin-top:8px"><button class="pbtn soft" onclick="togglePhotoMode()">${photoMode?'Exit Photo Mode':'Open Photo Mode'}</button><button class="pbtn soft" onclick="toggleWalkthroughTray()">Walkthroughs</button></div><div class="prop-tip">Photo mode gives a full-screen render view. Walkthroughs create scripted camera tours you can export and share.</div>`:'<div class="prop-tip" style="margin-top:8px">Switch to 3D to access photo mode and walkthrough presentation tools.</div>'}`);
   let h=cBtn.replace('$T','Room Tools')+roomPanelTabs();
   if(roomPanelGroup==='build')h+=homePlanSection+connectionsSection+referenceSection+geometrySection+layerSection;
-  if(roomPanelGroup==='style')h+=surfacesSection+lightingSection+designDirectionSection+moodSection+styleMovesSection;
+  if(roomPanelGroup==='style')h+=surfacesSection+lightingSection+designDirectionSection;
   if(roomPanelGroup==='furnish')h+=furnishHintSection+editorSection+layerSection+redesignSection;
   if(roomPanelGroup==='present')h+=optionsSection+presentSection;
   return h;
