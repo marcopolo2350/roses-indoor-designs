@@ -347,7 +347,28 @@ async function saveAll(){
     window.cloudSync.afterSave().catch(()=>{});
   }
 }
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
+let toastHideTimer=null;
+function toast(m){
+  const msg=String(m||'').trim();
+  if(!msg)return;
+  if(
+    /^Tap the cube icon\b/i.test(msg) ||
+    /^Room added (up|down|left|right)$/i.test(msg) ||
+    /^Room duplicated$/i.test(msg) ||
+    /^Project duplicated$/i.test(msg) ||
+    /^Deleted$/i.test(msg) ||
+    /^Saved$/i.test(msg) ||
+    / copied$/i.test(msg) ||
+    / pasted$/i.test(msg) ||
+    / placed$/i.test(msg)
+  )return;
+  const t=document.getElementById('toast');
+  if(!t)return;
+  t.textContent=msg;
+  t.classList.add('show');
+  if(toastHideTimer)clearTimeout(toastHideTimer);
+  toastHideTimer=setTimeout(()=>t.classList.remove('show'),1800);
+}
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function updateDebugBadge(){
   const el=document.getElementById('debugBadge');

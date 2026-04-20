@@ -138,7 +138,7 @@ function toggle3D(){
   document.getElementById('cmCompare').classList.remove('act');
   document.getElementById('cmPhoto')?.classList.remove('act');
   document.getElementById('scrEd').classList.add('mode-3d');
-  hideP();build3D();setTimeout(()=>{if(is3D){setViewPreset('overview');showViewChip('3D View · Orbit');}},80);updateWalkthroughTray();updatePhotoTray();}
+  hideP();build3D();setTimeout(()=>{if(is3D){setViewPreset('eye');showViewChip('3D View · Room');}},80);updateWalkthroughTray();updatePhotoTray();}
 
 function exit3DView(){stop3D();hideViewChip();is3D=false;camMode='orbit';presentationMode=false;compare3DMode=false;photoMode=false;photoTrayOpen=false;cameraScript=null;walkthroughTrayOpen=false;document.getElementById('scrEd').classList.remove('mode-3d','presentation','photo-mode');document.getElementById('threeC').classList.remove('on');document.getElementById('b3d').classList.remove('on');document.getElementById('vLbl').textContent='2D Plan';document.getElementById('camBtns').classList.remove('on');document.getElementById('walkHint').classList.remove('on');document.getElementById('presentPill').classList.remove('on');document.getElementById('presentPill').textContent='Presentation Mode';document.getElementById('photoPill')?.classList.remove('on');document.getElementById('cmCompare').classList.remove('act');document.getElementById('cmTour')?.classList.remove('act');document.getElementById('cmPhoto')?.classList.remove('act');updateWalkthroughTray();updatePhotoTray();resetRoomDebug();initCan();if(last2DViewState){vScale=last2DViewState.vScale;vOff={...last2DViewState.vOff}}draw();showP()}
 
@@ -175,7 +175,7 @@ function viewPresetLabel(mode){
     hero:'Hero View',
     overview:'Overview',
     corner:'Favorite Corner',
-    eye:'Intimate View',
+    eye:'Room View',
   })[mode]||'Orbit';
 }
 function showViewChip(label,ms=3400){
@@ -224,8 +224,8 @@ function heroRoomPose(room=curRoom){
   const favorite=favoriteCornerPose(room);
   return {
     yaw:favorite.yaw,
-    pitch:.34,
-    dist:Math.max(10.5,Math.min(20,favorite.dist*.94)),
+    pitch:Math.max(.22,favorite.pitch||.24),
+    dist:Math.max(8.6,Math.min(15.5,favorite.dist*.86)),
     target:{...favorite.target}
   };
 }
@@ -260,7 +260,7 @@ function togglePresentationMode(){
   if(photoMode)togglePhotoMode(false);
   presentationMode=!presentationMode;
   document.getElementById('scrEd').classList.toggle('presentation',presentationMode);
-  document.getElementById('cmPresent').classList.toggle('act',presentationMode);
+  document.getElementById('cmPresent')?.classList.toggle('act',presentationMode);
   if(presentationMode){
     walkthroughTrayOpen=false;
     document.getElementById('cmTour')?.classList.remove('act');
@@ -351,7 +351,7 @@ function togglePhotoMode(force){
     photoTrayOpen=true;
     document.getElementById('scrEd').classList.remove('presentation');
     document.getElementById('presentPill').classList.remove('on');
-    document.getElementById('cmPresent').classList.remove('act');
+    document.getElementById('cmPresent')?.classList.remove('act');
     document.getElementById('cmTour')?.classList.remove('act');
     setPhotoPreset('hero');
   }else{
@@ -801,7 +801,7 @@ function build3D(){
       if(style!=='flat'){
         const grp=new THREE.Group();grp.name='roomCeilingDetails';grp.visible=camMode==='walk';
         if(style==='crown'){
-          const crownMat=new THREE.MeshStandardMaterial({color:tc,roughness:.45,metalness:.04});
+          const crownMat=new THREE.MeshStandardMaterial({color:tc,roughness:.45,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
           scene.userData.styleTargets.trimMats.push(crownMat);
           r.walls.forEach(wall=>{
             const a=wS(r,wall),b=wE(r,wall),wl=wL(r,wall),an=wA(r,wall);
@@ -832,7 +832,7 @@ function build3D(){
           }
         }else if(style==='coffered'){
           const panelMat=new THREE.MeshStandardMaterial({color:ceilColor.clone().multiplyScalar(0.94),roughness:.86,side:THREE.BackSide});
-          const trimMat=new THREE.MeshStandardMaterial({color:tc,roughness:.5,metalness:.04});
+          const trimMat=new THREE.MeshStandardMaterial({color:tc,roughness:.5,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
           scene.userData.styleTargets.trimMats.push(trimMat);
           const bbox=new THREE.Box3().setFromPoints(r.polygon.map(p=>new THREE.Vector3(p.x,0,-p.y)));
           const cols=Math.max(2,Math.floor((bbox.max.x-bbox.min.x)/4));
@@ -859,7 +859,7 @@ function build3D(){
     scene.userData.styleTargets.ceilingLight=ceilLight;
     const wallMat=new THREE.MeshStandardMaterial({color:wc,roughness:.68-wallFinish.sheen*.12,metalness:.005,side:THREE.DoubleSide,emissive:wc.clone().multiplyScalar(r.materials.wallColorCustom?.06:.03)});
     scene.userData.styleTargets.wallMats.push(wallMat);
-    r.walls.forEach(wall=>{const a=wS(r,wall),b=wE(r,wall),wl=wL(r,wall),an=wA(r,wall);if(wl<.01)return;const ops=r.openings.filter(o=>o.wallId===wall.id).sort((oa,ob)=>oa.offset-ob.offset);if(!ops.length)addWSeg(a,an,0,wl,0,rH,wallMat);else{let pos=0;ops.forEach(op=>{const os=op.offset-op.width/2,oe=op.offset+op.width/2;if(os>pos)addWSeg(a,an,pos,os,0,rH,wallMat);if(op.type==='door'){addWSeg(a,an,os,oe,op.height,rH,wallMat);const frameMat=new THREE.MeshStandardMaterial({color:tc,roughness:.44,metalness:.04});scene.userData.styleTargets.trimMats.push(frameMat);addWSeg(a,an,os,os+.06,0,op.height,frameMat);addWSeg(a,an,oe-.06,oe,0,op.height,frameMat);addWSeg(a,an,os,oe,op.height-.06,op.height,frameMat);addDoorLeaf3D(a,an,os,oe,op,tc)}else{addWSeg(a,an,os,oe,0,op.sillHeight,wallMat);addWSeg(a,an,os,oe,op.sillHeight+op.height,rH,wallMat);const glassMat=new THREE.MeshStandardMaterial({color:0xBFD9EA,transparent:true,opacity:.42,roughness:.08,metalness:.18});addWSeg(a,an,os,oe,op.sillHeight,op.sillHeight+op.height,glassMat);const frameMat=new THREE.MeshStandardMaterial({color:tc,roughness:.48,metalness:.04});scene.userData.styleTargets.trimMats.push(frameMat);const ft=.08,mid=(os+oe)/2;addWSeg(a,an,os,os+ft,op.sillHeight,op.sillHeight+op.height,frameMat);addWSeg(a,an,oe-ft,oe,op.sillHeight,op.sillHeight+op.height,frameMat);addWSeg(a,an,os,oe,op.sillHeight,op.sillHeight+ft,frameMat);addWSeg(a,an,os,oe,op.sillHeight+op.height-ft,op.sillHeight+op.height,frameMat);addWSeg(a,an,mid-ft/2,mid+ft/2,op.sillHeight,op.sillHeight+op.height,frameMat);addWindowAssembly3D(a,an,os,oe,op,tc)}pos=oe});if(pos<wl)addWSeg(a,an,pos,wl,0,rH,wallMat)}const bbMat=new THREE.MeshStandardMaterial({color:tc,roughness:.28,metalness:.08,side:THREE.DoubleSide});scene.userData.styleTargets.trimMats.push(bbMat);const bbN=getInteriorWallNormal(r,wall);const bbOff=0.1;const bb=new THREE.Mesh(new THREE.PlaneGeometry(wl,.48),bbMat);bb.position.set((a.x+b.x)/2+bbN.x*bbOff,.24,-(a.y+b.y)/2+bbN.z*bbOff);bb.rotation.y=-an;scene.add(bb)});
+    r.walls.forEach(wall=>{const a=wS(r,wall),b=wE(r,wall),wl=wL(r,wall),an=wA(r,wall);if(wl<.01)return;const ops=r.openings.filter(o=>o.wallId===wall.id).sort((oa,ob)=>oa.offset-ob.offset);if(!ops.length)addWSeg(a,an,0,wl,0,rH,wallMat);else{let pos=0;ops.forEach(op=>{const os=op.offset-op.width/2,oe=op.offset+op.width/2;if(os>pos)addWSeg(a,an,pos,os,0,rH,wallMat);if(op.type==='door'){addWSeg(a,an,os,oe,op.height,rH,wallMat);const frameMat=new THREE.MeshStandardMaterial({color:tc,roughness:.44,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});scene.userData.styleTargets.trimMats.push(frameMat);addWSeg(a,an,os,os+.06,0,op.height,frameMat);addWSeg(a,an,oe-.06,oe,0,op.height,frameMat);addWSeg(a,an,os,oe,op.height-.06,op.height,frameMat);addDoorLeaf3D(a,an,os,oe,op,tc)}else{addWSeg(a,an,os,oe,0,op.sillHeight,wallMat);addWSeg(a,an,os,oe,op.sillHeight+op.height,rH,wallMat);const glassMat=new THREE.MeshStandardMaterial({color:0xBFD9EA,transparent:true,opacity:.42,roughness:.08,metalness:.18});addWSeg(a,an,os,oe,op.sillHeight,op.sillHeight+op.height,glassMat);const frameMat=new THREE.MeshStandardMaterial({color:tc,roughness:.48,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});scene.userData.styleTargets.trimMats.push(frameMat);const ft=.08,mid=(os+oe)/2;addWSeg(a,an,os,os+ft,op.sillHeight,op.sillHeight+op.height,frameMat);addWSeg(a,an,oe-ft,oe,op.sillHeight,op.sillHeight+op.height,frameMat);addWSeg(a,an,os,oe,op.sillHeight,op.sillHeight+ft,frameMat);addWSeg(a,an,os,oe,op.sillHeight+op.height-ft,op.sillHeight+op.height,frameMat);addWSeg(a,an,mid-ft/2,mid+ft/2,op.sillHeight,op.sillHeight+op.height,frameMat);addWindowAssembly3D(a,an,os,oe,op,tc)}pos=oe});if(pos<wl)addWSeg(a,an,pos,wl,0,rH,wallMat)}const bbMat=new THREE.MeshStandardMaterial({color:tc,roughness:.28,metalness:.08,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});scene.userData.styleTargets.trimMats.push(bbMat);const bbN=getInteriorWallNormal(r,wall);const bbOff=0.1;const bb=new THREE.Mesh(new THREE.PlaneGeometry(wl,.48),bbMat);bb.position.set((a.x+b.x)/2+bbN.x*bbOff,.24,-(a.y+b.y)/2+bbN.z*bbOff);bb.rotation.y=-an;scene.add(bb)});
     r.structures.forEach(st=>{if(st.type==='closet'&&st.rect)scene.add(buildCloset3D(st,r));else if(st.type==='partition'&&st.line){const pa=st.line.a,pb=st.line.b,pl=Math.sqrt((pb.x-pa.x)**2+(pb.y-pa.y)**2),pAn=Math.atan2(pb.y-pa.y,pb.x-pa.x);const pm=new THREE.Mesh(new THREE.PlaneGeometry(pl,rH),new THREE.MeshStandardMaterial({color:wc,roughness:.65,side:THREE.DoubleSide}));pm.position.set((pa.x+pb.x)/2,rH/2,-(pa.y+pb.y)/2);pm.rotation.y=-pAn;scene.add(pm)}});
     r.furniture.forEach(f=>placeFurnitureInScene(f,r));
     applyRoomStyleToScene();
@@ -941,8 +941,8 @@ function addDoorLeaf3D(ws,an,os,oe,op,trimColor){
   pivot.rotation.y=-an;
   const angle=(swingIn?-1:1)*(hingeRight?1:-1)*Math.PI*.5;
   pivot.rotation.y+=angle;
-  const doorMat=new THREE.MeshStandardMaterial({color:trimColor.clone().offsetHSL(.015,.08,-.05),roughness:.54,metalness:.04});
-  const insetMat=new THREE.MeshStandardMaterial({color:trimColor.clone().offsetHSL(.01,.05,.08),roughness:.44,metalness:.03});
+  const doorMat=new THREE.MeshStandardMaterial({color:trimColor.clone().offsetHSL(.015,.08,-.05),roughness:.54,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
+  const insetMat=new THREE.MeshStandardMaterial({color:trimColor.clone().offsetHSL(.01,.05,.08),roughness:.44,metalness:.03,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
   const handleMat=new THREE.MeshStandardMaterial({color:0x8b8479,roughness:.24,metalness:.72});
   scene?.userData?.styleTargets?.trimMats?.push(doorMat,insetMat);
   const leaf=new THREE.Mesh(new THREE.BoxGeometry(doorW,doorH,.08),doorMat);
@@ -960,8 +960,8 @@ function addDoorLeaf3D(ws,an,os,oe,op,trimColor){
 function addWindowAssembly3D(ws,an,os,oe,op,trimColor){
   const width=Math.max(.8,oe-os),height=Math.max(1.6,op.height||4),sill=op.sillHeight||3,mid=(os+oe)/2;
   const cx=ws.x+Math.cos(an)*mid,cz=-(ws.y+Math.sin(an)*mid);
-  const frameMat=new THREE.MeshStandardMaterial({color:trimColor.clone().offsetHSL(.01,.04,.03),roughness:.5,metalness:.03});
-  const sillMat=new THREE.MeshStandardMaterial({color:trimColor.clone().offsetHSL(.02,.03,-.02),roughness:.58,metalness:.02});
+  const frameMat=new THREE.MeshStandardMaterial({color:trimColor.clone().offsetHSL(.01,.04,.03),roughness:.5,metalness:.03,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
+  const sillMat=new THREE.MeshStandardMaterial({color:trimColor.clone().offsetHSL(.02,.03,-.02),roughness:.58,metalness:.02,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
   scene?.userData?.styleTargets?.trimMats?.push(frameMat,sillMat);
   const trimDepth=.06;
   const horizTop=new THREE.Mesh(new THREE.BoxGeometry(width+.04,.08,trimDepth));
@@ -1110,7 +1110,7 @@ function buildCloset3D(st,r){
   const finish=CLOSET_FINISHES.find(f=>f.id===(st.finish||'white_shaker'))||CLOSET_FINISHES[0];
   const bodyMat=new THREE.MeshStandardMaterial({color:finish.body,roughness:finish.style==='dark_walnut'?.44:.58,metalness:.03});
   const doorMat=new THREE.MeshStandardMaterial({color:finish.door,roughness:.34,metalness:.04});
-  const trimMat=new THREE.MeshStandardMaterial({color:finish.trim,roughness:.45,metalness:.06});
+  const trimMat=new THREE.MeshStandardMaterial({color:finish.trim,roughness:.45,metalness:.06,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
   const handleMat=new THREE.MeshStandardMaterial({color:0x8f8a83,roughness:.28,metalness:.62});
   const cx=rect.x+rect.w/2,cz=-(rect.y+rect.h/2);
   const carcass=new THREE.Mesh(new THREE.BoxGeometry(rect.w,h,rect.h),bodyMat);
@@ -1941,7 +1941,7 @@ togglePhotoMode=function(force){
     walkthroughTrayOpen=false;
     photoTrayOpen=true;
     document.getElementById('scrEd').classList.remove('presentation');
-    document.getElementById('cmPresent').classList.remove('act');
+    document.getElementById('cmPresent')?.classList.remove('act');
     document.getElementById('cmTour')?.classList.remove('act');
     setPhotoPreset('hero');
   }else{

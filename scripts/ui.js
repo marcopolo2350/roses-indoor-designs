@@ -498,7 +498,9 @@ function moveCurrentRoomOrder(direction){
     else if((room.baseRoomId||room.id)===(target.baseRoomId||target.id))room.roomOrder=currentOrder;
   });
   saveAll();
+  renderHome();
   showP();
+  draw?.();
 }
 function moveCurrentRoomToFloor(floorId){
   if(!curRoom||!floorId)return;

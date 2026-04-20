@@ -361,7 +361,7 @@ input,select{font-family:var(--fb)}
   .props.peek{max-height:23vh}
   .props-tab{top:auto;bottom:calc(88px + env(safe-area-inset-bottom,0));right:10px;padding:12px 16px}
   .cam-btns{right:12px;bottom:calc(70px + env(safe-area-inset-bottom,0))}
-  .cmb{width:42px;height:42px}
+  .cmb{width:auto;min-width:92px;height:42px;padding:0 10px}
   .present-pill{right:12px;top:calc(12px + env(safe-area-inset-top,0));padding:10px 16px}
   .view-chip{left:12px;top:calc(12px + env(safe-area-inset-top,0));max-width:min(86vw,320px)}
   .walk-hint{bottom:calc(118px + env(safe-area-inset-bottom,0));width:min(88vw,320px);padding:10px 18px}
