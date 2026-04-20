@@ -1,9 +1,9 @@
-# Rose Designs
+# Rose's Indoor Designs
 
-Rose Designs is a browser-based room designer for planning, styling, and presenting interiors.
+Rose's Indoor Designs is a browser-based room designer for planning, styling, and presenting interiors.
 
 The app now runs as a small static app shell instead of one giant inlined page:
-- `rose-designs.html` is the document shell
+- `roses-indoor-designs.html` is the document shell
 - `styles/app.css` holds the visual system
 - `scripts/app.js` is the module bootstrap
 - `scripts/state.js`, `scripts/storage.js`, `scripts/catalog.js`, `scripts/planner2d.js`, `scripts/planner3d.js`, `scripts/walkthrough.js`, `scripts/export.js`, and `scripts/ui.js` split the runtime into focused static modules
@@ -46,7 +46,7 @@ Open the folder and serve it with any simple static server.
 
 ## Files
 
-- `rose-designs.html` - document shell
+- `roses-indoor-designs.html` - document shell
 - `styles/app.css` - extracted UI styling
 - `scripts/app.js` - module bootstrap loader
 - `scripts/state.js` - shared state and planner model helpers
@@ -78,7 +78,7 @@ Open the folder and serve it with any simple static server.
 The app includes a built-in self-test:
 
 ```text
-http://127.0.0.1:8123/rose-designs.html#selftest
+http://127.0.0.1:8123/roses-indoor-designs.html#selftest
 ```
 
 ## Thumbnail Pipeline

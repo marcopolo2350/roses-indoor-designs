@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rose Designs Thumbnail Generator</title>
+  <title>Rose's Indoor Designs Thumbnail Generator</title>
   <style>
     html, body {
       margin: 0;
@@ -70,7 +70,7 @@
   <div id="stage">
     <div id="fallback">
       <div class="mark" id="fallbackMark">R</div>
-      <div class="label" id="fallbackLabel">Rose Designs</div>
+      <div class="label" id="fallbackLabel">Rose's Indoor Designs</div>
       <div class="meta" id="fallbackMeta">Thumbnail unavailable</div>
     </div>
   </div>
@@ -150,7 +150,7 @@
 
     function showFallback(name, symbol, category) {
       fallbackMark.textContent = symbol || (name || 'R').charAt(0).toUpperCase();
-      fallbackLabel.textContent = name || 'Rose Designs';
+      fallbackLabel.textContent = name || "Rose's Indoor Designs";
       fallbackMeta.textContent = category ? `${category} preview coming soon` : 'Thumbnail unavailable';
       fallback.style.display = 'flex';
       renderer.domElement.style.display = 'none';

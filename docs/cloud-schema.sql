@@ -1,4 +1,4 @@
--- Phase 7A — Supabase schema for Rose Designs cloud sync
+-- Phase 7A — Supabase schema for Rose's Indoor Designs cloud sync
 -- Run this in the Supabase SQL editor after creating your project.
 --
 -- Policy: one row per project (room). Scoped by profile ('rose' / 'marco' / ...).

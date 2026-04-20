@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Rose Designs share preview</title>
-  <desc id="desc">A warm branded preview image for the Rose Designs room design web app.</desc>
+  <title id="title">Rose's Indoor Designs share preview</title>
+  <desc id="desc">A warm branded preview image for the Rose's Indoor Designs room design web app.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#f9f2eb"/>
@@ -36,7 +36,7 @@
   <circle cx="477" cy="174" r="7" fill="#fff5dd"/>
   <g transform="translate(594 110)">
     <rect width="466" height="190" rx="28" fill="#fffaf4" stroke="#d9c6ba" stroke-width="4"/>
-    <text x="36" y="56" fill="#6f5149" font-family="Georgia, serif" font-size="30" font-weight="700">Rose Designs</text>
+    <text x="36" y="56" fill="#6f5149" font-family="Georgia, serif" font-size="30" font-weight="700">Rose's Indoor Designs</text>
     <text x="36" y="97" fill="#8c6f68" font-family="Arial, sans-serif" font-size="24">Plan, redesign, compare, and present rooms beautifully.</text>
     <g transform="translate(36 126)">
       <rect width="150" height="36" rx="18" fill="#e9d2cf"/>

@@ -381,7 +381,7 @@ async function exportPresentationPDF(){
   const roomName=curRoom.name||'Room';
   const fileBase=(roomName||'room').replace(/[^a-z0-9]/gi,'_');
   const created=new Date().toLocaleDateString();
-  const pageFooter=(n,label='Rose Designs Presentation')=>{
+  const pageFooter=(n,label="Rose's Indoor Designs Presentation")=>{
     doc.setDrawColor(border);
     doc.setLineWidth(1);
     doc.line(margin,pageH-28,pageW-margin,pageH-28);

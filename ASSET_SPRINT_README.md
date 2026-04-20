@@ -1,4 +1,4 @@
-# Rose Designs — Free Premium Asset Sprint
+# Rose's Indoor Designs — Free Premium Asset Sprint
 
 **Goal:** Import 25+ curated free assets from Poly Haven, ambientCG, and Sketchfab to complete Kitchen, Bathroom, and Living Room categories.
 
