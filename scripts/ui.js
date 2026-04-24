@@ -448,6 +448,9 @@ function openProjectRoom(baseRoomId){
     || baseRoom;
   if(target)openEd(target);
 }
+function findProjectBaseRoom(baseRoomId,projectOrRoom=curRoom){
+  return projectRooms(projectOrRoom).find(room=>(room.baseRoomId||room.id)===baseRoomId)||null;
+}
 function openAddRoomModalForProject(floorId=activeProjectFloorId||curRoom?.floorId){
   if(!curRoom)return;
   const floor=projectFloors(curRoom).find(item=>item.id===floorId)||{id:curRoom.floorId||'floor_1',label:curRoom.floorLabel||'Floor 1',order:curRoom.floorOrder||0};
@@ -461,9 +464,11 @@ function createNextFloor(){
   activeProjectFloorId=floor.id;
   openCrModal('living_room',createRoomContext);
 }
-function duplicateCurrentRoom(){
+function duplicateProjectRoom(baseRoomId=(curRoom?.baseRoomId||curRoom?.id)){
   if(!curRoom)return;
-  const clone=JSON.parse(JSON.stringify(curRoom));
+  const source=findProjectBaseRoom(baseRoomId,curRoom);
+  if(!source)return;
+  const clone=JSON.parse(JSON.stringify(source));
   clone.id=uid();
   clone.baseRoomId=clone.id;
   clone.optionName='Main';
@@ -479,26 +484,39 @@ function duplicateCurrentRoom(){
   openEd(projects.find(room=>room.id===clone.id));
   toast('Room duplicated');
 }
-function deleteCurrentRoom(){
+function duplicateCurrentRoom(){
+  duplicateProjectRoom(curRoom?.baseRoomId||curRoom?.id);
+}
+function deleteProjectRoom(baseRoomId=(curRoom?.baseRoomId||curRoom?.id)){
   if(!curRoom)return;
+  const source=findProjectBaseRoom(baseRoomId,curRoom);
+  if(!source)return;
   const siblings=projectMainRooms(curRoom);
   if(siblings.length<=1){
     toast('Keep at least one room in the project');
     return;
   }
-  const removeBase=curRoom.baseRoomId||curRoom.id;
+  const removeBase=source.baseRoomId||source.id;
   const nextRoom=siblings.find(room=>(room.baseRoomId||room.id)!==removeBase);
   projects=projects.filter(room=>!((room.projectId||room.id)===(curRoom.projectId||curRoom.id)&&(room.baseRoomId||room.id)===removeBase));
   projects.forEach(room=>{
     if((room.projectId||room.id)===(curRoom.projectId||curRoom.id)){
-      room.connections=(room.connections||[]).filter(link=>link.roomId!==curRoom.id&&link.roomId!==removeBase);
+      room.connections=(room.connections||[]).filter(link=>link.roomId!==source.id&&link.roomId!==removeBase);
     }
   });
   normalizeProjectRoomOrders(curRoom);
   saveAll();
   renderHome();
-  if(nextRoom)openEd(nextRoom); else exitEd();
+  if((curRoom.baseRoomId||curRoom.id)===removeBase){
+    if(nextRoom)openEd(nextRoom); else exitEd();
+  }else{
+    showP();
+    draw?.();
+  }
   toast('Room removed from project');
+}
+function deleteCurrentRoom(){
+  deleteProjectRoom(curRoom?.baseRoomId||curRoom?.id);
 }
 function moveCurrentRoomOrder(direction){
   if(!curRoom)return;
@@ -520,21 +538,28 @@ function moveCurrentRoomOrder(direction){
   showP();
   draw?.();
 }
-function moveCurrentRoomToFloor(floorId){
+function moveProjectRoomToFloor(baseRoomId=(curRoom?.baseRoomId||curRoom?.id),floorId){
   if(!curRoom||!floorId)return;
   const floor=projectFloors(curRoom).find(item=>item.id===floorId);
   if(!floor)return;
-  optionSiblings(curRoom).forEach(room=>{
+  const source=findProjectBaseRoom(baseRoomId,curRoom);
+  if(!source)return;
+  optionSiblings(source).forEach(room=>{
     room.floorId=floor.id;
     room.floorLabel=floor.label;
     room.floorOrder=floor.order;
-    room.roomOrder=currentFloorRooms(curRoom,floor.id).length;
+    room.roomOrder=currentFloorRooms(curRoom,floor.id).filter(item=>(item.baseRoomId||item.id)!==baseRoomId).length;
   });
   activeProjectFloorId=floor.id;
   normalizeProjectRoomOrders(curRoom);
   saveAll();
   renderHome();
   showP();
+  draw?.();
+  if((curRoom.baseRoomId||curRoom.id)!==baseRoomId)toast(`Moved to ${floor.label}`);
+}
+function moveCurrentRoomToFloor(floorId){
+  moveProjectRoomToFloor(curRoom?.baseRoomId||curRoom?.id,floorId);
 }
 function normalizeFurnitureSelection(){
   if(!curRoom){multiSelFurnitureIds=[];return[]}

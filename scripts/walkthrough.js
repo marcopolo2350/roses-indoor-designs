@@ -205,7 +205,6 @@ async function boot() {
   updateWelcomeForTime();
   renderHome();
   popPresets();
-  if (!getLocal(profileSeenKey())) openProfileSwitcher();
   setInterval(applyTimeTheme, 60000);
   if (location.hash === '#selftest') setTimeout(() => runSelfTest(), 400);
 }
