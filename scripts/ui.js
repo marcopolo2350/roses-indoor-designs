@@ -439,7 +439,20 @@ function renameCurrentRoom(name){
   showP();
 }
 function setActiveFloor(floorId){
+  if(!curRoom||!floorId)return;
   activeProjectFloorId=floorId;
+  const floorRooms=currentFloorRooms(curRoom,floorId);
+  const currentBase=curRoom.baseRoomId||curRoom.id;
+  const currentOnFloor=floorRooms.some(room=>(room.baseRoomId||room.id)===currentBase);
+  if(!currentOnFloor&&floorRooms[0]){
+    openEd(floorRooms[0]);
+    return;
+  }
+  if(is3D&&typeof rebuild3D==='function')rebuild3D();
+  else{
+    autoFit?.();
+    draw?.();
+  }
   showP();
 }
 function openProjectRoom(baseRoomId){

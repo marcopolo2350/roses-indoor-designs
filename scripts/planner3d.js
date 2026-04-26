@@ -490,9 +490,10 @@ function setCompareModeForTour(mode){
   scheduleRebuild3D(30);
 }
 function findTourWalkPoint(index,total){
-  const focus=getRoomFocus(curRoom),radius=Math.max(1.4,Math.min(focus.maxD*.35,3.6)),angle=-Math.PI*.25+(index/Math.max(1,total-1))*Math.PI*.5;
+  const floorRooms=currentFloor3DRooms(curRoom);
+  const focus=floorRooms.length>1?getRoomsFocus(floorRooms):getRoomFocus(curRoom),radius=Math.max(1.4,Math.min(focus.maxD*.35,4.8)),angle=-Math.PI*.25+(index/Math.max(1,total-1))*Math.PI*.5;
   const candidate={x:focus.x+Math.cos(angle)*radius,z:-focus.y+Math.sin(angle)*radius};
-  return clampWalkPos(candidate.x,candidate.z,curRoom)?candidate:findWalkStart(curRoom);
+  return clampWalkPos(candidate.x,candidate.z,floorRooms)?candidate:findWalkStart(floorRooms);
 }
 function favoriteCornerPose(room){
   const focus=getRoomFocus(room);
@@ -530,9 +531,11 @@ function favoriteCornerPose(room){
 function startWalkthroughPreset(id){
   if(!is3D||!curRoom)return;
   walkthroughTrayOpen=false;updateWalkthroughTray();
+  const floorRooms=currentFloor3DRooms(curRoom);
+  const floorFocus=floorRooms.length>1?getRoomsFocus(floorRooms):getRoomFocus(curRoom);
   const focus=getRoomFocus(curRoom);
-  const current={yaw:cYaw,pitch:cPitch,dist:cDist,target:{...(orbitTarget||{x:focus.x,y:curRoom.height*.42,z:-focus.y})}};
-  const overview={yaw:Math.PI*.18,pitch:.78,dist:Math.max(18,Math.min(48,Math.max(focus.width,focus.height,curRoom.height)*2.2)),target:{x:focus.x,y:curRoom.height*.5,z:-focus.y}};
+  const current={yaw:cYaw,pitch:cPitch,dist:cDist,target:{...(orbitTarget||{x:floorFocus.x,y:(floorFocus.height3D||curRoom.height)*.42,z:-floorFocus.y})}};
+  const overview={yaw:Math.PI*.18,pitch:.78,dist:Math.max(18,Math.min(52,Math.max(floorFocus.width,floorFocus.height,floorFocus.height3D||curRoom.height)*2.2)),target:{x:floorFocus.x,y:(floorFocus.height3D||curRoom.height)*.5,z:-floorFocus.y}};
   const corner={yaw:Math.PI*.62,pitch:.36,dist:Math.max(12,Math.min(30,Math.max(focus.width,focus.height)*1.35)),target:{x:focus.x,y:curRoom.height*.4,z:-focus.y}};
   const romantic={yaw:Math.PI*.52,pitch:.28,dist:Math.max(10,Math.min(24,Math.max(focus.width,focus.height)*1.1)),target:{x:focus.x,y:curRoom.height*.36,z:-focus.y}};
   const favorite=favoriteCornerPose(curRoom);
@@ -564,13 +567,10 @@ function updateCameraScript(now){
 
 function setCamMode(m){
   camMode=m;document.getElementById('cmOrbit').classList.toggle('act',m==='orbit');document.getElementById('cmWalk').classList.toggle('act',m==='walk');
-  const r=curRoom,focus=getRoomFocus(r);
-  orbitTarget={x:focus.x,y:r.height*.42,z:-focus.y};
-  const ceiling=scene?.getObjectByName?.('roomCeiling');
-  if(ceiling)ceiling.visible=m==='walk';
-  if(m==='walk'){const start=findWalkStart(r);fpPos={x:start.x,y:Math.max(4.9,Math.min(r.height-1.15,r.height*.54)),z:start.z};cYaw=0;cPitch=0;orbitVel={yaw:0,pitch:0,zoom:0};bindWalkKeys();if(typeof recordWalkUsage==='function')recordWalkUsage();
-    // Make ceiling visible for entire extended polygon in walk mode
-    if(scene){scene.traverse(obj=>{if(obj.name==='roomCeiling')obj.visible=true})};
+  const r=curRoom,floorRooms=currentFloor3DRooms(r),focus=floorRooms.length>1?getRoomsFocus(floorRooms):getRoomFocus(r);
+  orbitTarget={x:focus.x,y:(floorRooms.length>1?(focus.height3D||r.height):r.height)*.42,z:-focus.y};
+  if(scene){scene.traverse(obj=>{if(obj.name==='roomCeiling'||obj.name==='roomCeilingDetails')obj.visible=m==='walk'})}
+  if(m==='walk'){const start=findWalkStart(floorRooms);const startRoom=getWalkRoomAtPoint?.(start.x,start.z,floorRooms)||r;fpPos={x:start.x,y:Math.max(4.9,Math.min((startRoom.height||r.height)-1.15,(startRoom.height||r.height)*.54)),z:start.z};cYaw=0;cPitch=0;orbitVel={yaw:0,pitch:0,zoom:0};bindWalkKeys();if(typeof recordWalkUsage==='function')recordWalkUsage();
     document.getElementById('walkHint').classList.add('on');setTimeout(()=>document.getElementById('walkHint').classList.remove('on'),2500);}
   else{cYaw=Math.PI*.18;cPitch=.52;cDist=Math.max(11,Math.min(42,Math.max(cDist||17,focus.maxD*2.35,Math.max(focus.width||0,focus.height||0,r.height*.9)*1.65,r.height*1.45)));orbitVel={yaw:0,pitch:0,zoom:0}}
   showViewChip(`3D View - ${m==='walk'?'Walk':'Orbit'}`);
@@ -654,10 +654,10 @@ function canUseLampShadows(room){
   const mobile=(navigator.maxTouchPoints||0)>0;
   return mobile?lamps<=2:lamps<=4;
 }
-function registerPracticalLight(light,baseIntensity,baseDistance){
+function registerPracticalLight(light,baseIntensity,baseDistance,room=curRoom){
   if(!scene?.userData?.styleTargets||!light)return;
   if(!scene.userData.styleTargets.practicalLights)scene.userData.styleTargets.practicalLights=[];
-  scene.userData.styleTargets.practicalLights.push({light,baseIntensity,baseDistance});
+  scene.userData.styleTargets.practicalLights.push({light,baseIntensity,baseDistance,room});
 }
 function addRoomPracticalLight(type,anchor,preset,room){
   if(!anchor||!scene||preset.practical<.12)return;
@@ -681,7 +681,7 @@ function addRoomPracticalLight(type,anchor,preset,room){
     light.shadow.bias=-0.0008;
     anchor.add(light);
     addBulb(new THREE.Vector3(0,4.9,0),.14,.8);
-    registerPracticalLight(light,3.2,11);
+    registerPracticalLight(light,3.2,11,room);
     }else if(type==='lamp_table'){
       const light=new THREE.PointLight(warmColor,preset.practical*2.1*ceilingBoost,6.5,1.85);
     light.position.set(0,1.15,0);
@@ -691,7 +691,7 @@ function addRoomPracticalLight(type,anchor,preset,room){
     light.shadow.bias=-0.001;
     anchor.add(light);
     addBulb(new THREE.Vector3(0,1.1,0),.1,.7);
-    registerPracticalLight(light,2.1,6.5);
+    registerPracticalLight(light,2.1,6.5,room);
     }else if(type==='lamp_wall'){
       const light=new THREE.SpotLight(warmColor,preset.practical*3.1*ceilingBoost,12,Math.PI/4,.45,1.25);
     light.position.set(0,.3,-.08);
@@ -703,7 +703,7 @@ function addRoomPracticalLight(type,anchor,preset,room){
     anchor.add(light);
     anchor.add(light.target);
     addBulb(new THREE.Vector3(0,.26,0),.09,.75);
-    registerPracticalLight(light,3.1,12);
+    registerPracticalLight(light,3.1,12,room);
     }else if(type==='lamp_pendant'||type==='lamp_chandelier'||type==='lamp_ceiling'||type==='lamp_cube'){
       const light=new THREE.PointLight(warmColor,preset.practical*3.8*ceilingBoost,13,1.55);
     light.position.set(0,-.2,0);
@@ -713,27 +713,147 @@ function addRoomPracticalLight(type,anchor,preset,room){
     light.shadow.bias=-0.001;
     anchor.add(light);
     addBulb(new THREE.Vector3(0,-.15,0),.12,.85);
-    registerPracticalLight(light,3.8,13);
+    registerPracticalLight(light,3.8,13,room);
   }
+}
+
+function pushStyleMaterial(bucket,material,room=curRoom){
+  if(!scene?.userData?.styleTargets||!material)return material;
+  if(!scene.userData.styleTargets[bucket])scene.userData.styleTargets[bucket]=[];
+  scene.userData.styleTargets[bucket].push({material,room});
+  return material;
+}
+function pushStyleNode(bucket,node,room=curRoom){
+  if(!scene?.userData?.styleTargets||!node)return node;
+  if(!scene.userData.styleTargets[bucket])scene.userData.styleTargets[bucket]=[];
+  scene.userData.styleTargets[bucket].push({node,room});
+  return node;
+}
+function buildRoomEnvelope3D(room,{floorFocus,renderer}={}){
+  if(!room?.polygon?.length||!scene)return;
+  const roomHeight=room.height||curRoom?.height||9;
+  const wallFinish=WALL_PALETTES.find(x=>x.id===(room.materials.wallFinish||'warm_white'))||WALL_PALETTES[0];
+  const floorPreset=FLOOR_TYPES.find(x=>x.id===(room.materials.floorType||'light_oak'))||FLOOR_TYPES[0];
+  const tc=safeThreeColor(room.materials.trim,TRIM_COLORS[0]);
+  const wc=safeThreeColor(room.materials.wall,WALL_PALETTES[0].color);
+  const floorShape=new THREE.Shape();
+  room.polygon.forEach((p,i)=>!i?floorShape.moveTo(p.x,p.y):floorShape.lineTo(p.x,p.y));
+  floorShape.closePath();
+  const floorMap=buildFloorTexture(room.materials.floor,room.materials.floorType||'light_oak');
+  const floorAccentMap=buildFloorAccentTexture(room.materials.floorType||'light_oak');
+  const floorGeo=applyPlanarUVs(new THREE.ShapeGeometry(floorShape),room.polygon);
+  const floorMat=pushStyleMaterial('floorMats',new THREE.MeshStandardMaterial({color:safeThreeColor(room.materials.floor,floorPreset.color),roughness:Math.max(.8,Number.isFinite(floorPreset.roughness)?floorPreset.roughness:.88),metalness:0,map:floorMap}),room);
+  if(floorMat.map){floorMat.map.needsUpdate=true;try{floorMat.map.anisotropy=Math.min(16,renderer?.capabilities?.getMaxAnisotropy?.()||1)}catch(_){}}
+  const floorMesh=new THREE.Mesh(floorGeo,floorMat);floorMesh.rotation.x=-Math.PI/2;floorMesh.receiveShadow=true;scene.add(floorMesh);pushStyleNode('floorMeshes',floorMesh,room);
+  const accentMat=new THREE.MeshStandardMaterial({color:safeThreeColor(room.materials.floor,floorPreset.color),roughness:1,metalness:0,map:floorAccentMap,transparent:true,opacity:.14,depthWrite:true});
+  const accentMesh=new THREE.Mesh(applyPlanarUVs(new THREE.ShapeGeometry(floorShape),room.polygon),accentMat);accentMesh.rotation.x=-Math.PI/2;accentMesh.position.y=.003;accentMesh.renderOrder=-1;scene.add(accentMesh);pushStyleNode('floorAccents',accentMesh,room);
+  const ceilColor=safeThreeColor(room.materials.ceiling,'#FAF7F2').multiplyScalar(Math.max(.86,Math.min(1.18,room.materials.ceilingBrightness||1)));
+  const ceilMesh=new THREE.Mesh(new THREE.ShapeGeometry(floorShape),pushStyleMaterial('ceilingMats',new THREE.MeshStandardMaterial({color:ceilColor,roughness:.92,side:THREE.BackSide}),room));ceilMesh.name='roomCeiling';ceilMesh.visible=camMode==='walk';ceilMesh.rotation.x=-Math.PI/2;ceilMesh.position.y=roomHeight-.01;scene.add(ceilMesh);
+  const style=room.materials.ceilingStyle||'flat';
+  if(style!=='flat'){
+    const grp=new THREE.Group();grp.name='roomCeilingDetails';grp.visible=camMode==='walk';
+    if(style==='crown'){
+      const crownMat=pushStyleMaterial('trimMats',new THREE.MeshStandardMaterial({color:tc,roughness:.45,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}),room);
+      room.walls.forEach(wall=>{
+        const a=wS(room,wall),b=wE(room,wall),wl=wL(room,wall),an=wA(room,wall);
+        if(wl<.2)return;
+        const crown=new THREE.Mesh(new THREE.BoxGeometry(wl,0.35,0.12),crownMat);
+        const cN=getInteriorWallNormal(room,wall);const cOff=0.12;
+        crown.position.set((a.x+b.x)/2+cN.x*cOff,roomHeight-0.18,-(a.y+b.y)/2+cN.z*cOff);
+        crown.rotation.y=-an;
+        grp.add(crown);
+      });
+    }else if(style==='beams'){
+      const beamMat=new THREE.MeshStandardMaterial({color:0x5a3f27,roughness:.82,metalness:.02});
+      const bbox=new THREE.Box3().setFromPoints(room.polygon.map(p=>new THREE.Vector3(p.x,0,-p.y)));
+      const spanX=bbox.max.x-bbox.min.x,spanZ=bbox.max.z-bbox.min.z;
+      const along=spanX>spanZ?'z':'x';
+      const count=Math.max(3,Math.floor((along==='z'?spanX:spanZ)/3.2));
+      for(let i=1;i<count;i++){
+        const u=i/count;
+        if(along==='z'){
+          const x=bbox.min.x+u*spanX;
+          const beam=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.32,spanZ*0.96),beamMat);
+          beam.position.set(x,roomHeight-0.18,(bbox.min.z+bbox.max.z)/2);grp.add(beam);
+        }else{
+          const z=bbox.min.z+u*spanZ;
+          const beam=new THREE.Mesh(new THREE.BoxGeometry(spanX*0.96,0.32,0.35),beamMat);
+          beam.position.set((bbox.min.x+bbox.max.x)/2,roomHeight-0.18,z);grp.add(beam);
+        }
+      }
+    }else if(style==='coffered'){
+      const panelMat=pushStyleMaterial('ceilingMats',new THREE.MeshStandardMaterial({color:ceilColor.clone().multiplyScalar(0.94),roughness:.86,side:THREE.BackSide}),room);
+      const trimMat=pushStyleMaterial('trimMats',new THREE.MeshStandardMaterial({color:tc,roughness:.5,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}),room);
+      const bbox=new THREE.Box3().setFromPoints(room.polygon.map(p=>new THREE.Vector3(p.x,0,-p.y)));
+      const cols=Math.max(2,Math.floor((bbox.max.x-bbox.min.x)/4));
+      const rows=Math.max(2,Math.floor((bbox.max.z-bbox.min.z)/4));
+      const cellW=(bbox.max.x-bbox.min.x)/cols,cellD=(bbox.max.z-bbox.min.z)/rows;
+      for(let cx2=0;cx2<cols;cx2++)for(let cz2=0;cz2<rows;cz2++){
+        const px=bbox.min.x+(cx2+0.5)*cellW,pz=bbox.min.z+(cz2+0.5)*cellD;
+        const panel=new THREE.Mesh(new THREE.BoxGeometry(cellW*0.88,0.15,cellD*0.88),panelMat);
+        panel.position.set(px,roomHeight-0.08,pz);grp.add(panel);
+        const frameTh=0.08;
+        const frameH=new THREE.Mesh(new THREE.BoxGeometry(cellW*0.88,0.06,frameTh),trimMat);
+        frameH.position.set(px,roomHeight-0.02,pz-cellD*0.44);grp.add(frameH);
+        const frameH2=frameH.clone();frameH2.position.z=pz+cellD*0.44;grp.add(frameH2);
+        const frameV=new THREE.Mesh(new THREE.BoxGeometry(frameTh,0.06,cellD*0.88),trimMat);
+        frameV.position.set(px-cellW*0.44,roomHeight-0.02,pz);grp.add(frameV);
+        const frameV2=frameV.clone();frameV2.position.x=px+cellW*0.44;grp.add(frameV2);
+      }
+    }
+    scene.add(grp);
+  }
+  const wallMat=pushStyleMaterial('wallMats',new THREE.MeshStandardMaterial({color:wc,roughness:.68-wallFinish.sheen*.12,metalness:.005,side:THREE.DoubleSide,emissive:wc.clone().multiplyScalar(room.materials.wallColorCustom?.06:.03)}),room);
+  wallMat.userData={isWallSurface:true,styleRoomId:room.id};
+  room.walls.forEach(wall=>{
+    const a=wS(room,wall),b=wE(room,wall),wl=wL(room,wall),an=wA(room,wall);
+    if(wl<.01)return;
+    const ops=room.openings.filter(o=>o.wallId===wall.id).sort((oa,ob)=>oa.offset-ob.offset);
+    if(!ops.length)addWSeg(a,an,0,wl,0,roomHeight,wallMat);
+    else{
+      let pos=0;
+      ops.forEach(op=>{
+        const os=op.offset-op.width/2,oe=op.offset+op.width/2;
+        if(os>pos)addWSeg(a,an,pos,os,0,roomHeight,wallMat);
+        if(op.type==='door'){
+          addWSeg(a,an,os,oe,op.height,roomHeight,wallMat);
+          const frameMat=pushStyleMaterial('trimMats',new THREE.MeshStandardMaterial({color:tc,roughness:.44,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}),room);
+          addWSeg(a,an,os,os+.06,0,op.height,frameMat);addWSeg(a,an,oe-.06,oe,0,op.height,frameMat);addWSeg(a,an,os,oe,op.height-.06,op.height,frameMat);addDoorLeaf3D(a,an,os,oe,op,tc);
+        }else{
+          addWSeg(a,an,os,oe,0,op.sillHeight,wallMat);addWSeg(a,an,os,oe,op.sillHeight+op.height,roomHeight,wallMat);
+          const glassMat=new THREE.MeshStandardMaterial({color:0xBFD9EA,transparent:true,opacity:.42,roughness:.08,metalness:.18});
+          addWSeg(a,an,os,oe,op.sillHeight,op.sillHeight+op.height,glassMat);
+          const frameMat=pushStyleMaterial('trimMats',new THREE.MeshStandardMaterial({color:tc,roughness:.48,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}),room);
+          const ft=.08,mid=(os+oe)/2;
+          addWSeg(a,an,os,os+ft,op.sillHeight,op.sillHeight+op.height,frameMat);addWSeg(a,an,oe-ft,oe,op.sillHeight,op.sillHeight+op.height,frameMat);addWSeg(a,an,os,oe,op.sillHeight,op.sillHeight+ft,frameMat);addWSeg(a,an,os,oe,op.sillHeight+op.height-ft,op.sillHeight+op.height,frameMat);addWSeg(a,an,mid-ft/2,mid+ft/2,op.sillHeight,op.sillHeight+op.height,frameMat);addWindowAssembly3D(a,an,os,oe,op,tc);
+        }
+        pos=oe;
+      });
+      if(pos<wl)addWSeg(a,an,pos,wl,0,roomHeight,wallMat);
+    }
+    const bbMat=pushStyleMaterial('trimMats',new THREE.MeshStandardMaterial({color:tc,roughness:.28,metalness:.08,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}),room);
+    const bbN=getInteriorWallNormal(room,wall);const bbOff=0.1;const bb=new THREE.Mesh(new THREE.PlaneGeometry(wl,.48),bbMat);bb.position.set((a.x+b.x)/2+bbN.x*bbOff,.24,-(a.y+b.y)/2+bbN.z*bbOff);bb.rotation.y=-an;scene.add(bb);
+  });
+  room.structures.forEach(st=>{if(st.type==='closet'&&st.rect)scene.add(buildCloset3D(st,room));else if(st.type==='partition'&&st.line){const pa=st.line.a,pb=st.line.b,pl=Math.sqrt((pb.x-pa.x)**2+(pb.y-pa.y)**2),pAn=Math.atan2(pb.y-pa.y,pb.x-pa.x);const pm=new THREE.Mesh(new THREE.PlaneGeometry(pl,roomHeight),new THREE.MeshStandardMaterial({color:wc,roughness:.65,side:THREE.DoubleSide}));pm.position.set((pa.x+pb.x)/2,roomHeight/2,-(pa.y+pb.y)/2);pm.rotation.y=-pAn;scene.add(pm)}});
+  room.furniture.forEach(f=>placeFurnitureInScene(f,room));
+  const ceilLight=new THREE.PointLight(0xFFF8E8,.28*(room.materials.ceilingBrightness||1),Math.max((getRoomFocus(room).maxD||6)*3.2,(floorFocus?.maxD||6)*2.4));ceilLight.position.set(getRoomFocus(room).x,roomHeight-.4,-getRoomFocus(room).y);scene.add(ceilLight);pushStyleNode('ceilingLights',ceilLight,room);
 }
 
 function build3D(){
   try{
     resetRoomDebug();
     const cont=document.getElementById('threeC');const w=cont.clientWidth,h=cont.clientHeight;
-    const r=curRoom,rH=r.height,focus=getRoomFocus(r),floorRooms=currentFloor3DRooms(r),floorFocus=floorRooms.length>1?getRoomsFocus(floorRooms):focus,cx=focus.x,cz=focus.y,maxD=Math.max(6,focus.maxD),frameSpan=Math.max(focus.width||0,focus.height||0,rH*.9);
+    const r=curRoom,rH=r.height,focus=getRoomFocus(r),floorRooms=currentFloor3DRooms(r),floorFocus=floorRooms.length>1?getRoomsFocus(floorRooms):focus,maxFloorHeight=Math.max(rH,...floorRooms.map(room=>room?.height||0)),maxD=Math.max(6,focus.maxD),frameSpan=Math.max(focus.width||0,focus.height||0,rH*.9);
     const lightState=computeSceneLightingState(r);
     const preset=lightState.preset;
-    const wallFinish=WALL_PALETTES.find(x=>x.id===(r.materials.wallFinish||'warm_white'))||WALL_PALETTES[0];
-    const floorPreset=FLOOR_TYPES.find(x=>x.id===(r.materials.floorType||'light_oak'))||FLOOR_TYPES[0];
     scene=new THREE.Scene();
-    scene.userData.styleTargets={wallMats:[],trimMats:[],floorMats:[],ceilingMats:[]};
+    scene.userData.styleTargets={wallMats:[],trimMats:[],floorMats:[],ceilingMats:[],floorMeshes:[],floorAccents:[],ceilingLights:[],floorReflectors:[]};
     scene.background=lightState.background.clone();
     scene.fog=new THREE.Fog(scene.background.getHex(),lightState.fogNear,lightState.fogFar);
     cam=new THREE.PerspectiveCamera(53,w/h,.3,140);
-    cDist=Math.max(11,Math.min(56,Math.max(maxD*2.35,frameSpan*1.65,rH*1.45,(floorFocus.maxD||0)*1.7)));
+    cDist=Math.max(11,Math.min(56,Math.max(maxD*2.35,frameSpan*1.65,maxFloorHeight*1.45,(floorFocus.maxD||0)*1.7)));
     if(camMode==='orbit'){cYaw=Math.PI*.22;cPitch=.48}
-    orbitTarget={x:floorFocus.x,y:(floorFocus.height3D||rH)*.42,z:-floorFocus.y};orbitVel={yaw:0,pitch:0,zoom:0};
+    orbitTarget={x:floorFocus.x,y:(floorFocus.height3D||maxFloorHeight)*.42,z:-floorFocus.y};orbitVel={yaw:0,pitch:0,zoom:0};
     ren=new THREE.WebGLRenderer({antialias:true});
     ren.setSize(w,h);ren.setPixelRatio(Math.min(window.devicePixelRatio,photoMode?2:1.7));
     ren.physicallyCorrectLights=true;
@@ -802,104 +922,7 @@ function build3D(){
     scene.userData.styleTargets.ambLight=ambLight;
     scene.userData.styleTargets.dirLight=dir;
     scene.userData.styleTargets.fillLight=fill;
-    const tc=safeThreeColor(r.materials.trim,TRIM_COLORS[0]),wc=safeThreeColor(r.materials.wall,WALL_PALETTES[0].color);
-    const floorShape=new THREE.Shape();r.polygon.forEach((p,i)=>!i?floorShape.moveTo(p.x,p.y):floorShape.lineTo(p.x,p.y));floorShape.closePath();
-    const floorMap=buildFloorTexture(r.materials.floor,r.materials.floorType||'light_oak');
-    const floorAccentMap=buildFloorAccentTexture(r.materials.floorType||'light_oak');
-    const floorGeo=applyPlanarUVs(new THREE.ShapeGeometry(floorShape),r.polygon);
-    const floorMat=new THREE.MeshStandardMaterial({color:safeThreeColor(r.materials.floor,floorPreset.color),roughness:Math.max(.8,Number.isFinite(floorPreset.roughness)?floorPreset.roughness:.88),metalness:0,map:floorMap});
-    if(floorMat.map){floorMat.map.needsUpdate=true;try{floorMat.map.anisotropy=Math.min(16,ren.capabilities.getMaxAnisotropy())}catch(_){}}
-    const floorMesh=new THREE.Mesh(floorGeo,floorMat);floorMesh.rotation.x=-Math.PI/2;floorMesh.receiveShadow=true;scene.add(floorMesh);
-    scene.userData.styleTargets.floorMats.push(floorMat);
-    scene.userData.styleTargets.floorMesh=floorMesh;
-    // Subtle gloss on polished families via metalness — no Reflector (avoids z-clipping artifacts)
-    scene.userData.styleTargets.floorReflector=null;
-    // Accent detail texture baked into the floor mesh — rendered below furniture (renderOrder -1)
-    const accentMat=new THREE.MeshStandardMaterial({color:safeThreeColor(r.materials.floor,floorPreset.color),roughness:1,metalness:0,map:floorAccentMap,transparent:true,opacity:.14,depthWrite:true});
-    const accentMesh=new THREE.Mesh(applyPlanarUVs(new THREE.ShapeGeometry(floorShape),r.polygon),accentMat);accentMesh.rotation.x=-Math.PI/2;accentMesh.position.y=.003;accentMesh.renderOrder=-1;scene.add(accentMesh);
-    scene.userData.styleTargets.floorAccent=accentMesh;
-    const ceilColor=safeThreeColor(r.materials.ceiling,'#FAF7F2').multiplyScalar(Math.max(.86,Math.min(1.18,r.materials.ceilingBrightness||1)));
-    const ceilMesh=new THREE.Mesh(new THREE.ShapeGeometry(floorShape),new THREE.MeshStandardMaterial({color:ceilColor,roughness:.92,side:THREE.BackSide}));ceilMesh.name='roomCeiling';ceilMesh.visible=camMode==='walk';ceilMesh.rotation.x=-Math.PI/2;ceilMesh.position.y=rH-.01;scene.add(ceilMesh);
-    scene.userData.styleTargets.ceilingMats.push(ceilMesh.material);
-    // Phase ✨ — Optional ceiling details. Toggle via room.materials.ceilingStyle:
-    //   'crown'   → crown molding strip around perimeter
-    //   'coffered'→ grid of recessed panels (subtle)
-    //   'beams'   → exposed wooden beams spanning the shorter dimension
-    //   default / 'flat' → nothing extra
-    try{
-      const style=r.materials.ceilingStyle||'flat';
-      if(style!=='flat'){
-        const grp=new THREE.Group();grp.name='roomCeilingDetails';grp.visible=camMode==='walk';
-        if(style==='crown'){
-          const crownMat=new THREE.MeshStandardMaterial({color:tc,roughness:.45,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
-          scene.userData.styleTargets.trimMats.push(crownMat);
-          r.walls.forEach(wall=>{
-            const a=wS(r,wall),b=wE(r,wall),wl=wL(r,wall),an=wA(r,wall);
-            if(wl<.2)return;
-            const crown=new THREE.Mesh(new THREE.BoxGeometry(wl,0.35,0.12),crownMat);
-            const cN=getInteriorWallNormal(r,wall);const cOff=0.12;
-            crown.position.set((a.x+b.x)/2+cN.x*cOff,rH-0.18,-(a.y+b.y)/2+cN.z*cOff);
-            crown.rotation.y=-an;
-            grp.add(crown);
-          });
-        }else if(style==='beams'){
-          const beamMat=new THREE.MeshStandardMaterial({color:0x5a3f27,roughness:.82,metalness:.02});
-          const bbox=new THREE.Box3().setFromPoints(r.polygon.map(p=>new THREE.Vector3(p.x,0,-p.y)));
-          const spanX=bbox.max.x-bbox.min.x,spanZ=bbox.max.z-bbox.min.z;
-          const along=spanX>spanZ?'z':'x';
-          const count=Math.max(3,Math.floor((along==='z'?spanX:spanZ)/3.2));
-          for(let i=1;i<count;i++){
-            const u=i/count;
-            if(along==='z'){
-              const x=bbox.min.x+u*spanX;
-              const beam=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.32,spanZ*0.96),beamMat);
-              beam.position.set(x,rH-0.18,(bbox.min.z+bbox.max.z)/2);grp.add(beam);
-            }else{
-              const z=bbox.min.z+u*spanZ;
-              const beam=new THREE.Mesh(new THREE.BoxGeometry(spanX*0.96,0.32,0.35),beamMat);
-              beam.position.set((bbox.min.x+bbox.max.x)/2,rH-0.18,z);grp.add(beam);
-            }
-          }
-        }else if(style==='coffered'){
-          const panelMat=new THREE.MeshStandardMaterial({color:ceilColor.clone().multiplyScalar(0.94),roughness:.86,side:THREE.BackSide});
-          const trimMat=new THREE.MeshStandardMaterial({color:tc,roughness:.5,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
-          scene.userData.styleTargets.trimMats.push(trimMat);
-          const bbox=new THREE.Box3().setFromPoints(r.polygon.map(p=>new THREE.Vector3(p.x,0,-p.y)));
-          const cols=Math.max(2,Math.floor((bbox.max.x-bbox.min.x)/4));
-          const rows=Math.max(2,Math.floor((bbox.max.z-bbox.min.z)/4));
-          const cellW=(bbox.max.x-bbox.min.x)/cols,cellD=(bbox.max.z-bbox.min.z)/rows;
-          for(let cx2=0;cx2<cols;cx2++)for(let cz2=0;cz2<rows;cz2++){
-            const px=bbox.min.x+(cx2+0.5)*cellW,pz=bbox.min.z+(cz2+0.5)*cellD;
-            const panel=new THREE.Mesh(new THREE.BoxGeometry(cellW*0.88,0.15,cellD*0.88),panelMat);
-            panel.position.set(px,rH-0.08,pz);grp.add(panel);
-            // trim edges
-            const frameTh=0.08;
-            const frameH=new THREE.Mesh(new THREE.BoxGeometry(cellW*0.88,0.06,frameTh),trimMat);
-            frameH.position.set(px,rH-0.02,pz-cellD*0.44);grp.add(frameH);
-            const frameH2=frameH.clone();frameH2.position.z=pz+cellD*0.44;grp.add(frameH2);
-            const frameV=new THREE.Mesh(new THREE.BoxGeometry(frameTh,0.06,cellD*0.88),trimMat);
-            frameV.position.set(px-cellW*0.44,rH-0.02,pz);grp.add(frameV);
-            const frameV2=frameV.clone();frameV2.position.x=px+cellW*0.44;grp.add(frameV2);
-          }
-        }
-        scene.add(grp);
-      }
-    }catch(e){console.warn('Ceiling details skipped:',e.message)}
-    const ceilLight=new THREE.PointLight(0xFFF8E8,.28*(r.materials.ceilingBrightness||1),Math.max(maxD*3.2,(floorFocus.maxD||maxD)*2.4));ceilLight.position.set(floorFocus.x,rH-.4,-floorFocus.y);scene.add(ceilLight);
-    scene.userData.styleTargets.ceilingLight=ceilLight;
-    const wallMat=new THREE.MeshStandardMaterial({color:wc,roughness:.68-wallFinish.sheen*.12,metalness:.005,side:THREE.DoubleSide,emissive:wc.clone().multiplyScalar(r.materials.wallColorCustom?.06:.03)});
-    scene.userData.styleTargets.primaryWallMat=wallMat;
-    scene.userData.styleTargets.wallMats.push(wallMat);
-    if(floorRooms.length>1){
-      const ghostFloorColor=safeThreeColor(r.materials.floor,floorPreset.color).clone().lerp(safeThreeColor('#ffffff','#ffffff'),.32);
-      const ghostWallColor=wc.clone().lerp(safeThreeColor('#ffffff','#ffffff'),.22);
-      floorRooms
-        .filter(room=>room&&room.id!==r.id&&(room.baseRoomId||room.id)!==(r.baseRoomId||r.id))
-        .forEach(room=>addGhostRoomShell(room,ghostWallColor,ghostFloorColor));
-    }
-    r.walls.forEach(wall=>{const a=wS(r,wall),b=wE(r,wall),wl=wL(r,wall),an=wA(r,wall);if(wl<.01)return;const ops=r.openings.filter(o=>o.wallId===wall.id).sort((oa,ob)=>oa.offset-ob.offset);if(!ops.length)addWSeg(a,an,0,wl,0,rH,wallMat);else{let pos=0;ops.forEach(op=>{const os=op.offset-op.width/2,oe=op.offset+op.width/2;if(os>pos)addWSeg(a,an,pos,os,0,rH,wallMat);if(op.type==='door'){addWSeg(a,an,os,oe,op.height,rH,wallMat);const frameMat=new THREE.MeshStandardMaterial({color:tc,roughness:.44,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});scene.userData.styleTargets.trimMats.push(frameMat);addWSeg(a,an,os,os+.06,0,op.height,frameMat);addWSeg(a,an,oe-.06,oe,0,op.height,frameMat);addWSeg(a,an,os,oe,op.height-.06,op.height,frameMat);addDoorLeaf3D(a,an,os,oe,op,tc)}else{addWSeg(a,an,os,oe,0,op.sillHeight,wallMat);addWSeg(a,an,os,oe,op.sillHeight+op.height,rH,wallMat);const glassMat=new THREE.MeshStandardMaterial({color:0xBFD9EA,transparent:true,opacity:.42,roughness:.08,metalness:.18});addWSeg(a,an,os,oe,op.sillHeight,op.sillHeight+op.height,glassMat);const frameMat=new THREE.MeshStandardMaterial({color:tc,roughness:.48,metalness:.04,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});scene.userData.styleTargets.trimMats.push(frameMat);const ft=.08,mid=(os+oe)/2;addWSeg(a,an,os,os+ft,op.sillHeight,op.sillHeight+op.height,frameMat);addWSeg(a,an,oe-ft,oe,op.sillHeight,op.sillHeight+op.height,frameMat);addWSeg(a,an,os,oe,op.sillHeight,op.sillHeight+ft,frameMat);addWSeg(a,an,os,oe,op.sillHeight+op.height-ft,op.sillHeight+op.height,frameMat);addWSeg(a,an,mid-ft/2,mid+ft/2,op.sillHeight,op.sillHeight+op.height,frameMat);addWindowAssembly3D(a,an,os,oe,op,tc)}pos=oe});if(pos<wl)addWSeg(a,an,pos,wl,0,rH,wallMat)}const bbMat=new THREE.MeshStandardMaterial({color:tc,roughness:.28,metalness:.08,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});scene.userData.styleTargets.trimMats.push(bbMat);const bbN=getInteriorWallNormal(r,wall);const bbOff=0.1;const bb=new THREE.Mesh(new THREE.PlaneGeometry(wl,.48),bbMat);bb.position.set((a.x+b.x)/2+bbN.x*bbOff,.24,-(a.y+b.y)/2+bbN.z*bbOff);bb.rotation.y=-an;scene.add(bb)});
-    r.structures.forEach(st=>{if(st.type==='closet'&&st.rect)scene.add(buildCloset3D(st,r));else if(st.type==='partition'&&st.line){const pa=st.line.a,pb=st.line.b,pl=Math.sqrt((pb.x-pa.x)**2+(pb.y-pa.y)**2),pAn=Math.atan2(pb.y-pa.y,pb.x-pa.x);const pm=new THREE.Mesh(new THREE.PlaneGeometry(pl,rH),new THREE.MeshStandardMaterial({color:wc,roughness:.65,side:THREE.DoubleSide}));pm.position.set((pa.x+pb.x)/2,rH/2,-(pa.y+pb.y)/2);pm.rotation.y=-pAn;scene.add(pm)}});
-    r.furniture.forEach(f=>placeFurnitureInScene(f,r));
+    floorRooms.forEach(room=>buildRoomEnvelope3D(room,{floorFocus,renderer:ren}));
     applyRoomStyleToScene();
     attach3DPointerControls();updateWalkUI();
     // Phase ✨ — Inertial camera: lerp the *rendered* camera position toward the target position each frame.
@@ -915,7 +938,10 @@ function build3D(){
         tgtPos.set(orbitTarget.x+Math.sin(cYaw)*Math.cos(cPitch)*cDist,orbitTarget.y+Math.sin(cPitch)*cDist,orbitTarget.z+Math.cos(cYaw)*Math.cos(cPitch)*cDist);
         tgtLook.set(orbitTarget.x,orbitTarget.y,orbitTarget.z);
       }else{
-        if(!cameraScript)applyWalkInputStep();fpPos.y=Math.max(4.9,Math.min(rH-1.15,rH*.54));
+        if(!cameraScript)applyWalkInputStep();
+        const walkRoom=getWalkRoomAtPoint?.(fpPos.x,fpPos.z,floorRooms)||r;
+        const walkHeight=walkRoom?.height||rH;
+        fpPos.y=Math.max(4.9,Math.min(walkHeight-1.15,walkHeight*.54));
         tgtPos.set(fpPos.x,fpPos.y,fpPos.z);
         tgtLook.set(fpPos.x+Math.sin(cYaw)*10,fpPos.y+cPitch*8,fpPos.z-Math.cos(cYaw)*10);
       }
@@ -971,9 +997,10 @@ function addWSeg(ws,an,s,e,botY,topY,mat){
   const mid=(s+e)/2;
   m.position.set(ws.x+Math.cos(an)*mid,(botY+topY)/2,-(ws.y+Math.sin(an)*mid));
   m.rotation.y=-an;
-  if(!isGlass&&scene?.userData?.styleTargets?.primaryWallMat===mat){
+  if(!isGlass&&mat?.userData?.isWallSurface){
     m.userData.roomWallSegment=true;
     m.userData.wallCenter2D={x:m.position.x,y:-m.position.z};
+    m.userData.roomId=mat.userData.styleRoomId||'';
   }
   scene.add(m)}
 function updateOrbitWallCutaway(cameraPos){
@@ -983,12 +1010,13 @@ function updateOrbitWallCutaway(cameraPos){
   walls.forEach(obj=>obj.visible=true);
   if(camMode!=='orbit')return;
   const cam2D={x:cameraPos.x,y:-cameraPos.z};
-  const outside=typeof pointInsideRoom2D==='function'?!pointInsideRoom2D(cam2D,curRoom):true;
+  const floorRooms=currentFloor3DRooms(curRoom);
+  const outside=typeof pointInsideRoom2D==='function'?!floorRooms.some(room=>pointInsideRoom2D(cam2D,room)):true;
   if(!outside)return;
   walls
     .map(obj=>({obj,d:Math.hypot((obj.userData.wallCenter2D?.x||0)-cam2D.x,(obj.userData.wallCenter2D?.y||0)-cam2D.y)}))
     .sort((a,b)=>a.d-b.d)
-    .slice(0,Math.min(2,walls.length))
+    .slice(0,Math.min(3,walls.length))
     .forEach(entry=>{entry.obj.visible=false;});
 }
 function addDoorLeaf3D(ws,an,os,oe,op,trimColor){

@@ -172,18 +172,57 @@ function nearDoorOpening(px, pz, room, radius=1.8) {
   return false;
 }
 
-// Clamp walk position: must be inside polygon or near a door opening, and not inside structures
-function clampWalkPos(newX, newZ, room) {
-  const inside = pointInPolygon(newX, newZ, room.polygon);
-  if (!inside) {
-    // Allow walking slightly outside polygon near door openings (hallway transitions)
-    if (!nearDoorOpening(newX, newZ, room, 2.5)) return false;
+function resolveWalkRooms(roomOrRooms=curRoom){
+  if(Array.isArray(roomOrRooms))return roomOrRooms.filter(room=>room?.polygon?.length);
+  if(roomOrRooms?.polygon?.length){
+    try{
+      if(typeof currentFloorRooms==='function'){
+        const floorRooms=currentFloorRooms(roomOrRooms,roomOrRooms.floorId||activeProjectFloorId);
+        if(floorRooms?.length)return floorRooms.filter(room=>room?.polygon?.length);
+      }
+    }catch(_){}
+    return [roomOrRooms];
   }
-  if (collidesWithStructure(newX, newZ, room)) return false;
+  return [];
+}
+function getWalkBounds2D(roomOrRooms=curRoom){
+  const rooms=resolveWalkRooms(roomOrRooms);
+  if(!rooms.length)return getRoomBounds2D(curRoom);
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  rooms.forEach(room=>{
+    const b=getRoomBounds2D(room);
+    x0=Math.min(x0,b.x0);y0=Math.min(y0,b.y0);x1=Math.max(x1,b.x1);y1=Math.max(y1,b.y1);
+  });
+  const cx=(x0+x1)/2,cy=(y0+y1)/2;
+  return {x0,y0,x1,y1,width:x1-x0,height:y1-y0,cx,cy,maxD:Math.max((x1-x0)/2,(y1-y0)/2)};
+}
+function findWalkRoomsAtPoint(px,pz,roomOrRooms=curRoom){
+  const py=-pz;
+  return resolveWalkRooms(roomOrRooms).filter(room=>{
+    if(pointInPolygon(px,pz,room.polygon))return true;
+    return nearDoorOpening(px,pz,room,2.5)&&py>=getRoomBounds2D(room).y0-2.5&&py<=getRoomBounds2D(room).y1+2.5;
+  });
+}
+function getWalkRoomAtPoint(px,pz,roomOrRooms=curRoom){
+  return findWalkRoomsAtPoint(px,pz,roomOrRooms)[0]||null;
+}
+
+// Clamp walk position: must be inside one of the active-floor polygons or near a door opening,
+// and not inside any structures in the rooms around that point.
+function clampWalkPos(newX, newZ, roomOrRooms=curRoom) {
+  const rooms=resolveWalkRooms(roomOrRooms);
+  if(!rooms.length)return false;
+  const containing=findWalkRoomsAtPoint(newX,newZ,rooms);
+  if(!containing.length)return false;
+  if (containing.some(room=>collidesWithStructure(newX, newZ, room))) return false;
   return true;
 }
-function findWalkStart(room){
-  const focus=getRoomFocus(room);
+function findWalkStart(roomOrRooms=curRoom){
+  const rooms=resolveWalkRooms(roomOrRooms);
+  const focus=rooms.length>1?(()=>{
+    const b=getWalkBounds2D(rooms);
+    return {x:b.cx,y:b.cy,maxD:Math.max(b.maxD,4.5),width:b.width,height:b.height};
+  })():getRoomFocus(rooms[0]||roomOrRooms);
   const candidates=[
     {x:focus.x,z:-focus.y},
     {x:focus.x,z:-focus.y+1.4},
@@ -193,12 +232,12 @@ function findWalkStart(room){
     {x:focus.x+2.4,z:-focus.y+1.6},
     {x:focus.x-2.4,z:-focus.y-1.6}
   ];
-  for(const pt of candidates)if(clampWalkPos(pt.x,pt.z,room))return pt;
-  const b=getRoomBounds2D(room);
+  for(const pt of candidates)if(clampWalkPos(pt.x,pt.z,rooms))return pt;
+  const b=getWalkBounds2D(rooms);
   for(let i=0;i<18;i++){
     const x=b.x0+.9+((b.width-1.8)*(i%6)/5);
     const y=b.y0+.9+((b.height-1.8)*(Math.floor(i/6))/2);
-    if(clampWalkPos(x,-y,room))return{x,z:-y};
+    if(clampWalkPos(x,-y,rooms))return{x,z:-y};
   }
   return{x:focus.x,z:-focus.y};
 }
@@ -207,7 +246,8 @@ function applyWalkInputStep(){
   if(activeTurnDir)cYaw+=activeTurnDir*.07;
   if(activeWalkDir){
     const sp=.34,vx=Math.sin(cYaw)*sp*activeWalkDir,vz=-Math.cos(cYaw)*sp*activeWalkDir,nx=fpPos.x+vx,nz=fpPos.z+vz;
-    if(clampWalkPos(nx,nz,curRoom)){fpPos.x=nx;fpPos.z=nz}
+    const walkRooms=resolveWalkRooms(curRoom);
+    if(clampWalkPos(nx,nz,walkRooms)){fpPos.x=nx;fpPos.z=nz}
   }
 }
 function bindWalkKeys(){
