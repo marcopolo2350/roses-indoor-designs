@@ -132,13 +132,13 @@
     ground.receiveShadow = true;
     scene.add(ground);
 
-    const plinth = new THREE.Mesh(
-      new THREE.CylinderGeometry(2.55, 2.75, 0.14, 48),
-      new THREE.MeshStandardMaterial({ color: 0xf7efe5, roughness: 0.95, metalness: 0.02 })
+    const contactShadow = new THREE.Mesh(
+      new THREE.CircleGeometry(2.15, 48),
+      new THREE.MeshBasicMaterial({ color: 0x8d6b60, transparent: true, opacity: 0.1, depthWrite: false })
     );
-    plinth.position.y = -0.08;
-    plinth.receiveShadow = true;
-    scene.add(plinth);
+    contactShadow.rotation.x = -Math.PI / 2;
+    contactShadow.position.y = -0.01;
+    scene.add(contactShadow);
 
     const loader = new GLTFLoader();
     let currentRoot = null;
@@ -223,7 +223,10 @@
       clearFallback();
       resetScene();
       try {
-        const gltf = await loader.loadAsync(modelUrl);
+        const gltf = await Promise.race([
+          loader.loadAsync(modelUrl),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Thumbnail load timeout')), 12000))
+        ]);
         currentRoot = gltf.scene || gltf.scenes?.[0];
         if (!currentRoot) throw new Error('No scene in glTF');
         currentRoot.traverse(obj => {

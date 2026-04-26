@@ -568,10 +568,11 @@ function placeFurn(itemIdx){
     return;
   }
   const reg=item.assetKey?MODEL_REGISTRY[item.assetKey]:null;
+  const targetRoom=state?.targetRoom||curRoom;
   const pos=state?.snapped||snapFurniturePoint(pendFurnPos.x,pendFurnPos.y);
   const wallAngle=state?.wallSnap?.angle;
   const mountType=resolveFurnitureMountType(item,item,reg);
-  curRoom.furniture.push(normalizeFurnitureRecord({
+  targetRoom.furniture.push(normalizeFurnitureRecord({
     id:uid(),
     label:item.label,
     category:item.category,
@@ -588,9 +589,10 @@ function placeFurn(itemIdx){
     finishColor:variant?.previewColor||'',
     visible:true
   }));
-  const idx=curRoom.furniture.length-1;
+  const idx=targetRoom.furniture.length-1;
   tool='select';
   document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.t==='select'));
+  if(targetRoom!==curRoom&&typeof openEd==='function')openEd(targetRoom);
   setFurnitureSelection(idx);
   if(isTouchUi()&&window.innerWidth<=760)panelHidden=true;
   rememberCatalogRecent(item.assetKey);

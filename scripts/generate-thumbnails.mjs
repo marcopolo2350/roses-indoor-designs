@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const manifestPath = path.join(repoRoot, 'data', 'asset-manifest.json');
 const outDir = path.join(repoRoot, 'assets', 'thumbnails');
-const thumbgenUrl = 'http://127.0.0.1:8123/scripts/thumbgen.html';
+const thumbgenUrl = process.env.THUMBGEN_URL || 'http://127.0.0.1:8123/scripts/thumbgen.html';
 
 const categoryFixes = {
   bookshelf: 'Storage',
@@ -34,7 +34,7 @@ async function main() {
   const raw = await fs.readFile(manifestPath, 'utf8');
   const manifest = JSON.parse(raw).map(withThumbnailPath);
 
-  const browser = await chromium.launch({ channel: 'msedge', headless: true });
+  const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: 640, height: 500 }, deviceScaleFactor: 1.5 });
   page.on('console', msg => {
     if (msg.type() === 'error') console.error('[thumbgen console]', msg.text());

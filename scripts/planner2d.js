@@ -637,51 +637,58 @@ function snapFurnitureForItem(item,x,z,room=curRoom){
   if(wallSnap?.valid)return {...wallSnap.snapped,wallSnap};
   return base;
 }
+function floorRoomForPlacementPoint(wp,room=curRoom){
+  if(!wp||!room)return room;
+  const floorRooms=(typeof currentFloorRooms==='function'?currentFloorRooms(room,room.floorId||activeProjectFloorId):[room]).filter(Boolean);
+  const direct=floorRooms.find(candidate=>candidate?.polygon?.length&&pointInsideRoom2D(wp,candidate));
+  if(direct)return direct;
+  const nearby=floorRooms.find(candidate=>candidate?.polygon?.length&&pointNearRoom2D(wp,candidate,1.4));
+  return nearby||room;
+}
+function rotatedPlacementCorners(centerX,centerZ,width,depth,rotationDeg=0,inset=1){
+  const hw=Math.max(.08,(width||2)*.5*inset);
+  const hd=Math.max(.08,(depth||1.5)*.5*inset);
+  const an=(rotationDeg||0)*Math.PI/180;
+  return [[-hw,-hd],[hw,-hd],[hw,hd],[-hw,hd]].map(([dx,dz])=>({
+    x:centerX+dx*Math.cos(an)-dz*Math.sin(an),
+    y:centerZ+dx*Math.sin(an)+dz*Math.cos(an)
+  }));
+}
 function getPendingFurniturePlacementState(room=curRoom){
   if(!room||!pendFurnPos)return null;
   const item=pendingFurniturePreviewItem();
   if(!item)return null;
+  const targetRoom=floorRoomForPlacementPoint(pendFurnPos,room);
   const reg=item.assetKey?MODEL_REGISTRY[item.assetKey]:null;
   const wallMounted=isWallMountedFurnitureItem(item,reg);
-  const snapped=snapFurnitureForItem(item,pendFurnPos.x,pendFurnPos.y,room);
+  const snapped=snapFurnitureForItem(item,pendFurnPos.x,pendFurnPos.y,targetRoom);
   const wallSnap=snapped?.wallSnap||null;
-  const halfW=(item.w||2)/2;
-  const halfD=(item.d||1.5)/2;
-  const corners=[
-    {x:snapped.x-halfW,y:snapped.z-halfD},
-    {x:snapped.x+halfW,y:snapped.z-halfD},
-    {x:snapped.x+halfW,y:snapped.z+halfD},
-    {x:snapped.x-halfW,y:snapped.z+halfD},
-  ];
-  // Use 88% of footprint for inside test so items snapped near walls aren't falsely blocked
-  const iW=halfW*0.88,iD=halfD*0.88;
-  const insideCorners=[
-    {x:snapped.x-iW,y:snapped.z-iD},{x:snapped.x+iW,y:snapped.z-iD},
-    {x:snapped.x+iW,y:snapped.z+iD},{x:snapped.x-iW,y:snapped.z+iD},
-  ];
-  const inside=wallMounted?!!wallSnap?.valid:insideCorners.every(pt=>pointInsideRoom2D(pt,room));
-  const structureBlocked=wallMounted?false:collidesWithStructure(snapped.x,-snapped.z,room);
-  const collision=wallMounted?null:pendingFurnitureCollision(room,{item,snapped});
+  const previewRotation=Number.isFinite(wallSnap?.angle)?Math.round((-wallSnap.angle*180/Math.PI)*10)/10:0;
+  const corners=rotatedPlacementCorners(snapped.x,snapped.z,item.w||2,item.d||1.5,previewRotation,1);
+  const insideCorners=rotatedPlacementCorners(snapped.x,snapped.z,item.w||2,item.d||1.5,previewRotation,.8);
+  const inside=wallMounted?!!wallSnap?.valid:insideCorners.every(pt=>pointInsideRoom2D(pt,targetRoom)||pointNearRoom2D(pt,targetRoom,.18));
+  const structureBlocked=wallMounted?false:collidesWithStructure(snapped.x,-snapped.z,targetRoom);
+  const collision=wallMounted?null:pendingFurnitureCollision(targetRoom,{item,snapped});
   let reason='';
   if(!inside)reason=wallMounted?'Move onto a wall':'Move fully inside the room';
   else if(structureBlocked)reason='Target overlaps a built-in or closet';
   else if(collision)reason=`Too close to ${collision.label||'another piece'}`;
   let nearestWall=wallSnap?{idx:wallSnap.idx,distance:wallSnap.distance,angle:wallSnap.angle}:null;
   if(!nearestWall){
-    room.walls.forEach((wall,idx)=>{
-      const dist=psw({x:snapped.x,y:snapped.z},wS(room,wall),wE(room,wall));
+    targetRoom.walls.forEach((wall,idx)=>{
+      const dist=psw({x:snapped.x,y:snapped.z},wS(targetRoom,wall),wE(targetRoom,wall));
       if(!nearestWall||dist<nearestWall.distance)nearestWall={idx,distance:dist};
     });
   }
-  const windowTarget=reg?.snapToOpening&&typeof findNearestWindowOpening==='function'?findNearestWindowOpening({x:snapped.x,y:snapped.z},room):null;
+  const windowTarget=reg?.snapToOpening&&typeof findNearestWindowOpening==='function'?findNearestWindowOpening({x:snapped.x,y:snapped.z},targetRoom):null;
   if(reg?.snapToOpening&&!windowTarget)reason='Place this on a window wall';
-  return {item,snapped,corners,inside,structureBlocked,collision,valid:inside&&!structureBlocked&&!collision&&(!reg?.snapToOpening||!!windowTarget),reason,nearestWall,windowTarget,wallMounted,wallSnap};
+  return {item,snapped,corners,inside,structureBlocked,collision,valid:inside&&!structureBlocked&&!collision&&(!reg?.snapToOpening||!!windowTarget),reason,nearestWall,windowTarget,wallMounted,wallSnap,targetRoom,previewRotation};
 }
 function drawPendingFurniturePlacement(room){
   if(!pendFurnPos)return;
   const state=getPendingFurniturePlacementState(room);
   if(!state)return;
-  const {item,snapped,nearestWall}=state;
+  const {item,snapped,nearestWall,targetRoom}=state;
   const screen=tS({x:snapped.x,y:snapped.z});
   const width=(item?.w||2)*vScale;
   const depth=(item?.d||1.5)*vScale;
@@ -708,8 +715,8 @@ function drawPendingFurniturePlacement(room){
     ctx.restore();
   }
   if(nearestWall&&nearestWall.distance<=1.1){
-    const wall=room.walls[nearestWall.idx];
-    const a=tS(wS(room,wall)),b=tS(wE(room,wall));
+    const wall=targetRoom.walls[nearestWall.idx];
+    const a=tS(wS(targetRoom,wall)),b=tS(wE(targetRoom,wall));
     ctx.save();
     ctx.strokeStyle=threeColorToRgba(accent,.78);
     ctx.lineWidth=4;
@@ -720,7 +727,7 @@ function drawPendingFurniturePlacement(room){
   }
   ctx.save();
   ctx.translate(screen.x,screen.y);
-  if(state.wallMounted&&Number.isFinite(state.wallSnap?.angle))ctx.rotate(-state.wallSnap.angle);
+  if(Number.isFinite(state.previewRotation))ctx.rotate(-(state.previewRotation||0)*Math.PI/180);
   ctx.beginPath();
   ctx.roundRect(-width/2,-depth/2,width,depth,Math.max(12,Math.min(width,depth)*.16));
   ctx.fillStyle=fill;

@@ -89,8 +89,8 @@ function applyTimeOfDay(t){
   curRoom.materials.timeOfDay=t;
   // Live background tint: dawn→noon→golden→dusk→night gradient
   const stops=[
-    {t:0.00,c:'#0a0f1e'},{t:0.14,c:'#c8b8b0'},{t:0.30,c:'#d6e5f2'},
-    {t:0.50,c:'#eef4f8'},{t:0.72,c:'#e8c79a'},{t:0.86,c:'#dcc3af'},
+    {t:0.00,c:'#0a0f1e'},{t:0.14,c:'#c8b8b0'},{t:0.30,c:'#d6e1eb'},
+    {t:0.50,c:'#dfe8ee'},{t:0.72,c:'#e2c297'},{t:0.86,c:'#d4b9a7'},
     {t:0.96,c:'#2b2a32'},{t:1.00,c:'#0a0f1e'}
   ];
   let a=stops[0],b=stops[stops.length-1];
@@ -100,7 +100,7 @@ function applyTimeOfDay(t){
   try{scene.background=new THREE.Color(col);if(scene.fog)scene.fog.color=new THREE.Color(col)}catch(_){}
   // Exposure curve: darker at night, brighter at noon
   if(ren){
-    const eBase=0.7+Math.sin(Math.min(1,Math.max(0,t))*Math.PI)*0.65;
+    const eBase=0.68+Math.sin(Math.min(1,Math.max(0,t))*Math.PI)*0.42;
     ren.toneMappingExposure=eBase*(photoMode?1.08:1);
   }
   // Swap HDRI if the TOD bucket changed
@@ -114,10 +114,10 @@ function applyTimeOfDay(t){
     const warm=t>0.65?_lerpHex('#ffd6a8','#ff9a5b',Math.min(1,(t-0.65)/0.25)):
                t<0.25?_lerpHex('#9ab4d0','#ffd6a8',Math.min(1,t/0.25)):'#fffaf2';
     try{dir.color=new THREE.Color(warm)}catch(_){}
-    dir.intensity=(0.3+Math.sin(Math.max(0,Math.min(1,t))*Math.PI)*1.6);
+    dir.intensity=(0.24+Math.sin(Math.max(0,Math.min(1,t))*Math.PI)*1.18);
   }
   const hemi=scene.userData?.styleTargets?.hemiLight;
-  if(hemi){hemi.intensity=0.4+Math.sin(Math.max(0,Math.min(1,t))*Math.PI)*0.9}
+  if(hemi){hemi.intensity=0.34+Math.sin(Math.max(0,Math.min(1,t))*Math.PI)*0.62}
 }
 if(typeof window!=='undefined'){window.applyTimeOfDay=applyTimeOfDay}
 
@@ -592,15 +592,15 @@ function getLightCharacter(room){
 function computeSceneLightingState(room){
   const preset=getLightingPreset(room);
   const t=getLightCharacter(room);
-  const morningSky=safeThreeColor('#dfeaf4','#dfeaf4');
-  const noonSky=safeThreeColor('#eef4f8','#eef4f8');
-  const sunsetSky=safeThreeColor('#d7b79c','#d7b79c');
+  const morningSky=safeThreeColor('#d8e2ea','#d8e2ea');
+  const noonSky=safeThreeColor('#dde6eb','#dde6eb');
+  const sunsetSky=safeThreeColor('#d3b28f','#d3b28f');
   const blueHour=safeThreeColor('#7c8396','#7c8396');
   const practicalBias=Math.max(0,Math.min(1,(preset.practical||0)));
   const daylightBlend=t<.55?t/.55:1;
   const warmSky=daylightBlend<1?morningSky.clone().lerp(noonSky,daylightBlend):sunsetSky.clone().lerp(blueHour,Math.max(0,(t-.55)/.45));
-  const background=safeThreeColor(preset.background,'#0f141c').lerp(warmSky,.44-(practicalBias*.14));
-  const dirColor=safeThreeColor(preset.dirColor,0xffffff).lerp(safeThreeColor('#ffd6a8','#ffd6a8'),Math.max(0,t-.35)*.42);
+  const background=safeThreeColor(preset.background,'#0f141c').lerp(warmSky,.3-(practicalBias*.1));
+  const dirColor=safeThreeColor(preset.dirColor,0xffffff).lerp(safeThreeColor('#ffd6a8','#ffd6a8'),Math.max(0,t-.35)*.34);
   const warmColor=safeThreeColor(preset.warm,0xFFF1D3).lerp(safeThreeColor('#ffd0a1','#ffd0a1'),Math.max(0,t-.4)*.32);
   const dirHeight=(room?.height||9)*(1.9-t*.72);
   const dirDepth=Math.max(4,(room?.height||9))*(.72+t*.55);
@@ -609,11 +609,11 @@ function computeSceneLightingState(room){
     background,
     dirColor,
     warmColor,
-    exposure:preset.exposure*(photoMode?1.08:1)*(1.04-t*.08),
-    ambientIntensity:preset.ambient*(1.04-t*.08),
-    hemiIntensity:preset.ambient*(1.22-t*.08),
-    dirIntensity:preset.dir*(1.08-t*.16),
-    fillIntensity:preset.ambient*(.46+t*.1),
+    exposure:preset.exposure*(photoMode?1.05:1)*(0.94-t*.04),
+    ambientIntensity:preset.ambient*(0.94-t*.04),
+    hemiIntensity:preset.ambient*(1.02-t*.05),
+    dirIntensity:preset.dir*(0.92-t*.1),
+    fillIntensity:preset.ambient*(.38+t*.08),
     practicalMultiplier:(preset.practical||.04)*(1+t*.28+(photoMode?.08:0)),
     fogNear:(preset.fogNear||28)*(photoMode?1.08:1),
     fogFar:(preset.fogFar||82)*(photoMode?1.08:1),
