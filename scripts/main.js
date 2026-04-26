@@ -4,11 +4,13 @@ const RUNTIME_MODULES = [
   "./scripts/core/project-schema.js",
   "./scripts/state.js",
   "./scripts/storage.js",
+  "./scripts/core/app-state.js",
   "./scripts/ui.js",
   "./scripts/planner2d.js",
   "./scripts/catalog.js",
   "./scripts/export.js",
   "./scripts/planner3d.js",
+  "./scripts/core/history.js",
   "./scripts/cloud/supabase.js",
   "./scripts/walkthrough.js",
 ];

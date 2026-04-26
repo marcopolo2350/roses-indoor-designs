@@ -593,36 +593,6 @@ function loadEditorPrefs(){
     unitSystem=prefs?.unitSystem==='metric'?'metric':'imperial';
   }catch(e){}
 }
-function historyKey(roomId){return `${ROOM_HISTORY_PREFIX}${roomId}`}
-function roomSnapshot(room=curRoom){
-  if(!room)return null;
-  return JSON.stringify({
-    polygon:room.polygon,
-    walls:room.walls,
-    openings:room.openings,
-    structures:room.structures,
-    furniture:room.furniture,
-    dimensionAnnotations:room.dimensionAnnotations,
-    textAnnotations:room.textAnnotations,
-    materials:room.materials,
-    height:room.height,
-    wallThickness:room.wallThickness,
-    roomType:room.roomType,
-    designPreset:room.designPreset,
-    mood:room.mood,
-    existingRoomMode:room.existingRoomMode,
-    hideRemovedExisting:room.hideRemovedExisting,
-    ghostExisting:room.ghostExisting,
-    planViewMode:room.planViewMode,
-    showPlanLegend:room.showPlanLegend,
-    layerVisibility:room.layerVisibility,
-    baseRoomId:room.baseRoomId,
-    optionName:room.optionName,
-    optionNotes:room.optionNotes,
-    referenceOverlay:room.referenceOverlay,
-    previewThumb:room.previewThumb
-  });
-}
 function collectRoomPlanStats(room){
   const stats={existing:0,newItems:0,keep:0,move:0,replace:0,remove:0,paired:0};
   (room?.furniture||[]).forEach(item=>{
@@ -639,32 +609,6 @@ function updateRoomPreviewThumb(room=curRoom){
   try{
     room.previewThumb=renderRoomModeToDataURL(room,'combined',280,180,{legend:false,measurements:false})||room.previewThumb||'';
   }catch(_){}
-}
-function syncCurrentRoomRecord(announce=false){
-  if(!curRoom)return;
-  updateRoomPreviewThumb(curRoom);
-  curRoom.updatedAt=Date.now();
-  const i=projects.findIndex(p=>p.id===curRoom.id);
-  if(i>=0)projects[i]=curRoom;
-  saveAll();
-  if(announce)toast('Saved');
-}
-function persistRoomHistory(){
-  if(!curRoom)return;
-  ds(historyKey(curRoom.id),{undo:[...undoSt],redo:[...redoSt]});
-  syncCurrentRoomRecord(false);
-}
-async function restoreRoomHistory(room){
-  const current=roomSnapshot(room);
-  const saved=await dg(historyKey(room.id));
-  if(saved&&Array.isArray(saved.undo)&&saved.undo.length&&saved.undo[saved.undo.length-1]===current){
-    undoSt=saved.undo.slice(-50);
-    redoSt=Array.isArray(saved.redo)?saved.redo.slice(-50):[];
-    return;
-  }
-  undoSt=current?[current]:[];
-  redoSt=[];
-  persistRoomHistory();
 }
 function isEditableTarget(target){
   if(!target)return false;

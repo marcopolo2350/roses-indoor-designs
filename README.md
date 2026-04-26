@@ -104,6 +104,8 @@ What they do:
 - [scripts/core/app-config.js](./scripts/core/app-config.js) - canonical app identity and version metadata
 - [scripts/core/project-schema.js](./scripts/core/project-schema.js) - JSON import/export schema helpers
 - [scripts/core/error-reporting.js](./scripts/core/error-reporting.js) - fatal load and runtime error helpers
+- [scripts/core/app-state.js](./scripts/core/app-state.js) - first central runtime state surface for high-risk globals
+- [scripts/core/history.js](./scripts/core/history.js) - shared undo/redo and room-history runtime
 - [scripts/state.js](./scripts/state.js) - shared state helpers, geometry, snapping, walk logic
 - [scripts/storage.js](./scripts/storage.js) - persistence, IndexedDB, normalization
 - [scripts/ui.js](./scripts/ui.js) - home/editor shell behavior
@@ -159,7 +161,7 @@ The thumbnail tool renders from [scripts/thumbgen.html](./scripts/thumbgen.html)
 
 ## Architecture Reality Check
 
-The runtime is split across files, but it is not yet a clean ES-module architecture. Today it boots through [scripts/main.js](./scripts/main.js), which is an explicit ES-module entrypoint that still uses a documented compatibility bridge to load the existing browser-global runtime. That bridge is temporary and intentional.
+The runtime is split across files, but it is not yet a clean ES-module architecture. Today it boots through [scripts/main.js](./scripts/main.js), which is an explicit ES-module entrypoint that still uses a documented compatibility bridge to load the existing browser-global runtime. That bridge is temporary and intentional. The repo now also has first-pass central surfaces for runtime state and history in [scripts/core/app-state.js](./scripts/core/app-state.js) and [scripts/core/history.js](./scripts/core/history.js), but most feature code has not been migrated onto them yet.
 
 If you are trying to contribute or extend this app, treat it like a capable but still consolidating codebase:
 

@@ -334,6 +334,7 @@ async function loadAll(){
     }
   }
   projects=d&&Array.isArray(d)?d.map(normalizeRoom):[];
+  if(window.appState)window.appState.markDirty(false);
   if(window.cloudSync&&typeof window.cloudSync.onLoad==='function'){
     try{
       const merged=await window.cloudSync.onLoad(projects);
@@ -346,6 +347,7 @@ async function loadAll(){
 }
 async function saveAll(){
   await ds('projects',JSON.parse(JSON.stringify(projects)));
+  if(window.appState)window.appState.markSaved(Date.now());
   if(window.cloudSync&&typeof window.cloudSync.afterSave==='function'){
     window.cloudSync.afterSave().catch(err=>window.reportRoseError?.('saveAll-cloud-push',err));
   }

@@ -7,7 +7,9 @@ The app boots through [scripts/main.js](../scripts/main.js), which is an ES modu
 ## Major runtime layers
 
 - `scripts/core/` - shared configuration, validation, error boundaries
-- `scripts/state.js` - geometry helpers, storage keys, history helpers, app preferences
+- `scripts/core/app-state.js` - first central state surface for room/editor/runtime metadata
+- `scripts/core/history.js` - shared room history and undo/redo behavior
+- `scripts/state.js` - geometry helpers, storage keys, and app preferences
 - `scripts/storage.js` - IndexedDB access, normalization, runtime persistence glue
 - `scripts/ui.js` - home/editor shell behavior
 - `scripts/planner2d.js` - 2D room editing and drawing
@@ -19,4 +21,4 @@ The app boots through [scripts/main.js](../scripts/main.js), which is an ES modu
 
 ## Honest status
 
-The repo is only partly modular. The next structural step is moving runtime ownership from browser-global files toward explicit imports, controllers, and app-state boundaries.
+The repo is only partly modular. The next structural step is moving runtime ownership from browser-global files toward explicit imports, controllers, and app-state boundaries. `app-state.js` and `history.js` are the first extraction step, not the end state.

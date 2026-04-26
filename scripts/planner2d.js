@@ -3,7 +3,7 @@ async function openEd(room){
   normalizeRoom(room);
   // Persist the previous room's undo stack before navigating away
   if(curRoom&&curRoom.id!==room.id)persistRoomHistory();
-  curRoom=room;activeProjectFloorId=room.floorId||'floor_1';sel={type:null,idx:-1};tool='select';undoSt=[];redoSt=[];multiSelFurnitureIds=[];is3D=false;drawMode=false;
+  curRoom=room;if(window.appState)window.appState.setCurrentRoom(room);activeProjectFloorId=room.floorId||'floor_1';sel={type:null,idx:-1};tool='select';undoSt=[];redoSt=[];multiSelFurnitureIds=[];is3D=false;drawMode=false;
   // Reset panel state so every room opens on the Build tab with design presets collapsed
   roomPanelGroup='build';
   designPresetPanelOpen=false;
@@ -16,8 +16,10 @@ async function openEd(room){
   document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.t==='select'));stop3D();initCan();await restoreRoomHistory(room);sel={type:null,idx:-1};panelHidden=!!(typeof isTouchUi==='function'&&isTouchUi()&&window.innerWidth<=760);showP();
   try{if(!localStorage.getItem('rose_3d_hint'))localStorage.setItem('rose_3d_hint','1')}catch(_){}
   // Surface old note if returning to a room
+  if(window.appState)window.appState.markDirty(false);
   if(room.polygon&&room.polygon.length)maybeSurfaceNote(room.id);checkRoomReturn(room.id)}
 function exitEd(){persistRoomHistory();savePrj();stop3D();if(resH){window.removeEventListener('resize',resH);resH=null}curRoom=null;activeProjectFloorId=null;drawMode=false;multiSelFurnitureIds=[];
+  if(window.appState)window.appState.setCurrentRoom(null);
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scrHome').classList.add('on');renderHome()}
 function savePrj(){if(!curRoom)return;persistRoomHistory();syncCurrentRoomRecord(true)}
 
