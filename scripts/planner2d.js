@@ -602,13 +602,16 @@ function wallSnapForFurniture(item,point,room=curRoom,reg=item?.assetKey?MODEL_R
   if(reg?.snapToOpening&&!openingTarget)return {valid:false,windowTarget:null};
   let best=null;
   if(openingTarget){
+    const wall=openingTarget.wall;
+    const idx=(room.walls||[]).findIndex(candidate=>candidate?.id===wall?.id);
+    if(!wall||idx<0)return {valid:false,windowTarget:null};
     best={
-      wall:room.walls[openingTarget.wall],
-      idx:openingTarget.wall,
-      length:wL(room,openingTarget.wall),
+      wall,
+      idx,
+      length:wL(room,wall),
       offset:openingTarget.opening?.offset||0,
       distance:0,
-      point:closestPointOnSegment(source,wS(room,room.walls[openingTarget.wall]),wE(room,room.walls[openingTarget.wall]))
+      point:closestPointOnSegment(source,wS(room,wall),wE(room,wall))
     };
   }else{
     (room.walls||[]).forEach((wall,idx)=>{

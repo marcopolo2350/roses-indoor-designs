@@ -249,7 +249,7 @@ const MODEL_REGISTRY={
   ph_table_gallinera:{file:'ph_table_gallinera.glb',category:'table',mountType:'floor',defaultScale:1,yOffset:0,fit:'footprint'},
   ph_side_table:{file:'ph_side_table.glb',category:'table',mountType:'floor',defaultScale:1,yOffset:0,fit:'footprint'},
   ph_side_table_tall:{file:'ph_side_table_tall.glb',category:'table',mountType:'floor',defaultScale:1,yOffset:0,fit:'footprint'},
-  ph_shelf_01:{file:'ph_shelf_01.glb',category:'shelving',mountType:'floor',defaultScale:1,yOffset:0,fit:'footprint'},
+  ph_shelf_01:{file:'ph_shelf_01.glb',category:'shelving',mountType:'wall',defaultScale:1,yOffset:0,snapToWall:true,snapToFloor:false,fit:'wall',yawOffset:0,forwardAxis:'+z',wallFacingMode:'face_interior',defaultFacing:'interior'},
   ph_bookshelf:{file:'ph_bookshelf.glb',category:'bookshelf',mountType:'floor',defaultScale:1,yOffset:0,fit:'footprint'},
   ph_console_01:{file:'ph_console_01.glb',category:'storage',mountType:'floor',defaultScale:1,yOffset:0,fit:'footprint'},
   ph_console_chinese:{file:'ph_console_chinese.glb',category:'storage',mountType:'floor',defaultScale:1,yOffset:0,fit:'footprint'},
@@ -275,6 +275,7 @@ const MODEL_REGISTRY={
   ph_plant_potted_04:{file:'ph_plant_potted_04.glb',category:'plant',mountType:'floor',defaultScale:1,yOffset:0,fit:'footprint'},
   ph_planter_clay:{file:'ph_planter_clay.glb',category:'plant',mountType:'floor',defaultScale:1,yOffset:0,fit:'footprint'},
   ph_mirror_ornate:{file:'ph_mirror_ornate.glb',category:'mirror',mountType:'wall',defaultScale:1,yOffset:0,fit:'wall',snapToWall:true,wallFacingMode:'face_interior',defaultFacing:'interior'},
+  ph_ornate_mirror_01:{file:'ph_ornate_mirror_01.gltf',category:'mirror',mountType:'wall',defaultScale:1,yOffset:0,snapToWall:true,snapToFloor:false,fit:'wall',yawOffset:0,forwardAxis:'+z',wallFacingMode:'face_interior',defaultFacing:'interior'},
   ph_vase_ceramic_01:{file:'ph_vase_ceramic_01.glb',category:'decor',mountType:'surface',defaultScale:1,yOffset:0,fit:'surface'},
   ph_vase_brass_01:{file:'ph_vase_brass_01.glb',category:'decor',mountType:'surface',defaultScale:1,yOffset:0,fit:'surface'},
   kitchen_cabinet_base:{file:'cabinet.glb',category:'kitchen',mountType:'floor',defaultScale:1,yOffset:0,snapToFloor:true,fit:'footprint',yawOffset:0,forwardAxis:'+z',wallFacingMode:'free',defaultFacing:'forward'},
@@ -292,6 +293,7 @@ const MODEL_REGISTRY={
   bathroom_shower:{file:'bathroom_shower.glb',category:'bathroom',mountType:'floor',defaultScale:1,yOffset:0,snapToFloor:true,fit:'footprint',yawOffset:0,forwardAxis:'+z',wallFacingMode:'free',defaultFacing:'forward'},
   bathroom_mirror:{file:'mirror.glb',category:'bathroom',mountType:'wall',defaultScale:1,yOffset:0,snapToWall:true,snapToFloor:false,fit:'wall',yawOffset:0,forwardAxis:'+z',wallFacingMode:'face_interior',defaultFacing:'interior'},
   bathroom_towel_bar:{file:'bathroom_towel_bar.glb',category:'bathroom',mountType:'wall',defaultScale:1,yOffset:0,snapToWall:true,snapToFloor:false,fit:'wall',yawOffset:0,forwardAxis:'+z',wallFacingMode:'face_interior',defaultFacing:'interior'},
+  thi_towel_rack:{file:'thi_towel_rack.glb',category:'bathroom',mountType:'wall',defaultScale:1,yOffset:0,snapToWall:true,snapToFloor:false,fit:'wall',yawOffset:0,forwardAxis:'+z',wallFacingMode:'face_interior',defaultFacing:'interior'},
   washing_machine:{file:'washing_machine.glb',category:'laundry',mountType:'floor',defaultScale:1,yOffset:0,snapToFloor:true,fit:'footprint',yawOffset:0,forwardAxis:'+z',wallFacingMode:'free',defaultFacing:'forward'},
   column_round:{file:'column_round.glb',category:'decor',mountType:'floor',defaultScale:1,yOffset:0,snapToFloor:true,fit:'footprint',yawOffset:0,forwardAxis:'+z',wallFacingMode:'free',defaultFacing:'forward'},
   trashcan_small:{file:'trashcan_small.glb',category:'decor',mountType:'floor',defaultScale:1,yOffset:0,snapToFloor:true,fit:'footprint',yawOffset:0,forwardAxis:'+z',wallFacingMode:'free',defaultFacing:'forward'},
@@ -306,7 +308,7 @@ Object.entries(MODEL_REGISTRY).forEach(([key,reg])=>{
   reg.defaultFacing=reg.defaultFacing||(reg.mountType==='wall'?'interior':'forward');
   delete reg.defaultRotation;
 });
-['mirror','wall_art_01','wall_art_04','wall_art_06','curtains','blinds','lamp_wall','shelving','shelf_small','kitchen_cabinet_upper','kitchen_hood','bathroom_mirror','bathroom_towel_bar'].forEach(key=>{
+['mirror','wall_art_01','wall_art_04','wall_art_06','curtains','blinds','lamp_wall','shelving','shelf_small','kitchen_cabinet_upper','kitchen_hood','bathroom_mirror','bathroom_towel_bar','ph_shelf_01','ph_mirror_ornate','ph_ornate_mirror_01','thi_towel_rack'].forEach(key=>{
   if(MODEL_REGISTRY[key]){
     MODEL_REGISTRY[key].wallFacingMode='face_interior';
     MODEL_REGISTRY[key].defaultFacing='interior';

@@ -322,6 +322,14 @@ function itemMatchesCategory(item,category){
 function getFurnitureCatalogItem(record){
   return (record?.assetKey&&FURN_ITEM_BY_KEY.get(record.assetKey))||FURN_ITEM_BY_LABEL.get(((record?.label)||'').toLowerCase())||null;
 }
+function getAssetMeta(assetKey){
+  return assetKey?assetMetaByKey.get(assetKey)||null:null;
+}
+function resolveFurnitureMountType(record={},catalog=null,reg=null){
+  const assetKey=record?.assetKey||catalog?.assetKey||'';
+  const meta=getAssetMeta(assetKey);
+  return record?.mountType||catalog?.mountType||meta?.mountType||reg?.mountType||'floor';
+}
 function catalogSearchText(item){
   return [item.label,item.group,item.category,...(item.tags||[]),...(item.collections||[]),...(item.recommendedRoomTypes||[]),...getItemVariants(item).flatMap(variant=>[variant.label,variant.type,variant.family])].join(' ').toLowerCase();
 }
@@ -357,11 +365,16 @@ async function loadAssetManifest(){
     }));
     window.assetManifest=assetManifest;
     assetMetaByKey=new Map(assetManifest.map(entry=>[entry.id,entry]));
+    assetManifest.forEach(entry=>{
+      if(!MODEL_REGISTRY[entry.id])return;
+      if(entry.mountType)MODEL_REGISTRY[entry.id].mountType=entry.mountType;
+      if(entry.snapToOpening!==undefined)MODEL_REGISTRY[entry.id].snapToOpening=!!entry.snapToOpening;
+    });
     FURN_ITEMS.forEach(item=>{
       const meta=item.assetKey?assetMetaByKey.get(item.assetKey):null;
       item.group=normalizeCatalogGroup(meta?.category||item.group);
       item.category=GROUP_CATEGORY_MAP[item.group]||'decor';
-      item.mountType=item.mountType||MODEL_REGISTRY[item.assetKey]?.mountType||'floor';
+      item.mountType=item.mountType||meta?.mountType||MODEL_REGISTRY[item.assetKey]?.mountType||'floor';
       item.rotationPolicy=item.rotationPolicy||'free';
       item.defaultFacing=item.defaultFacing||MODEL_REGISTRY[item.assetKey]?.defaultFacing||'forward';
       item.tags=uniqueList([...(item.tags||[]),...(meta?.tags||[])]);
@@ -380,7 +393,7 @@ function normalizeFurnitureRecord(f){
   const catalog=getFurnitureCatalogItem(f);
   const assetKey=f.assetKey||catalog?.assetKey||inferAssetKey(f.label,f.mountType||catalog?.mountType);
   const reg=assetKey?MODEL_REGISTRY[assetKey]:null;
-  const mountType=f.mountType||catalog?.mountType||reg?.mountType||'floor';
+  const mountType=resolveFurnitureMountType({...f,assetKey},catalog,reg);
   const type=resolveLabel(f.label||catalog?.label);
   const redesignAction=EXISTING_ACTIONS[f.redesignAction]?f.redesignAction:'keep';
   const variant=getVariantById(catalog,f.variantId)||(!f.finishColor?getDefaultVariant(catalog):null);
@@ -557,6 +570,7 @@ function placeFurn(itemIdx){
   const reg=item.assetKey?MODEL_REGISTRY[item.assetKey]:null;
   const pos=state?.snapped||snapFurniturePoint(pendFurnPos.x,pendFurnPos.y);
   const wallAngle=state?.wallSnap?.angle;
+  const mountType=resolveFurnitureMountType(item,item,reg);
   curRoom.furniture.push(normalizeFurnitureRecord({
     id:uid(),
     label:item.label,
@@ -566,8 +580,8 @@ function placeFurn(itemIdx){
     w:item.w,
     d:item.d,
     rotation:Number.isFinite(wallAngle)?Math.round((-wallAngle*180/Math.PI)*10)/10:0,
-    mountType:item.mountType||reg?.mountType||'floor',
-    elevation:Number.isFinite(item.elevation)?item.elevation:defaultElevation(item.mountType||reg?.mountType||'floor',item.assetKey,resolveLabel(item.label)),
+    mountType,
+    elevation:Number.isFinite(item.elevation)?item.elevation:defaultElevation(mountType,item.assetKey,resolveLabel(item.label)),
     assetKey:item.assetKey,
     yOffset:reg?.yOffset||0,
     variantId:variant?.id||'',
