@@ -15,6 +15,75 @@ function dismissWelcome(){
   ds('welcomed',true);
 }
 
+function handleUiAction(action,target){
+  if(!action)return;
+  if(action==='dismiss-welcome')return dismissWelcome();
+  if(action==='choose-profile')return chooseProfile(target?.dataset?.profile||'rose');
+  if(action==='open-profile-switcher')return openProfileSwitcher();
+  if(action==='start-tutorial')return startTut(target?.dataset?.force==='true');
+  if(action==='open-create-room')return openCrModal(target?.dataset?.roomType||'');
+  if(action==='open-create-room-brief')return openCrModalWithBrief(target?.dataset?.roomType||'',target?.dataset?.brief||'');
+  if(action==='open-last-project')return openLastProject();
+  if(action==='exit-editor')return exitEd();
+  if(action==='undo')return doUndo();
+  if(action==='redo')return doRedo();
+  if(action==='set-tool')return setTool(target?.dataset?.tool||target?.dataset?.t||'select');
+  if(action==='toggle-measurements')return toggleMeasurements();
+  if(action==='toggle-3d')return toggle3D();
+  if(action==='save-project')return savePrj();
+  if(action==='toggle-editor-more')return toggleEditorMore();
+  if(action==='editor-more'){
+    const fn=window[target?.dataset?.fn];
+    if(typeof fn==='function')fn();
+    return closeEditorMore();
+  }
+  if(action==='open-panel')return openP();
+  if(action==='toggle-snap')return togSnap();
+  if(action==='close-room')return closeRoom();
+  if(action==='set-time-of-day')return setTimeOfDay(Number(target?.dataset?.timeOfDay||50));
+  if(action==='set-cam-mode')return setCamMode(target?.dataset?.camMode||'orbit');
+  if(action==='set-view-preset')return setViewPreset(target?.dataset?.viewPreset||'overview');
+  if(action==='toggle-walkthrough-tray')return toggleWalkthroughTray();
+  if(action==='toggle-presentation-mode')return togglePresentationMode();
+  if(action==='toggle-photo-mode')return togglePhotoMode();
+  if(action==='toggle-3d-compare-mode')return toggle3DCompareMode();
+  if(action==='room-runtime-action'){
+    const fn=window[target?.dataset?.fn];
+    if(typeof fn==='function')return fn();
+    return;
+  }
+  if(action==='set-create-room-layout')return setCreateRoomLayoutMode(target?.dataset?.layoutMode||'empty');
+  if(action==='create-room-from-preset')return createFromPreset();
+  if(action==='start-free-draw')return startFreeDraw();
+  if(action==='cancel-reference-calibration')return cancelReferenceCalibrationModal();
+  if(action==='submit-reference-calibration')return submitReferenceCalibration();
+  if(action==='toggle-preflight-panel')return togglePreflightPanel();
+  if(action==='open-asset-verification')return openAssetVerification();
+  if(action==='cycle-verification-assets')return cycleVerificationAssets();
+  if(action==='refresh-asset-verification')return refreshAssetVerification();
+  if(action==='close-asset-verification')return closeAssetVerification();
+  if(action==='tutorial-next')return nextTut();
+  if(action==='tutorial-end')return endTut();
+}
+
+function bindStaticUiActions(){
+  if(document.body?.dataset?.uiActionsBound==='1')return;
+  document.body.dataset.uiActionsBound='1';
+  document.addEventListener('click',event=>{
+    const target=event.target.closest('[data-action]');
+    if(!target)return;
+    handleUiAction(target.dataset.action,target);
+  });
+  document.addEventListener('change',event=>{
+    const target=event.target;
+    if(target?.dataset?.action==='handle-project-json-selected')handleProjectJSONSelected(event);
+  });
+  document.addEventListener('input',event=>{
+    const target=event.target;
+    if(target?.dataset?.action==='time-of-day-input')onTimeOfDayChange(target.value);
+  });
+}
+
 // ── TUTORIAL ──
 async function chooseProfile(profileId,{skipReload=false}={}){
   activeProfile=PROFILE_LABELS[profileId]?profileId:'rose';
@@ -48,7 +117,7 @@ function showTut(){
   if(tutS<0||tutS>=TUTS.length){endTut();return}
   const s=TUTS[tutS];
   document.getElementById('tutOv').classList.add('on');
-  document.getElementById('tutCard').innerHTML=`<h4>${s.t}</h4><p>${s.d}</p><div class="tut-actions"><button onclick="${tutS>=TUTS.length-1?'endTut()':'nextTut()'}">${tutS>=TUTS.length-1?"Let's go!":'Next'}</button><button class="tut-skip" onclick="endTut()">Skip tutorial</button></div><div class="tut-dots">${TUTS.map((_,i)=>`<div class="tut-d${i===tutS?' on':''}"></div>`).join('')}</div>`;
+  document.getElementById('tutCard').innerHTML=`<h4>${s.t}</h4><p>${s.d}</p><div class="tut-actions"><button type="button" data-action="${tutS>=TUTS.length-1?'tutorial-end':'tutorial-next'}">${tutS>=TUTS.length-1?"Let's go!":'Next'}</button><button type="button" class="tut-skip" data-action="tutorial-end">Skip tutorial</button></div><div class="tut-dots">${TUTS.map((_,i)=>`<div class="tut-d${i===tutS?' on':''}"></div>`).join('')}</div>`;
 }
 function nextTut(){tutS++;showTut()}
 function endTut(){tutS=-1;document.getElementById('tutOv').classList.remove('on');setLocal(profileSeenKey(),'1')}

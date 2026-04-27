@@ -22,3 +22,7 @@ The app boots through [scripts/main.js](../scripts/main.js), which is an ES modu
 ## Honest status
 
 The repo is only partly modular. The next structural step is moving runtime ownership from browser-global files toward explicit imports, controllers, and app-state boundaries. `app-state.js` and `history.js` are the first extraction step, not the end state.
+
+## UI event wiring status
+
+The shell is in migration from inline HTML handlers to delegated `data-action` bindings. `scripts/ui.js` now owns a central `handleUiAction()` dispatcher plus `bindStaticUiActions()`, and boot calls that binding once up front. This reduces direct HTML-to-global coupling for the home shell, editor header, setup modal, time-of-day controls, and major 3D buttons, but it is still a transitional layer rather than a finished component system.

@@ -191,6 +191,7 @@ async function runSelfTest() {
 // ── BOOT ──
 async function boot() {
   document.body.classList.toggle('dev-mode', DEV_MODE);
+  bindStaticUiActions();
   const httpReady = await ensureHttpRuntime();
   if (!httpReady && location.protocol === 'file:') return;
   loadActiveProfile();

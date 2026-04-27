@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.3 - 2026-04-26
+
+- replaced a large shell/editor slice of inline `onclick` and `oninput` handlers with delegated `data-action` bindings
+- bound the delegated UI action layer during boot so the home screen, editor chrome, 3D controls, and setup modal no longer depend on direct inline event wiring
+- added a shared devtools static server helper and moved smoke/self-test runners to ephemeral ports to avoid fixed-port collisions during local verification
+
 ## 0.5.0-hardening.2 - 2026-04-26
 
 - made `index.html` the canonical app shell
