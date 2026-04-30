@@ -1,0 +1,28 @@
+{
+  "allowedDuplicateModelPaths": {
+    "./assets/models/shelf_small.glb": {
+      "assetIds": ["shelf_small", "kitchen_hood"],
+      "reason": "Range hood currently reuses the small shelf geometry with distinct metadata and thumbnail."
+    },
+    "./assets/models/cabinet.glb": {
+      "assetIds": ["cabinet", "kitchen_dishwasher"],
+      "reason": "Dishwasher currently reuses cabinet geometry with appliance-specific catalog metadata."
+    },
+    "./assets/models/mirror.glb": {
+      "assetIds": ["mirror", "bathroom_mirror"],
+      "reason": "Bathroom mirror is a room-specific catalog alias of the generic mirror model."
+    },
+    "./assets/models/ph_table_wooden.glb": {
+      "assetIds": ["kitchen_island", "ph_table_wooden"],
+      "reason": "Kitchen island currently reuses the wooden table model as a catalog-specific alias."
+    },
+    "./assets/models/ph_cabinet_painted.glb": {
+      "assetIds": ["kitchen_cabinet_base", "ph_cabinet_painted"],
+      "reason": "Base cabinet currently reuses the painted cabinet model as kitchen-specific metadata."
+    },
+    "./assets/models/ph_shelf_01.glb": {
+      "assetIds": ["kitchen_cabinet_upper", "ph_shelf_01"],
+      "reason": "Upper cabinet currently reuses the wall shelf model as kitchen-specific metadata."
+    }
+  }
+}

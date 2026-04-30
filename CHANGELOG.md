@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.7 - 2026-04-30
+
+- added `data/asset-validation-overrides.json` to document intentional shared GLB aliases
+- updated manifest validation so expected shared model files are quiet, while stale overrides and unexpected duplicates still fail or warn
+
 ## 0.5.0-hardening.6 - 2026-04-30
 
 - replaced silent persistence catches in IndexedDB, profile selection, editor preferences, and preview thumbnail generation with explicit error reports

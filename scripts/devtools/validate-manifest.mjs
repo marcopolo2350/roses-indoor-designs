@@ -3,13 +3,18 @@ import path from "node:path";
 
 const root = process.cwd();
 const manifestPath = path.join(root, "data", "asset-manifest.json");
+const overridesPath = path.join(root, "data", "asset-validation-overrides.json");
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+const validationOverrides = fs.existsSync(overridesPath)
+  ? JSON.parse(fs.readFileSync(overridesPath, "utf8"))
+  : {};
 const items = Array.isArray(manifest) ? manifest : manifest.assets || [];
+const allowedDuplicateModelPaths = validationOverrides.allowedDuplicateModelPaths || {};
 
 const errors = [];
 const warnings = [];
 const ids = new Set();
-const files = new Set();
+const files = new Map();
 
 for (const item of items) {
   if (!item || typeof item !== "object") {
@@ -38,8 +43,20 @@ for (const item of items) {
     ids.add(id);
   }
   if (modelPath) {
-    if (files.has(modelPath)) warnings.push(`Duplicate model file reference: ${modelPath}`);
-    files.add(modelPath);
+    const previousIds = files.get(modelPath) || [];
+    if (previousIds.length) {
+      const expectedIds = allowedDuplicateModelPaths[modelPath]?.assetIds || [];
+      const observedIds = [...previousIds, id].filter(Boolean).sort();
+      const allowedIds = [...expectedIds].sort();
+      const isAllowed =
+        allowedIds.length === observedIds.length &&
+        allowedIds.every((allowedId, index) => allowedId === observedIds[index]);
+      if (!isAllowed) {
+        warnings.push(`Duplicate model file reference: ${modelPath} (${observedIds.join(", ")})`);
+      }
+    }
+    previousIds.push(id);
+    files.set(modelPath, previousIds);
     const absoluteModelPath = path.join(root, modelPath.replace(/^\.\//, ""));
     if (!fs.existsSync(absoluteModelPath))
       errors.push(`Missing model file for ${id}: ${modelPath}`);
@@ -51,6 +68,19 @@ for (const item of items) {
   }
   if (item.mountType && !["floor", "wall", "surface", "ceiling"].includes(item.mountType)) {
     errors.push(`Invalid mountType for ${item.assetKey}: ${item.mountType}`);
+  }
+}
+
+for (const [modelPath, meta] of Object.entries(allowedDuplicateModelPaths)) {
+  const observedIds = [...(files.get(modelPath) || [])].filter(Boolean).sort();
+  const expectedIds = [...(meta.assetIds || [])].sort();
+  const matches =
+    observedIds.length === expectedIds.length &&
+    expectedIds.every((expectedId, index) => expectedId === observedIds[index]);
+  if (!matches) {
+    errors.push(
+      `Allowed duplicate model override is stale for ${modelPath}: expected ${expectedIds.join(", ") || "<none>"}; observed ${observedIds.join(", ") || "<none>"}.`,
+    );
   }
 }
 
