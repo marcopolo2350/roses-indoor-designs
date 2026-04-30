@@ -29,7 +29,7 @@ This repo contains a real working app, but it is still in a transition phase bet
 - runtime still depends on ordered browser globals
 - app boot uses sequential script injection instead of real `import` / `export`
 - state is still shared through broad mutable globals
-- UI still contains inline event handlers
+- generated editor/catalog panels still contain inline event handlers
 - package/tooling is only partially formalized
 
 ## Run Locally
@@ -69,6 +69,7 @@ npm run check
 npm run lint
 npm run format
 npm run validate:manifest
+npm run test:playwright
 npm run test:self
 npm run test:smoke
 npm test
@@ -84,6 +85,7 @@ What they do:
 - `lint` - lints the new hardening boundary files
 - `format` - checks formatting for docs and the new hardening files
 - `validate:manifest` - verifies asset manifest entries, models, and thumbnails
+- `test:playwright` - runs the standard Playwright spec suite
 - `test:self` - runs the built-in `#selftest` flow through Playwright
 - `test:smoke` - starts a temporary local server and runs the Playwright smoke helper against the app
 - `test` - runs the hardening validation chain
@@ -128,6 +130,7 @@ What they do:
 - [docs/data-model.md](./docs/data-model.md) - current room/project model
 - [docs/testing.md](./docs/testing.md) - test and verification commands
 - [docs/deployment.md](./docs/deployment.md) - deployment notes
+- [docs/hardening-status.md](./docs/hardening-status.md) - current checklist status
 
 ## QA
 
@@ -140,7 +143,7 @@ http://127.0.0.1:8123/index.html#selftest
 Notes:
 
 - the repo now includes reproducible `test:self`, `test:smoke`, and manifest-validation commands
-- the repo still does not have a full Playwright spec suite
+- the repo has a starter Playwright spec suite, but not full workflow coverage yet
 - `progress.md` is still the best source for recent verification history
 
 ## Thumbnail Pipeline

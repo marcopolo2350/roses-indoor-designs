@@ -9,6 +9,10 @@ This roadmap is for hardening work, not feature expansion.
 3. reduce inline event handling
 4. expand reproducible validation
 
+## Tracking
+
+Current completed, partial, and deferred cleanup work is tracked in [docs/hardening-status.md](./docs/hardening-status.md).
+
 ## Not in scope during hardening
 
 - new furniture categories

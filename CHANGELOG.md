@@ -2,6 +2,7 @@
 
 ## 0.5.0-hardening.8 - 2026-04-30
 
+- added `docs/hardening-status.md` to track completed, partial, deferred, and remaining hardening work
 - added `playwright.config.mjs` and a standard Playwright smoke spec for the canonical app shell
 - added `npm run test:playwright` and CI coverage for the Playwright spec suite
 - verified delegated shell actions, shortcut-sheet close behavior, create-room flow, and runtime version metadata in the spec
