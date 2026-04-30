@@ -42,5 +42,23 @@ test("canonical shell boots and delegated actions work", async ({ page }) => {
   await page.locator('[data-action="create-room-from-preset"]').click();
   await expect(page.locator("#scrEd")).toHaveClass(/on/);
 
+  await page.locator('[data-tool="furniture"]').click();
+  await page.locator("#edCan").click({ position: { x: 260, y: 220 } });
+  await expect(page.locator("#furnPickOv")).toBeVisible();
+  const pickerInlineHandlers = await page
+    .locator(
+      "#furnPickOv [onclick], #furnPickOv [oninput], #furnPickOv [onchange], #furnPickOv [onfocus], #furnPickOv [onpointerenter]",
+    )
+    .count();
+  expect(pickerInlineHandlers).toBe(0);
+  await page.locator("#furnSearch").fill("sofa");
+  await expect(page.locator(".furn-option:visible").first()).toBeVisible();
+  await page
+    .locator('.furn-option:visible [data-action="catalog-toggle-favorite"]')
+    .first()
+    .click();
+  await page.locator('[data-action="catalog-close"]').click();
+  await expect(page.locator("#furnPickOv")).toHaveCount(0);
+
   expect(runtimeErrors).toEqual([]);
 });

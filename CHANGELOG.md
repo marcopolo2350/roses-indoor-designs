@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.9 - 2026-04-30
+
+- replaced generated catalog picker inline handlers with delegated `data-action` handlers for search, close, filters, cards, favorites, placement, and variant chips
+- extended the Playwright smoke spec to open the catalog picker and verify it has no generated inline handlers
+- kept property-panel inline-handler cleanup tracked as remaining hardening work
+
 ## 0.5.0-hardening.8 - 2026-04-30
 
 - added `docs/hardening-status.md` to track completed, partial, deferred, and remaining hardening work

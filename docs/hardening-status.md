@@ -16,6 +16,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - `scripts/core/storage-keys.js` owns localStorage and IndexedDB key naming.
 - `scripts/cloud/supabase.js` isolates experimental cloud sync behavior.
 - `scripts/ui/shortcuts.js` owns keyboard shortcuts and shortcut-sheet rendering.
+- Generated catalog picker interactions use delegated `data-action` handlers instead of inline event attributes.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
 - Standard Playwright config and a shell smoke spec exist.
 - README, changelog, roadmap, architecture, data model, testing, deployment, and limitations docs exist.
@@ -24,7 +25,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 
 - The runtime is still browser-global, but the bridge is explicit and several core surfaces have been extracted.
 - State is still largely mutable globals, but high-risk metadata and history now have central owners.
-- Inline handlers are removed from the static app shell, but generated panel markup still contains inline handlers in legacy catalog/editor surfaces.
+- Inline handlers are removed from the static app shell and generated catalog picker, but generated property-panel markup still contains inline handlers in legacy editor surfaces.
 - Manifest validation is stricter and quieter, but asset licensing and heavy GLB audits are still not complete.
 - Cloud sync is isolated and marked experimental, but conflict handling is still timestamp-oriented.
 - Playwright coverage exists, but it is still smoke-level rather than a full workflow suite.
@@ -34,13 +35,13 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Full ESM conversion: too risky to force without a bundler/build step and broad regression coverage.
 - Full central action dispatcher: needs careful migration from existing globals to avoid breaking editor flows.
 - CSS file split: useful, but less urgent than state, persistence, and test reliability.
-- Full `innerHTML` removal: important, but generated catalog/editor panels need a focused rendering refactor.
+- Full `innerHTML` removal: important, but generated editor panels still need a focused rendering refactor.
 - Full dependency bundling: still deferred to preserve GitHub Pages compatibility while hardening behavior.
 
 ## Current Known Debt
 
 - `scripts/ui.js`, `scripts/catalog.js`, `scripts/planner2d.js`, and `scripts/planner3d.js` are still large browser-global files.
-- Generated property-panel HTML still uses inline event handlers.
+- Generated property-panel HTML still uses inline event handlers outside the catalog picker.
 - Some catches remain intentionally soft for rendering/math fallbacks and should be reviewed in smaller passes.
 - Catalog metadata still has model aliases, now documented through validation overrides.
 - The app still relies on CDN-loaded Three.js, jsPDF, and pdf.js at runtime.
