@@ -11,7 +11,22 @@ test.afterAll(async () => {
   await server?.close();
 });
 
-test("canonical shell boots and delegated actions work", async ({ page }) => {
+async function ensureRoomPanelOpen(page) {
+  const buildTab = page.locator('[data-action="room-panel-group"][data-group="build"]');
+  const opener = page.locator('[data-action="open-panel"]');
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    if (await buildTab.isVisible().catch(() => false)) return buildTab;
+    if (await opener.isVisible().catch(() => false)) {
+      await opener.click();
+      break;
+    }
+    await page.waitForTimeout(100);
+  }
+  await expect(buildTab).toBeVisible();
+  return buildTab;
+}
+
+test("canonical shell boots and delegated actions work", async ({ page }, testInfo) => {
   const runtimeErrors = [];
   page.on("console", (message) => {
     if (message.type() === "error") runtimeErrors.push(`console: ${message.text()}`);
@@ -32,25 +47,26 @@ test("canonical shell boots and delegated actions work", async ({ page }) => {
   expect(runtimeVersion).toBe(metaVersion);
 
   await page.locator(".w-btn").click();
-  await page.keyboard.press("?");
-  await expect(page.locator("#shortcutSheet")).toHaveClass(/on/);
-  await page.locator('[data-action="close-shortcut-sheet"]').click();
-  await expect(page.locator("#shortcutSheet")).not.toHaveClass(/on/);
+  if (testInfo.project.name === "desktop") {
+    await page.keyboard.press("?");
+    await expect(page.locator("#shortcutSheet")).toHaveClass(/on/);
+    await page.locator('[data-action="close-shortcut-sheet"]').click();
+    await expect(page.locator("#shortcutSheet")).not.toHaveClass(/on/);
+  }
 
   await page.locator('[data-action="open-create-room"]').first().click();
   await expect(page.locator("#crMod")).toHaveClass(/on/);
   await page.locator('[data-action="create-room-from-preset"]').click();
   await expect(page.locator("#scrEd")).toHaveClass(/on/);
 
-  const buildTab = page.locator('[data-action="room-panel-group"][data-group="build"]');
-  if ((await buildTab.count()) === 0) {
-    await page.locator('[data-action="open-panel"]').click();
-  }
-  await expect(buildTab).toBeVisible();
+  const buildTab = await ensureRoomPanelOpen(page);
   await page.locator('[data-action="room-panel-group"][data-group="style"]').click();
   await expect(page.locator('[data-action="room-panel-group"][data-group="style"]')).toHaveClass(
     /sel/,
   );
+  await page.locator('[data-action="set-wall-finish"]').nth(1).click();
+  await page.locator('[data-action="set-floor-type"]').nth(1).click();
+  await page.locator('[data-action="set-trim-color"]').first().click();
   await page.locator('[data-action="room-panel-group"][data-group="build"]').click();
   await expect(page.locator('[data-action="room-panel-group"][data-group="build"]')).toHaveClass(
     /sel/,
@@ -59,10 +75,7 @@ test("canonical shell boots and delegated actions work", async ({ page }) => {
   await page.locator('[data-action="set-adj-room-depth"]').click();
   await page.locator('[data-action="attach-adjacent-room"][data-side="east"]').click();
   await expect(page.locator("body")).toContainText("Living Room East");
-  const panelOpen = await page.locator("#propsP").evaluate((node) => node.classList.contains("on"));
-  if (!panelOpen) {
-    await page.locator('[data-action="open-panel"]').click();
-  }
+  await ensureRoomPanelOpen(page);
   await expect(page.locator("#propsP")).toContainText("Building 2 rooms");
   await page.locator('[data-action="prop-close"]').click();
   await expect(page.locator("#propsP")).not.toHaveClass(/on/);

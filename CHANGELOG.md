@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.13 - 2026-04-30
+
+- moved Surfaces wall, floor, and trim controls to delegated `data-action` handlers
+- extended the desktop/mobile Playwright smoke path to exercise delegated surface controls
+
 ## 0.5.0-hardening.12 - 2026-04-30
 
 - added desktop and mobile Chromium Playwright projects for the canonical smoke path

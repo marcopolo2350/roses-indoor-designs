@@ -100,6 +100,13 @@ function handleUiAction(action,target,event){
   if(action==='move-current-room-order')return moveCurrentRoomOrder(Number(target?.dataset?.direction||0));
   if(action==='delete-current-room')return deleteCurrentRoom();
   if(action==='attach-adjacent-room')return attachAdjacentRoom(target?.dataset?.side||'east');
+  if(action==='set-wall-finish')return setWallFinish(target?.dataset?.finishId||'warm_white');
+  if(action==='reset-wall-color-to-style')return resetWallColorToStyle();
+  if(action==='set-wall-paint')return setWallPaint(target?.dataset?.color||'');
+  if(action==='set-floor-type')return setFloorType(target?.dataset?.floorType||'light_oak');
+  if(action==='reset-floor-color-to-style')return resetFloorColorToStyle();
+  if(action==='set-floor-paint')return setFloorPaint(target?.dataset?.color||'');
+  if(action==='set-trim-color')return setTrimColor(target?.dataset?.color||'');
   if(action==='tutorial-next')return nextTut();
   if(action==='tutorial-end')return endTut();
   if(action==='close-shortcut-sheet')return closeShortcutSheet();
@@ -127,6 +134,9 @@ function bindStaticUiActions(){
     if(target?.dataset?.action==='rename-current-room')renameCurrentRoom(target.value);
     if(target?.dataset?.action==='set-adj-room-width')setAdjRoomWidth(target.value);
     if(target?.dataset?.action==='set-adj-room-depth')setAdjRoomDepth(target.value);
+    if(target?.dataset?.action==='set-wall-paint-input')setWallPaint(target.value);
+    if(target?.dataset?.action==='set-floor-paint-input')setFloorPaint(target.value);
+    if(target?.dataset?.action==='set-trim-color-input')setTrimColor(target.value);
   });
   document.addEventListener('input',event=>{
     const target=event.target;
