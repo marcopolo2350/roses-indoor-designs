@@ -84,6 +84,19 @@ function handleUiAction(action,target,event){
     if(handler==='setSelectedFurnitureVariant')return setSelectedFurnitureVariant(assetKey,variantId);
     return;
   }
+  if(action==='prop-close')return closeP();
+  if(action==='room-panel-group')return setRoomPanelGroup(target?.dataset?.group||'build');
+  if(action==='open-project-room')return openProjectRoom(target?.dataset?.roomId||'');
+  if(action==='duplicate-project-room')return duplicateProjectRoom(target?.dataset?.roomId||'');
+  if(action==='delete-project-room')return deleteProjectRoom(target?.dataset?.roomId||'');
+  if(action==='set-active-floor')return setActiveFloor(target?.dataset?.floorId||'floor_1');
+  if(action==='open-add-room-modal-for-project')return openAddRoomModalForProject(target?.dataset?.floorId||'floor_1');
+  if(action==='move-project-room-to-floor')return moveProjectRoomToFloor(target?.dataset?.roomId||'',target?.dataset?.floorId||'floor_1');
+  if(action==='move-current-room-to-floor')return moveCurrentRoomToFloor(target?.dataset?.floorId||'floor_1');
+  if(action==='create-next-floor')return createNextFloor();
+  if(action==='duplicate-current-room')return duplicateCurrentRoom();
+  if(action==='move-current-room-order')return moveCurrentRoomOrder(Number(target?.dataset?.direction||0));
+  if(action==='delete-current-room')return deleteCurrentRoom();
   if(action==='tutorial-next')return nextTut();
   if(action==='tutorial-end')return endTut();
   if(action==='close-shortcut-sheet')return closeShortcutSheet();
@@ -100,6 +113,8 @@ function bindStaticUiActions(){
   document.addEventListener('change',event=>{
     const target=event.target;
     if(target?.dataset?.action==='handle-project-json-selected')handleProjectJSONSelected(event);
+    if(target?.dataset?.action==='rename-current-project')renameCurrentProject(target.value);
+    if(target?.dataset?.action==='rename-current-room')renameCurrentRoom(target.value);
   });
   document.addEventListener('input',event=>{
     const target=event.target;

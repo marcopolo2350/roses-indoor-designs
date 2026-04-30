@@ -42,6 +42,18 @@ test("canonical shell boots and delegated actions work", async ({ page }) => {
   await page.locator('[data-action="create-room-from-preset"]').click();
   await expect(page.locator("#scrEd")).toHaveClass(/on/);
 
+  await expect(page.locator('[data-action="room-panel-group"][data-group="build"]')).toBeVisible();
+  await page.locator('[data-action="room-panel-group"][data-group="style"]').click();
+  await expect(page.locator('[data-action="room-panel-group"][data-group="style"]')).toHaveClass(
+    /sel/,
+  );
+  await page.locator('[data-action="room-panel-group"][data-group="build"]').click();
+  await expect(page.locator('[data-action="room-panel-group"][data-group="build"]')).toHaveClass(
+    /sel/,
+  );
+  await page.locator('[data-action="prop-close"]').click();
+  await expect(page.locator("#propsP")).not.toHaveClass(/on/);
+
   await page.locator('[data-tool="furniture"]').click();
   await page.locator("#edCan").click({ position: { x: 260, y: 220 } });
   await expect(page.locator("#furnPickOv")).toBeVisible();

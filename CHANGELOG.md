@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.10 - 2026-04-30
+
+- moved Home Plan room/floor panel controls to delegated `data-action` handlers
+- moved property-panel close and room panel tabs off inline click handlers
+- added Playwright coverage for delegated room panel tab switching and panel close behavior
+
 ## 0.5.0-hardening.9 - 2026-04-30
 
 - replaced generated catalog picker inline handlers with delegated `data-action` handlers for search, close, filters, cards, favorites, placement, and variant chips

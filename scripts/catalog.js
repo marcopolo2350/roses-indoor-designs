@@ -776,7 +776,7 @@ function setRoomPanelGroup(group){
 }
 function roomPanelTabs(){
   const groups=[['build','Build'],['style','Style'],['furnish','Furnish'],['present','Present']];
-  return `<div class="prop-group-tabs">${groups.map(([id,label])=>`<button class="prop-group-tab${roomPanelGroup===id?' sel':''}" type="button" onclick="setRoomPanelGroup('${id}')">${label}</button>`).join('')}</div>`;
+  return `<div class="prop-group-tabs">${groups.map(([id,label])=>`<button class="prop-group-tab${roomPanelGroup===id?' sel':''}" type="button" data-action="room-panel-group" data-group="${id}">${label}</button>`).join('')}</div>`;
 }
 function toggleDesignPresetPanel(){
   designPresetPanelOpen=!designPresetPanelOpen;
@@ -851,7 +851,7 @@ function referenceCalibrationStatus(ref){
 }
 function restyleRoomPanelText(panel){
   if(!panel)return;
-  const floorButtons=[...panel.querySelectorAll('.mat-grid.tall .mat-btn[onclick*="setActiveFloor"]')];
+  const floorButtons=[...panel.querySelectorAll('.mat-grid.tall .mat-btn[data-action="set-active-floor"]')];
   floorButtons.forEach(btn=>{
     const raw=(btn.textContent||'').replace(/\s+/g,' ').trim();
     const match=raw.match(/^(.*?)(\d+)\s*$/);
@@ -877,21 +877,21 @@ function projectRoomMoveTargetsMarkup(room,floors){
   const targets=floors.filter(floor=>floor.id!==currentFloorId);
   if(!targets.length)return '';
   const baseId=room.baseRoomId||room.id;
-  return `<div class="room-floor-targets">${targets.map(floor=>`<button class="mini-chip secondary" type="button" onclick="moveProjectRoomToFloor('${baseId}','${floor.id}')">Send to ${esc(floor.label)}</button>`).join('')}</div>`;
+  return `<div class="room-floor-targets">${targets.map(floor=>`<button class="mini-chip secondary" type="button" data-action="move-project-room-to-floor" data-room-id="${baseId}" data-floor-id="${floor.id}">Send to ${esc(floor.label)}</button>`).join('')}</div>`;
 }
 function projectRoomCardMarkup(room,projectRoot,floors){
   const baseId=room.baseRoomId||room.id;
   const active=(curRoom.baseRoomId||curRoom.id)===baseId;
   return `<div class="room-card-mini${active?' active':''}">
-    <div class="room-card-main" onclick="openProjectRoom('${baseId}')">
+    <div class="room-card-main" data-action="open-project-room" data-room-id="${baseId}">
       <div class="room-card-kicker">${active?'Current room':'Room'}</div>
       <div class="room-card-title">${esc(room.name||'Room')}</div>
       <div class="room-card-meta">${esc(projectRoomMetaLine(room,projectRoot))}</div>
     </div>
     <div class="room-card-actions">
-      <button class="mini-chip secondary" type="button" onclick="openProjectRoom('${baseId}')">${active?'Stay Here':'Open'}</button>
-      <button class="mini-chip secondary" type="button" onclick="duplicateProjectRoom('${baseId}')">Duplicate</button>
-      <button class="mini-chip secondary" type="button" onclick="deleteProjectRoom('${baseId}')">Delete</button>
+      <button class="mini-chip secondary" type="button" data-action="open-project-room" data-room-id="${baseId}">${active?'Stay Here':'Open'}</button>
+      <button class="mini-chip secondary" type="button" data-action="duplicate-project-room" data-room-id="${baseId}">Duplicate</button>
+      <button class="mini-chip secondary" type="button" data-action="delete-project-room" data-room-id="${baseId}">Delete</button>
     </div>
     ${projectRoomMoveTargetsMarkup(room,floors)}
   </div>`;
@@ -906,8 +906,8 @@ function projectFloorBoardMarkup(floor,projectRoot,floors,currentFloorId){
         <div class="project-floor-meta">${floor.rooms.length} room${floor.rooms.length===1?'':'s'}</div>
       </div>
       <div class="project-floor-actions">
-        <button class="mini-chip secondary" type="button" onclick="setActiveFloor('${floor.id}')">${active?'Viewing':'View Floor'}</button>
-        <button class="mini-chip secondary" type="button" onclick="openAddRoomModalForProject('${floor.id}')">Add Room</button>
+        <button class="mini-chip secondary" type="button" data-action="set-active-floor" data-floor-id="${floor.id}">${active?'Viewing':'View Floor'}</button>
+        <button class="mini-chip secondary" type="button" data-action="open-add-room-modal-for-project" data-floor-id="${floor.id}">Add Room</button>
       </div>
     </div>
     <div class="room-card-stack">${cards}</div>
@@ -915,13 +915,13 @@ function projectFloorBoardMarkup(floor,projectRoot,floors,currentFloorId){
 }
 function renderRoomPanelNoSelection(r,{cBtn,activeLightingPreset,ref,refLoaded,refScale,refWidth,floors,currentFloorId,roomCards}){
   const currentFloor=floors.find(floor=>floor.id===currentFloorId)||floors[0];
-  const floorSwitcher=`<div class="mat-grid tall">${floors.map(floor=>`<button class="mat-btn${currentFloorId===floor.id?' sel':''}" onclick="setActiveFloor('${floor.id}')"><span class="mat-btn-title">${esc(floor.label)}</span><span class="mat-btn-meta">${floor.rooms.length} room${floor.rooms.length===1?'':'s'}</span></button>`).join('')}</div>`;
+  const floorSwitcher=`<div class="mat-grid tall">${floors.map(floor=>`<button class="mat-btn${currentFloorId===floor.id?' sel':''}" type="button" data-action="set-active-floor" data-floor-id="${floor.id}"><span class="mat-btn-title">${esc(floor.label)}</span><span class="mat-btn-meta">${floor.rooms.length} room${floor.rooms.length===1?'':'s'}</span></button>`).join('')}</div>`;
   const currentRoomTargets=floors.filter(floor=>floor.id!==(r.floorId||currentFloorId));
   const currentRoomMoveRow=currentRoomTargets.length
-    ? `<label style="margin-top:8px">MOVE CURRENT ROOM TO</label><div class="room-floor-targets">${currentRoomTargets.map(floor=>`<button class="mini-chip secondary" type="button" onclick="moveCurrentRoomToFloor('${floor.id}')">${esc(floor.label)}</button>`).join('')}</div>`
+    ? `<label style="margin-top:8px">MOVE CURRENT ROOM TO</label><div class="room-floor-targets">${currentRoomTargets.map(floor=>`<button class="mini-chip secondary" type="button" data-action="move-current-room-to-floor" data-floor-id="${floor.id}">${esc(floor.label)}</button>`).join('')}</div>`
     : '';
   const floorBoards=floors.map(floor=>projectFloorBoardMarkup(floor,r,floors,currentFloorId)).join('');
-  const homePlanSection=propSection('Home Plan',`<label>PROJECT NAME</label><input value="${esc(currentProjectName())}" onchange="renameCurrentProject(this.value)"><label style="margin-top:8px">CURRENT ROOM</label><input value="${esc(r.name||'Room')}" onchange="renameCurrentRoom(this.value)"><div class="prop-state">Building <strong>${projectMainRooms(r).length} rooms</strong> across <strong>${floors.length} floor${floors.length===1?'':'s'}</strong>. Keep shaping the home here, then step into each room to furnish and present it.</div><label style="margin-top:8px">FLOORS</label>${floorSwitcher}<div class="quick-rotate-row"><button class="pbtn soft" onclick="openAddRoomModalForProject('${currentFloor?.id||currentFloorId}')">Add Room Here</button><button class="pbtn soft" onclick="createNextFloor()">Add Floor</button><button class="pbtn soft" onclick="duplicateCurrentRoom()">Duplicate Current</button></div><div class="quick-rotate-row"><button class="pbtn soft" onclick="moveCurrentRoomOrder(-1)">Move Earlier</button><button class="pbtn soft" onclick="moveCurrentRoomOrder(1)">Move Later</button><button class="pbtn soft" onclick="deleteCurrentRoom()">Delete Current</button></div>${currentRoomMoveRow}<div class="prop-tip">The active floor stays in focus, but every room in the house is listed below so you can jump, duplicate, delete, or move rooms without losing your place.</div><div class="project-floor-stack">${floorBoards}</div>`);
+  const homePlanSection=propSection('Home Plan',`<label>PROJECT NAME</label><input value="${esc(currentProjectName())}" data-action="rename-current-project"><label style="margin-top:8px">CURRENT ROOM</label><input value="${esc(r.name||'Room')}" data-action="rename-current-room"><div class="prop-state">Building <strong>${projectMainRooms(r).length} rooms</strong> across <strong>${floors.length} floor${floors.length===1?'':'s'}</strong>. Keep shaping the home here, then step into each room to furnish and present it.</div><label style="margin-top:8px">FLOORS</label>${floorSwitcher}<div class="quick-rotate-row"><button class="pbtn soft" type="button" data-action="open-add-room-modal-for-project" data-floor-id="${currentFloor?.id||currentFloorId}">Add Room Here</button><button class="pbtn soft" type="button" data-action="create-next-floor">Add Floor</button><button class="pbtn soft" type="button" data-action="duplicate-current-room">Duplicate Current</button></div><div class="quick-rotate-row"><button class="pbtn soft" type="button" data-action="move-current-room-order" data-direction="-1">Move Earlier</button><button class="pbtn soft" type="button" data-action="move-current-room-order" data-direction="1">Move Later</button><button class="pbtn soft" type="button" data-action="delete-current-room">Delete Current</button></div>${currentRoomMoveRow}<div class="prop-tip">The active floor stays in focus, but every room in the house is listed below so you can jump, duplicate, delete, or move rooms without losing your place.</div><div class="project-floor-stack">${floorBoards}</div>`);
   const surfacesSection=propSection('Surfaces',`<label>WALL STYLE</label><div class="mat-grid">${WALL_PALETTES.map(c=>`<button class="mat-btn${(r.materials.wallFinish||'warm_white')===c.id?' sel':''}" onclick="setWallFinish('${c.id}')" style="background:${c.color};color:${c.id==='charcoal_accent'?'#fff':'#332922'}">${c.name}</button>`).join('')}</div><div class="prop-state${wallColorIsCustom(r)?' custom':''}">${wallColorIsCustom(r)?`Custom wall color active <button class="prop-link-btn" onclick="resetWallColorToStyle()">Reset to style</button>`:'Wall color follows the selected wall style.'}</div><label style="margin-top:8px">CUSTOM WALL COLOR</label><div class="color-input-row"><input class="color-input" type="color" value="${colorInputValue(r.materials.wall,WALL_PALETTES[0].color)}" onchange="setWallPaint(this.value)"><span class="color-input-copy">Use any wall color, or tap a quick swatch below.</span></div><div class="paint-row">${WALL_PALETTES.map(c=>`<button class="swatch${r.materials.wall===c.color?' sel':''}" style="background:${c.color}" onclick="setWallPaint('${c.color}')" title="Use ${c.name} as a custom wall color"></button>`).join('')}</div><div class="prop-tip">Choose a style first, then use custom color only when you want a deliberate override.</div><label style="margin-top:8px">FLOOR STYLE</label><div class="mat-grid">${FLOOR_TYPES.map(ft=>`<button class="mat-btn${(r.materials.floorType||'light_oak')===ft.id?' sel':''}" onclick="setFloorType('${ft.id}')">${ft.name}</button>`).join('')}</div><div class="prop-state${floorColorIsCustom(r)?' custom':''}">${floorColorIsCustom(r)?`Custom floor color active <button class="prop-link-btn" onclick="resetFloorColorToStyle()">Reset to style</button>`:'Floor color follows the selected floor style.'}</div><label style="margin-top:8px">CUSTOM FLOOR COLOR</label><div class="color-input-row"><input class="color-input" type="color" value="${colorInputValue(r.materials.floor,FLOOR_TYPES[0].color)}" onchange="setFloorPaint(this.value)"><span class="color-input-copy">Keep the floor pattern, but tune the color more freely.</span></div><div class="paint-row">${FLOOR_TYPES.map(ft=>`<button class="swatch${r.materials.floor===ft.color?' sel':''}" style="background:${ft.color}" onclick="setFloorPaint('${ft.color}')" title="Use ${ft.name} as a custom floor color"></button>`).join('')}</div><div class="prop-tip">Floor style controls both the material family and the default finish tone.</div><label style="margin-top:8px">TRIM COLOR</label><div class="color-input-row"><input class="color-input" type="color" value="${colorInputValue(r.materials.trim,TRIM_COLORS[0])}" onchange="setTrimColor(this.value)"><span class="color-input-copy">Fine-tune trim while keeping quick trim swatches.</span></div><div class="paint-row">${TRIM_COLORS.map(c=>`<button class="swatch${r.materials.trim===c?' sel':''}" style="background:${c}" onclick="setTrimColor('${c}')"></button>`).join('')}</div>`);
   const connectionsSection=propSection('Add Room',`<div class="pr"><div><label>SHARED WALL (${distanceLabel()})</label><input type="number" step="${distanceInputStep(1)}" value="${distanceInputValue(adjRoomCfg.width)}" onchange="setAdjRoomWidth(this.value)"></div><div><label>ROOM DEPTH (${distanceLabel()})</label><input type="number" step="${distanceInputStep(1)}" value="${distanceInputValue(adjRoomCfg.depth)}" onchange="setAdjRoomDepth(this.value)"></div></div><div class="mat-grid tall"><button class="mat-btn" onclick="attachAdjacentRoom('north')">Up</button><button class="mat-btn" onclick="attachAdjacentRoom('east')">Right</button><button class="mat-btn" onclick="attachAdjacentRoom('south')">Down</button><button class="mat-btn" onclick="attachAdjacentRoom('west')">Left</button></div><div class="prop-tip">Grow the layout one connected room at a time. Choose the side, and the new room will land on that edge with a doorway cut between them.</div>`);
   const lightingSection=propSection('Lighting Mood',`<label>LIGHTING MOOD</label><div class="mat-grid tall">${Object.entries(LIGHTING_PRESETS).map(([id,preset])=>`<button class="mat-btn${activeLightingPreset===id?' sel':''}" onclick="setLightingPreset('${id}')">${preset.name}</button>`).join('')}</div><div class="prop-state">Active mood: <strong>${LIGHTING_PRESETS[activeLightingPreset]?.name||'Daylight'}</strong></div><div class="prop-tip">${lightingPresetHelp(activeLightingPreset)}</div><label style="margin-top:8px">LIGHT CHARACTER</label><input type="range" min="0" max="1" step="0.05" value="${r.materials.lightCharacter??.5}" oninput="setLightCharacter(this.value)"><div class="prop-tip">Move from crisp daylight toward warmer evening or moodier blue-hour character.</div><div class="prop-state">${lightCharacterLabel(r)}</div><label style="margin-top:8px">CEILING BRIGHTNESS</label><input type="range" min="0.7" max="1.35" step="0.05" value="${r.materials.ceilingBrightness||1}" oninput="setCeilingBrightness(this.value)"><div class="prop-tip">Brightness only changes how much light the ceiling appears to bounce in 3D. It does not change room size.</div><div class="prop-state">${ceilingBrightnessLabel(r)}</div>${is3D?`<div class="quick-rotate-row" style="margin-top:8px"><button class="pbtn soft" onclick="togglePhotoMode()">${photoMode?'Exit Photo Mode':'Open Photo Mode'}</button><button class="pbtn soft" onclick="toggleWalkthroughTray()">Open Walkthroughs</button></div>`:''}`);
@@ -953,7 +953,7 @@ function showP(){
   if(panelHidden){p.classList.remove('on');return}
   p.classList.toggle('peek',mobilePanelShouldPeek());
   let h='';
-  const cBtn='<div class="props-hdr"><h4>$T</h4><button class="props-close" onclick="closeP()">\u00D7</button></div>';
+  const cBtn='<div class="props-hdr"><h4>$T</h4><button class="props-close" type="button" data-action="prop-close">\u00D7</button></div>';
   if(!sel.type||sel.idx<0){
     const activeLightingPreset=r.materials.lightingPreset||'daylight';
     const ref=r.referenceOverlay||normalizeReferenceOverlay({},r);
