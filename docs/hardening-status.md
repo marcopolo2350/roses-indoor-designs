@@ -20,7 +20,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Home Plan room/floor controls, property-panel close, and room panel tabs use delegated `data-action` handlers.
 - Add Room width/depth and Up/Right/Down/Left controls use delegated `data-action` handlers and have a Playwright adjacent-room smoke path.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
-- Standard Playwright config and a shell smoke spec exist.
+- Standard Playwright config and a shell smoke spec exist for desktop and mobile Chromium viewports.
 - README, changelog, roadmap, architecture, data model, testing, deployment, and limitations docs exist.
 
 ## Partially Completed
@@ -30,7 +30,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Inline handlers are removed from the static app shell, generated catalog picker, Home Plan controls, and Add Room controls, but generated property-panel markup still contains inline handlers in legacy editor surfaces.
 - Manifest validation is stricter and quieter, but asset licensing and heavy GLB audits are still not complete.
 - Cloud sync is isolated and marked experimental, but conflict handling is still timestamp-oriented.
-- Playwright coverage exists, but it is still smoke-level rather than a full workflow suite.
+- Playwright coverage exists for desktop and mobile smoke paths, but it is still smoke-level rather than a full workflow suite.
 
 ## Deferred With Reason
 

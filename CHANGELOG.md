@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.12 - 2026-04-30
+
+- added desktop and mobile Chromium Playwright projects for the canonical smoke path
+- made the room panel smoke flow resilient to mobile's collapsed panel behavior
+- fixed catalog favorite hit targets after converting catalog cards away from nested buttons
+
 ## 0.5.0-hardening.11 - 2026-04-30
 
 - moved Add Room width/depth inputs and Up/Right/Down/Left buttons to delegated `data-action` handlers

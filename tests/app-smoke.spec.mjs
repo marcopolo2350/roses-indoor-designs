@@ -42,7 +42,11 @@ test("canonical shell boots and delegated actions work", async ({ page }) => {
   await page.locator('[data-action="create-room-from-preset"]').click();
   await expect(page.locator("#scrEd")).toHaveClass(/on/);
 
-  await expect(page.locator('[data-action="room-panel-group"][data-group="build"]')).toBeVisible();
+  const buildTab = page.locator('[data-action="room-panel-group"][data-group="build"]');
+  if ((await buildTab.count()) === 0) {
+    await page.locator('[data-action="open-panel"]').click();
+  }
+  await expect(buildTab).toBeVisible();
   await page.locator('[data-action="room-panel-group"][data-group="style"]').click();
   await expect(page.locator('[data-action="room-panel-group"][data-group="style"]')).toHaveClass(
     /sel/,
@@ -54,6 +58,11 @@ test("canonical shell boots and delegated actions work", async ({ page }) => {
   await page.locator('[data-action="set-adj-room-width"]').fill("8");
   await page.locator('[data-action="set-adj-room-depth"]').click();
   await page.locator('[data-action="attach-adjacent-room"][data-side="east"]').click();
+  await expect(page.locator("body")).toContainText("Living Room East");
+  const panelOpen = await page.locator("#propsP").evaluate((node) => node.classList.contains("on"));
+  if (!panelOpen) {
+    await page.locator('[data-action="open-panel"]').click();
+  }
   await expect(page.locator("#propsP")).toContainText("Building 2 rooms");
   await page.locator('[data-action="prop-close"]').click();
   await expect(page.locator("#propsP")).not.toHaveClass(/on/);
