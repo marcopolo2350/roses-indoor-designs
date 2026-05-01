@@ -273,6 +273,32 @@ if (!presentationTray) {
   }
 }
 
+const threeTrayBuilders = planner3d.match(
+  /function\s+createWalkthroughTrayNode[\s\S]*?function\s+createPresentationTrayNode/,
+);
+if (!threeTrayBuilders) {
+  errors.push("3D walkthrough/photo tray builders were not found for HTML safety validation.");
+} else {
+  const body = threeTrayBuilders[0];
+  if (/innerHTML\s*=|insertAdjacentHTML|outerHTML\s*=/.test(body)) {
+    errors.push("3D walkthrough/photo trays must render with DOM nodes, not HTML strings.");
+  }
+  if (
+    !/presetTitle\.textContent\s*=/.test(body) ||
+    !/copyEl\.textContent\s*=/.test(body) ||
+    !/button\.dataset\.presetId\s*=/.test(body) ||
+    !/button\.dataset\.photoPreset\s*=/.test(body)
+  ) {
+    errors.push(
+      "3D walkthrough/photo trays must render preset labels and actions through textContent and datasets.",
+    );
+  }
+}
+
+if (/innerHTML\s*=|insertAdjacentHTML|outerHTML\s*=/.test(planner3d)) {
+  errors.push("planner3d.js must not render tray UI through direct HTML string insertion.");
+}
+
 const deleteConfirmKeys = ui.match(
   /function\s+handleDeleteConfirmKeydown[\s\S]*?function\s+showDeleteConfirm/,
 );

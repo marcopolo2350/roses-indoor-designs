@@ -301,6 +301,86 @@ function createMiniActionButton(label,action,{secondary=false,dataset={}}={}){
   button.textContent=label;
   return button;
 }
+function createTrayTitleBlock(titleClass,titleText,copyClass,copyText){
+  const block=document.createElement('div');
+  const title=document.createElement('div');
+  title.className=titleClass;
+  title.textContent=titleText;
+  const copy=document.createElement('div');
+  copy.className=copyClass;
+  copy.textContent=copyText;
+  block.append(title,copy);
+  return block;
+}
+function createWalkthroughTrayNode({title,copy,presets,isTouch}){
+  const root=document.createElement('div');
+  root.className=`tour-tray${isTouch?' touch':''}`;
+  root.id='tourTray';
+  const panel=document.createElement('div');
+  panel.className=`tour-panel${isTouch?' touch':''}`;
+  const head=document.createElement('div');
+  head.className='tour-head';
+  head.append(createTrayTitleBlock('tour-title',title,'tour-copy',copy),createMiniActionButton('Close','toggle-walkthrough-tray',{secondary:true}));
+  const grid=document.createElement('div');
+  grid.className=`tour-grid${isTouch?' touch':''}`;
+  presets.forEach(([id,label,presetCopy])=>{
+    const button=document.createElement('button');
+    button.className=`tour-preset${isTouch?' touch':''}`;
+    button.type='button';
+    button.dataset.action='start-walkthrough-preset';
+    button.dataset.presetId=id;
+    const presetTitle=document.createElement('span');
+    presetTitle.className='tour-preset-title';
+    presetTitle.textContent=label;
+    const copyEl=document.createElement('span');
+    copyEl.className='tour-preset-copy';
+    copyEl.textContent=presetCopy;
+    button.append(presetTitle,copyEl);
+    grid.appendChild(button);
+  });
+  panel.append(head,grid);
+  root.appendChild(panel);
+  return root;
+}
+function createPhotoTrayNode({copy,presets,resetLabel,resetPreset}){
+  const root=document.createElement('div');
+  root.className='photo-tray';
+  root.id='photoTray';
+  const panel=document.createElement('div');
+  panel.className='photo-panel';
+  const head=document.createElement('div');
+  head.className='photo-head';
+  head.append(
+    createTrayTitleBlock('photo-title','Photo Mode','photo-copy',copy),
+    createMiniActionButton('Exit','toggle-photo-mode',{secondary:true,dataset:{photoForce:'false'}})
+  );
+  const grid=document.createElement('div');
+  grid.className='photo-grid';
+  presets.forEach(([id,label,presetCopy])=>{
+    const button=document.createElement('button');
+    button.className='photo-preset';
+    button.type='button';
+    button.dataset.action='set-photo-preset';
+    button.dataset.photoPreset=id;
+    const presetTitle=document.createElement('span');
+    presetTitle.className='photo-preset-title';
+    presetTitle.textContent=label;
+    const copyEl=document.createElement('span');
+    copyEl.className='photo-preset-copy';
+    copyEl.textContent=presetCopy;
+    button.append(presetTitle,copyEl);
+    grid.appendChild(button);
+  });
+  const actions=document.createElement('div');
+  actions.className='photo-actions';
+  actions.append(
+    createMiniActionButton('Capture PNG','capture-photo-mode'),
+    createMiniActionButton(resetLabel,'set-view-preset',{secondary:true,dataset:{viewPreset:resetPreset}})
+  );
+  panel.append(head,grid,actions);
+  root.appendChild(panel);
+  return root;
+}
 function createPresentationTrayNode(stats,shots){
   const root=document.createElement('div');
   root.className='present-tray';
@@ -457,8 +537,12 @@ function updateWalkthroughTray(){
     ['before_after','Before / After','Cycles existing, redesign, and combined.'],
     ['romantic_reveal','Romantic Reveal','Soft presentation sweep for the final feel.'],
   ];
-  const markup='<div class="tour-tray'+(isTouch?' touch':'')+'" id="tourTray"><div class="tour-panel'+(isTouch?' touch':'')+'"><div class="tour-head"><div><div class="tour-title">Walkthrough Presets</div><div class="tour-copy">'+(isTouch?'Pick a move and keep your thumb near the bottom edge.':'Choose a camera move for the room.')+'</div></div><button class="mini-chip secondary" type="button" data-action="toggle-walkthrough-tray">Close</button></div><div class="tour-grid'+(isTouch?' touch':'')+'">'+presets.map(([id,label,copy])=>'<button class="tour-preset'+(isTouch?' touch':'')+'" type="button" data-action="start-walkthrough-preset" data-preset-id="'+id+'"><span class="tour-preset-title">'+label+'</span><span class="tour-preset-copy">'+copy+'</span></button>').join('')+'</div></div></div>';
-  if(existing)existing.outerHTML=markup; else document.getElementById('cWrap').insertAdjacentHTML('beforeend',markup);
+  replaceOrAppend3DTray(existing,createWalkthroughTrayNode({
+    title:'Walkthrough Presets',
+    copy:isTouch?'Pick a move and keep your thumb near the bottom edge.':'Choose a camera move for the room.',
+    presets,
+    isTouch
+  }));
 }
 function togglePhotoMode(force){
   if(!is3D)return;
@@ -492,8 +576,12 @@ function updatePhotoTray(){
     ['intimate','Intimate','Moves in closer for softer, warmer storytelling.'],
     ['overhead','Overhead','Pulls up for a styled layout overview.']
   ];
-  const markup=`<div class="photo-tray" id="photoTray"><div class="photo-panel"><div class="photo-head"><div><div class="photo-title">Photo Mode</div><div class="photo-copy">Clean capture UI, styled camera presets, and higher-quality PNG export.</div></div><button class="mini-chip secondary" type="button" data-action="toggle-photo-mode" data-photo-force="false">Exit</button></div><div class="photo-grid">${presets.map(([id,label,copy])=>`<button class="photo-preset" type="button" data-action="set-photo-preset" data-photo-preset="${id}"><span class="photo-preset-title">${label}</span><span class="photo-preset-copy">${copy}</span></button>`).join('')}</div><div class="photo-actions"><button class="mini-chip" type="button" data-action="capture-photo-mode">Capture PNG</button><button class="mini-chip secondary" type="button" data-action="set-view-preset" data-view-preset="corner">Reset View</button></div></div></div>`;
-  if(existing)existing.outerHTML=markup; else document.getElementById('cWrap').insertAdjacentHTML('beforeend',markup);
+  replaceOrAppend3DTray(existing,createPhotoTrayNode({
+    copy:'Clean capture UI, styled camera presets, and higher-quality PNG export.',
+    presets,
+    resetLabel:'Reset View',
+    resetPreset:'corner'
+  }));
 }
 function setPhotoPreset(mode){
   if(!is3D||!curRoom)return;
@@ -2187,8 +2275,12 @@ updateWalkthroughTray=function(){
     ['before_after','Before / After','Stages existing, redesign, and combined in sequence.'],
     ['romantic_reveal','Romantic Reveal','A soft, slower sweep for the final presentation feel.'],
   ];
-  const markup='<div class="tour-tray'+(isTouch?' touch':'')+'" id="tourTray"><div class="tour-panel'+(isTouch?' touch':'')+'"><div class="tour-head"><div><div class="tour-title">Walkthrough Moves</div><div class="tour-copy">'+(isTouch?'Choose a move, then keep your thumb near the bottom edge while the room glides into place.':'Choose a guided move for a cleaner, more cinematic room reveal.')+'</div></div><button class="mini-chip secondary" type="button" data-action="toggle-walkthrough-tray">Close</button></div><div class="tour-grid'+(isTouch?' touch':'')+'">'+presets.map(([id,label,copy])=>'<button class="tour-preset'+(isTouch?' touch':'')+'" type="button" data-action="start-walkthrough-preset" data-preset-id="'+id+'"><span class="tour-preset-title">'+label+'</span><span class="tour-preset-copy">'+copy+'</span></button>').join('')+'</div></div></div>';
-  if(existing)existing.outerHTML=markup; else document.getElementById('cWrap').insertAdjacentHTML('beforeend',markup);
+  replaceOrAppend3DTray(existing,createWalkthroughTrayNode({
+    title:'Walkthrough Moves',
+    copy:isTouch?'Choose a move, then keep your thumb near the bottom edge while the room glides into place.':'Choose a guided move for a cleaner, more cinematic room reveal.',
+    presets,
+    isTouch
+  }));
 }
 togglePhotoMode=function(force){
   if(!is3D)return;
@@ -2223,8 +2315,12 @@ updatePhotoTray=function(){
     ['intimate','Intimate','Moves in closer for softer, warmer storytelling.'],
     ['overhead','Overhead','Pulls up for a styled layout overview.']
   ];
-  const markup=`<div class="photo-tray" id="photoTray"><div class="photo-panel"><div class="photo-head"><div><div class="photo-title">Photo Mode</div><div class="photo-copy">Minimal chrome, styled camera presets, and cleaner capture framing for presentation-ready stills.</div></div><button class="mini-chip secondary" type="button" data-action="toggle-photo-mode" data-photo-force="false">Exit</button></div><div class="photo-grid">${presets.map(([id,label,copy])=>`<button class="photo-preset" type="button" data-action="set-photo-preset" data-photo-preset="${id}"><span class="photo-preset-title">${label}</span><span class="photo-preset-copy">${copy}</span></button>`).join('')}</div><div class="photo-actions"><button class="mini-chip" type="button" data-action="capture-photo-mode">Capture PNG</button><button class="mini-chip secondary" type="button" data-action="set-view-preset" data-view-preset="hero">Reset to Hero</button></div></div></div>`;
-  if(existing)existing.outerHTML=markup; else document.getElementById('cWrap').insertAdjacentHTML('beforeend',markup);
+  replaceOrAppend3DTray(existing,createPhotoTrayNode({
+    copy:'Minimal chrome, styled camera presets, and cleaner capture framing for presentation-ready stills.',
+    presets,
+    resetLabel:'Reset to Hero',
+    resetPreset:'hero'
+  }));
 }
 setPhotoPreset=function(mode){
   if(!is3D||!curRoom)return;

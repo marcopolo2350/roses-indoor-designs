@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.81 - 2026-05-01
+
+- rebuilt the 3D Walkthrough and Photo Mode trays with DOM nodes and `textContent`
+- tightened HTML safety validation so `planner3d.js` cannot reintroduce direct tray HTML insertion
+
 ## 0.5.0-hardening.80 - 2026-05-01
 
 - rebuilt the 3D Reveal Mode presentation tray with DOM nodes and `textContent`

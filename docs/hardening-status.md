@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-01
 
-Current app version: `0.5.0-hardening.80`
+Current app version: `0.5.0-hardening.81`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -71,6 +71,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Dev-only 3D asset verification cards and metadata rows render with DOM nodes and `textContent`, guarded by `npm run validate:html-safety`.
 - Mobile 3D walk controls render with DOM nodes, CSS classes, and accessible hold-button labels instead of injected inline HTML/styles, guarded by `npm run validate:html-safety`.
 - The 3D Reveal Mode presentation tray now renders room story copy, shot controls, and actions with DOM nodes and `textContent`, guarded by `npm run validate:html-safety`.
+- The 3D Walkthrough and Photo Mode trays now render preset labels, copy, and action buttons with DOM nodes and `textContent`, guarded by `npm run validate:html-safety`.
 - Runtime module comments no longer carry phase-history labels, and `npm run validate:structure` blocks them from returning.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
 - Every catalog entry now declares a valid `mountType`, and manifest validation blocks new entries that omit placement metadata.
