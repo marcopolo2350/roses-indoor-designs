@@ -4,11 +4,18 @@
  * the cloud implementation under scripts/cloud/.
  */
 
-const CLOUD_KEYS = {
+const LEGACY_CLOUD_KEYS = {
   url: "rose_cloud_url",
   key: "rose_cloud_key",
   enabled: "rose_cloud_enabled",
   lastSync: "rose_cloud_last_sync",
+};
+
+const CLOUD_KEYS = {
+  url: window.storageKey("cloud::url", { global: true }),
+  key: window.storageKey("cloud::key", { global: true }),
+  enabled: window.storageKey("cloud::enabled", { global: true }),
+  lastSync: window.storageKey("cloud::last_sync", { global: true }),
 };
 
 let cloudClient = null;
@@ -17,9 +24,9 @@ let cloudBusy = false;
 function cloudGetConfig() {
   try {
     return {
-      url: localStorage.getItem(CLOUD_KEYS.url) || "",
-      key: localStorage.getItem(CLOUD_KEYS.key) || "",
-      enabled: localStorage.getItem(CLOUD_KEYS.enabled) === "1",
+      url: cloudGetLocal("url") || "",
+      key: cloudGetLocal("key") || "",
+      enabled: cloudGetLocal("enabled") === "1",
     };
   } catch (error) {
     window.reportRoseRecoverableError?.("cloud-config-read", error);
@@ -37,6 +44,12 @@ function cloudSetConfig(url, key, enabled) {
     return;
   }
   cloudClient = null;
+}
+
+function cloudGetLocal(key) {
+  const value = localStorage.getItem(CLOUD_KEYS[key]);
+  if (value !== null) return value;
+  return localStorage.getItem(LEGACY_CLOUD_KEYS[key]);
 }
 
 function cloudEscapeAttribute(value) {
@@ -183,7 +196,7 @@ function cloudStatusText() {
   const { url, key, enabled } = cloudGetConfig();
   if (!url || !key) return "Not configured";
   if (!enabled) return "Configured (disabled)";
-  const last = localStorage.getItem(CLOUD_KEYS.lastSync);
+  const last = cloudGetLocal("lastSync");
   return last ? `Synced ${new Date(last).toLocaleString()}` : "Enabled (not yet synced)";
 }
 

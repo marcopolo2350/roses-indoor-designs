@@ -20,6 +20,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - `appState.dispatch()` now covers high-risk bridge actions for room selection, selection clearing, tool changes, render requests, save scheduling, 3D rebuild scheduling, and dirty/saved markers.
 - `scripts/core/history.js` owns shared room history and undo/redo behavior.
 - `scripts/core/storage-keys.js` owns localStorage and IndexedDB key naming.
+- `npm run validate:storage-keys` blocks raw localStorage key literals outside the storage-key boundary.
 - IndexedDB access now exposes readable storage-service bridge names (`openDatabase`, `getRecord`, `setRecord`) while legacy callers migrate.
 - `scripts/cloud/supabase.js` isolates experimental cloud sync behavior.
 - `scripts/ui/shortcuts.js` owns keyboard shortcuts and shortcut-sheet rendering.
@@ -93,6 +94,7 @@ npm run validate:asset-sources
 npm run validate:static-a11y
 npm run validate:dev-mode
 npm run validate:github-templates
+npm run validate:storage-keys
 npm run validate:error-handling
 npm run validate:runtime-modules
 npm run validate:dependencies

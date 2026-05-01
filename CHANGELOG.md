@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.45 - 2026-04-30
+
+- moved the 3D hint flag and cloud sync config onto the storage-key registry while keeping legacy cloud-key fallbacks
+- added `npm run validate:storage-keys` and CI coverage for raw localStorage key drift
+
 ## 0.5.0-hardening.44 - 2026-04-30
 
 - made `npm test` run lint and format checks before the validation chain so local verification matches CI discipline more closely

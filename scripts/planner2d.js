@@ -14,7 +14,7 @@ async function openEd(room){
   document.getElementById('threeC').classList.remove('on');document.getElementById('b3d').classList.remove('on');document.getElementById('vLbl').textContent='2D Plan';
   document.getElementById('camBtns').classList.remove('on');document.getElementById('walkHint').classList.remove('on');
   document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.t==='select'));stop3D();initCan();await restoreRoomHistory(room);sel={type:null,idx:-1};panelHidden=!!(typeof isTouchUi==='function'&&isTouchUi()&&window.innerWidth<=760);showP();
-  try{if(!localStorage.getItem('rose_3d_hint'))localStorage.setItem('rose_3d_hint','1')}catch(error){window.reportRoseRecoverableError?.('3D hint storage update failed',error)}
+  try{if(!getLocal('3d_hint'))setLocal('3d_hint','1')}catch(error){window.reportRoseRecoverableError?.('3D hint storage update failed',error)}
   // Surface old note if returning to a room
   if(window.appState)window.appState.markDirty(false);
   if(room.polygon&&room.polygon.length)maybeSurfaceNote(room.id);checkRoomReturn(room.id)}
