@@ -1746,13 +1746,38 @@ function updateVerificationCard(key,state){
   badge.textContent=state.status||'pending';
   if(state.status==='loaded')card.classList.add('ok');
   if(state.status==='failed')card.classList.add('fail');
-  meta.innerHTML=`<div>${key}</div><div>${state.url||modelUrl(MODEL_REGISTRY[key].file)}</div><div>http: ${state.httpStatus??'pending'}</div><div>bbox: ${state.bbox||'pending'}</div><div>fallback: ${state.fallback?'yes':'no'}</div>`;
+  renderVerificationMeta(meta,[key,state.url||modelUrl(MODEL_REGISTRY[key].file),`http: ${state.httpStatus??'pending'}`,`bbox: ${state.bbox||'pending'}`,`fallback: ${state.fallback?'yes':'no'}`]);
   note.textContent=state.note||'';
+}
+function renderVerificationMeta(meta,rows){
+  window.RoseHTML.clear(meta);
+  rows.forEach(row=>{
+    const line=document.createElement('div');
+    line.textContent=row;
+    meta.appendChild(line);
+  });
 }
 function renderVerificationCards(){
   const grid=document.getElementById('verifyGrid');
   const keys=Object.keys(MODEL_REGISTRY);
-  grid.innerHTML=keys.map(key=>`<div class="verify-card" data-verify-key="${key}"><div class="verify-badge pending">pending</div><h4>${key}</h4><div class="verify-meta">${MODEL_REGISTRY[key].file}</div><div class="verify-note"></div></div>`).join('');
+  window.RoseHTML.clear(grid);
+  keys.forEach(key=>{
+    const card=document.createElement('div');
+    card.className='verify-card';
+    card.dataset.verifyKey=key;
+    const badge=document.createElement('div');
+    badge.className='verify-badge pending';
+    badge.textContent='pending';
+    const title=document.createElement('h4');
+    title.textContent=key;
+    const meta=document.createElement('div');
+    meta.className='verify-meta';
+    meta.textContent=MODEL_REGISTRY[key].file;
+    const note=document.createElement('div');
+    note.className='verify-note';
+    card.append(badge,title,meta,note);
+    grid.appendChild(card);
+  });
 }
 function disposeVerificationScene(){
   if(!verify3D)return;

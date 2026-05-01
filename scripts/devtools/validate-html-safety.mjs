@@ -9,6 +9,7 @@ const main = read("scripts/main.js");
 const storage = read("scripts/storage.js");
 const ui = read("scripts/ui.js");
 const catalog = read("scripts/catalog.js");
+const planner3d = read("scripts/planner3d.js");
 const shortcuts = read("scripts/ui/shortcuts.js");
 const cloud = read("scripts/cloud/supabase.js");
 const walkthrough = read("scripts/walkthrough.js");
@@ -218,6 +219,21 @@ if (!roomPanelRestyle) {
   }
   if (!/title\.textContent\s*=\s*label/.test(body) || !/meta\.textContent\s*=/.test(body)) {
     errors.push("Room panel restyling must render floor button labels with textContent.");
+  }
+}
+
+const verificationCards = planner3d.match(
+  /function\s+updateVerificationCard[\s\S]*?function\s+disposeVerificationScene/,
+);
+if (!verificationCards) {
+  errors.push("3D verification card renderer was not found for HTML safety validation.");
+} else {
+  const body = verificationCards[0];
+  if (/innerHTML\s*=|insertAdjacentHTML/.test(body)) {
+    errors.push("3D verification cards must render with DOM nodes, not HTML strings.");
+  }
+  if (!/title\.textContent\s*=\s*key/.test(body) || !/line\.textContent\s*=\s*row/.test(body)) {
+    errors.push("3D verification cards must render dynamic model data with textContent.");
   }
 }
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.77 - 2026-05-01
+
+- rebuilt the dev-only 3D asset verification cards and metadata rows with DOM nodes and `textContent`
+- extended HTML safety validation to block asset verification HTML-string rendering from returning
+
 ## 0.5.0-hardening.76 - 2026-05-01
 
 - switched 3D renderer container cleanup from empty `innerHTML` assignments to `RoseHTML.clear()`
