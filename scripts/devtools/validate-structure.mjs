@@ -78,6 +78,17 @@ assertModuleBefore("./scripts/export/downloads.js", "./scripts/export/project-js
 assertModuleBefore("./scripts/export/project-json.js", "./scripts/export.js");
 assertModuleBefore("./scripts/planner3d/lifecycle.js", "./scripts/planner3d.js");
 
+for (const modulePath of modules.map((src) => src.replace(/^\.\//, ""))) {
+  const absolute = path.join(root, modulePath);
+  if (!existsSync(absolute)) continue;
+  const lines = readFileSync(absolute, "utf8").split(/\r?\n/);
+  lines.forEach((line, index) => {
+    if (/^\s*\/\/.*phase/i.test(line) || /^\s*\/\*.*phase/i.test(line)) {
+      errors.push(`${modulePath}:${index + 1} contains a phase-history comment.`);
+    }
+  });
+}
+
 if (errors.length) {
   console.error("Source structure validation failed:");
   for (const error of errors) console.error(`- ${error}`);

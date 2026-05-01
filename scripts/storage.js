@@ -143,7 +143,7 @@ const LIGHTING_PRESETS={
   soft_lamp_glow:{name:'Soft Lamp Glow',background:'#cdb6a6',ambient:0.26,dir:0.2,dirColor:0xffc991,exposure:0.8,warm:0xFFB96E,practical:1.12,fogNear:18,fogFar:58,hdri:'warm',tod:0.86},
   moody:{name:'Moody',background:'#8c878d',ambient:0.12,dir:0.16,dirColor:0xbfd0e6,exposure:0.62,warm:0xFFAA62,practical:.56,fogNear:15,fogFar:48,hdri:'evening',tod:0.94},
   bright_studio:{name:'Bright Studio',background:'#eef4f8',ambient:1.14,dir:1.9,dirColor:0xffffff,exposure:1.42,warm:0xFFF6E7,practical:.02,fogNear:44,fogFar:132,hdri:'daylight',tod:0.45},
-  // New cinematic presets (Phase ✨)
+  // Cinematic lighting presets.
   golden_hour:{name:'Golden Hour',background:'#e8c79a',ambient:0.62,dir:1.28,dirColor:0xffc074,exposure:1.14,warm:0xFFD38A,practical:.28,fogNear:26,fogFar:92,hdri:'warm',tod:0.72},
   overcast:{name:'Overcast',background:'#c8ccd2',ambient:1.22,dir:0.54,dirColor:0xe4e9ee,exposure:1.06,warm:0xECEEF2,practical:.08,fogNear:30,fogFar:104,hdri:'daylight',tod:0.52},
   lamp_lit:{name:'Lamp-Lit',background:'#2b2a32',ambient:0.08,dir:0.06,dirColor:0x7a8aa6,exposure:0.72,warm:0xFF9E5C,practical:1.42,fogNear:12,fogFar:42,hdri:'evening',tod:0.96},
@@ -178,7 +178,7 @@ const ROOM_STARTERS=[
   {id:'bathroom',name:'Bathroom',shape:'rect',width:10,depth:8,height:9,roomType:'bathroom',designPreset:'airy_minimal',tag:'Refresh',hint:'Vanity, shower or tub, clean surfaces.'},
   {id:'laundry',name:'Laundry',shape:'rect',width:9,depth:7,height:9,roomType:'laundry',designPreset:'airy_minimal',tag:'Refresh',hint:'Washer, storage, and a little room to breathe.'},
   {id:'closet_room',name:'Closet / Dressing Room',shape:'rect',width:11,depth:9,height:9,roomType:'bedroom',designPreset:'quiet_luxury',tag:'Dress',hint:'Made for mirrors, storage, and built-ins.'},
-  // Phase 6A — new starters
+  // Starter room presets.
   {id:'home_theater',name:'Home Theater',shape:'rect',width:16,depth:20,height:9,roomType:'living_room',designPreset:'tailored_masculine',tag:'Watch',hint:'A deep, focused room for cinema nights.'},
   {id:'mudroom',name:'Mudroom / Entry',shape:'rect',width:8,depth:10,height:9,roomType:'entry',designPreset:'warm_modern',tag:'Arrive',hint:'Drop zone with hooks, bench, and a mat.'},
   {id:'kids_room',name:'Kids Room',shape:'rect',width:12,depth:13,height:9,roomType:'bedroom',designPreset:'airy_minimal',tag:'Play',hint:'Bunk beds, soft rugs, and room to play.'},

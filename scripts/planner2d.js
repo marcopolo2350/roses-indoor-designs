@@ -853,7 +853,7 @@ function draw(){
   if(!ctx)return;ctx.clearRect(0,0,canvas.width,canvas.height);drawGrid();
   // Multi-room home layout ghosts (other rooms on this floor, behind current)
   if(curRoom&&curRoom.polygon?.length&&!drawMode)drawHomeLayoutGhosts();
-  // Phase ✨ — empty state
+  // Empty state.
   try{
     const es=document.getElementById('emptyState');
     if(es){
@@ -996,7 +996,7 @@ function draw(){
   if(partSt&&pendEnd){const a=tS(partSt),b=tS(pendEnd);ctx.strokeStyle='#8E6E6B';ctx.lineWidth=3;ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.setLineDash([])}
   if(dimAnnStart&&pendDimEnd){const a=tS(dimAnnStart),b=tS(pendDimEnd);ctx.save();ctx.strokeStyle='rgba(184,145,142,.84)';ctx.lineWidth=2;ctx.setLineDash([7,5]);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.setLineDash([]);ctx.restore()}
   drawPlanSnapGuides();
-  // Phase ✨ — render fading snap-alignment pulses
+  // Render fading snap-alignment pulses.
   if(window._snapPulses&&window._snapPulses.length){
     const now=performance.now();
     const alive=[];

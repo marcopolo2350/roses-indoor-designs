@@ -38,7 +38,7 @@ function doRedo(){
   if(typeof updateUndoStrip==='function')updateUndoStrip();
 }
 let cameraScript=null,walkthroughTrayOpen=false,photoMode=false,photoTrayOpen=false,contactShadowTexture=null,presentationShot='hero',composer=null,last2DViewState=null;
-// Phase 3B — HDRI environment maps (Poly Haven CC0, served via jsDelivr). Cached across scene rebuilds.
+// HDRI environment maps (Poly Haven CC0, served via jsDelivr). Cached across scene rebuilds.
 const HDRI_SOURCES={
   daylight:'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/equirectangular/royal_esplanade_1k.hdr',
   evening: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/equirectangular/moonless_golf_1k.hdr',
@@ -544,7 +544,7 @@ function startWalkthroughPreset(id){
     playCameraSequence([{duration:400,onStart:()=>setCamMode('walk'),apply:()=>{}},{duration:1800,apply:t=>applyWalkTween(fpPos,pts[0],t)},{duration:1800,apply:t=>applyWalkTween(pts[0],pts[1],t)},{duration:1800,apply:t=>applyWalkTween(pts[1],pts[2],t)},{duration:900,onStart:()=>setCamMode('orbit'),apply:()=>{}}]);
   }
 }
-// Phase ✨ — Easing curves for walkthrough. Previously progress was linear, so every
+// Easing curves for walkthrough. Previously progress was linear, so every
 // camera move felt robotic. easeInOutCubic on the default, easeOutQuint on reveals.
 function _easeInOutCubic(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
 function _easeOutQuint(t){return 1-Math.pow(1-t,5)}
@@ -856,12 +856,12 @@ function build3D(){
     ren.outputEncoding=THREE.sRGBEncoding;
     window.RoseHTML.clear(cont);cont.appendChild(ren.domElement);
     ren.shadowMap.enabled=true;
-    // Phase ✨ — VSM gives genuinely soft contact-hardening shadows instead of PCFSoft's uniform edges.
+    // VSM gives genuinely soft contact-hardening shadows instead of PCFSoft's uniform edges.
     // Fall back to PCFSoft if VSM isn't available in the build. Needs per-light shadow.blurSamples + radius set below.
     ren.shadowMap.type=(THREE.VSMShadowMap!==undefined&&!photoMode?THREE.VSMShadowMap:THREE.PCFSoftShadowMap);
     // Photo mode: use PCFSoft at 4K for crispest result; VSM is softer but blurrier per-pixel.
     if(photoMode)ren.shadowMap.type=THREE.PCFSoftShadowMap;
-    // === Post-processing pipeline (Phase 3A) ===
+    // Post-processing pipeline.
     // Disable heavy passes on mobile/small screens to keep 60fps; always keep FXAA for crispness.
     try{
       const isMobile=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)||Math.min(w,h)<520;
@@ -884,7 +884,7 @@ function build3D(){
           composer.addPass(bloom);
           composer._bloom=bloom;
         }
-        // Phase ✨ — Depth of field in photo mode. BokehPass keeps foreground sharp and softly blurs background,
+        // Depth of field in photo mode. BokehPass keeps foreground sharp and softly blurs background,
         // which makes exported screenshots read as "marketing render" instead of "game screenshot".
         if(photoMode&&heavyFX&&THREE.BokehPass){
           try{
@@ -901,7 +901,7 @@ function build3D(){
         composer._fxaa=fxaa;
       }else{composer=null}
     }catch(e){console.warn('Post-processing init failed:',e);composer=null}
-    // Phase 3B — load HDRI environment for PBR reflections (async; scene renders immediately, reflections pop in once loaded).
+    // Load HDRI environment for PBR reflections; the scene renders immediately, then reflections pop in once loaded.
     loadHDRIEnvironment(preset&&preset.id,ren,scene);
     const hemiLight=new THREE.HemisphereLight(0xfaf8f4,lightState.warmColor,lightState.hemiIntensity*1.1);scene.add(hemiLight);
     const ambLight=new THREE.AmbientLight(lightState.warmColor,lightState.ambientIntensity*.82);scene.add(ambLight);
@@ -920,7 +920,7 @@ function build3D(){
     floorRooms.forEach(room=>buildRoomEnvelope3D(room,{floorFocus,renderer:ren}));
     applyRoomStyleToScene();
     attach3DPointerControls();updateWalkUI();
-    // Phase ✨ — Inertial camera: lerp the *rendered* camera position toward the target position each frame.
+    // Inertial camera: lerp the rendered camera position toward the target position each frame.
     // This makes every movement (drag, zoom, preset switch, walk tween) glide instead of snap.
     const _smoothCam={pos:new THREE.Vector3(),look:new THREE.Vector3(),ready:false};
     (function anim(){raf3d=requestAnimationFrame(anim);if(!scene||!cam||!ren)return;updateCameraScript(performance.now());
@@ -1011,7 +1011,7 @@ function updateWalkUI(){
 
 function addWSeg(ws,an,s,e,botY,topY,mat){
   const sw=e-s,sh=topY-botY;if(sw<.01||sh<.01)return;
-  // Phase 5C — wall-with-holes: give walls real thickness so openings visibly
+  // Wall-with-holes: give walls real thickness so openings visibly
   // cut through solid wall (door/window jambs show reveal depth). Glass window
   // infills stay thin so they don't overlap the frame trim.
   const isGlass=mat&&mat.transparent&&(mat.opacity||1)<.9;
@@ -1644,7 +1644,7 @@ function placeFurnitureInScene(f,r){
     const targetW=target.w,targetD=target.d,targetH=target.h;
     fitObjectToFootprint(model,targetW,targetD,targetH,placement.windowTarget?'opening':(reg.fit||'footprint'));
     if(reg.defaultScale&&reg.defaultScale!==1)model.scale.multiplyScalar(reg.defaultScale);
-    // Phase ✨ — Material audit upgrades PBR props on all meshes
+    // Material audit upgrades PBR props on all meshes.
     if(typeof patchGLBMaterials==='function')patchGLBMaterials(model,ren);
     applyFurnitureFinishToModel(model,f);
     if(placement.windowTarget&&f.assetKey==='curtains'){

@@ -182,7 +182,7 @@ function exportSVG(){
   if(!curRoom||!curRoom.polygon?.length){toast('Open a room first');return}
   const room=curRoom;
   const meta=roomExportMeta(room);
-  // Phase 2B — wider pad to make room for per-wall dims, scale bar, north arrow
+  // Use a wider pad to make room for per-wall dimensions, scale bar, and north arrow.
   const pad=3.5;
   const minX=meta.bounds.x0-pad,maxX=meta.bounds.x1+pad,minY=meta.bounds.y0-pad,maxY=meta.bounds.y1+pad;
   const vbW=maxX-minX,vbH=maxY-minY;
@@ -224,7 +224,7 @@ function exportSVG(){
   }).join('\n');
   const roomLabelX=(meta.bounds.cx-minX).toFixed(2),roomLabelY=(maxY-meta.bounds.cy).toFixed(2);
   const widthLabel=formatDistance(meta.bounds.width),heightLabel=formatDistance(meta.bounds.height);
-  // Phase 2B — per-wall dimension ticks: label each edge of the room polygon with its length
+  // Per-wall dimension ticks label each edge of the room polygon with its length.
   const wallDims=(()=>{
     const poly=room.polygon||[];if(poly.length<2)return '';
     const parts=[];
@@ -242,7 +242,7 @@ function exportSVG(){
     }
     return parts.join('\n');
   })();
-  // Phase 2B — scale bar (1 ft increments, 5ft total if room allows)
+  // Scale bar uses 1 ft increments, up to 5 ft when the room allows.
   const scaleBar=(()=>{
     const barFt=Math.min(5,Math.max(2,Math.floor(meta.bounds.width/4)));
     const barX=0.8,barY=vbH-1.1;
@@ -254,7 +254,7 @@ function exportSVG(){
     segs.push(`<text class="scalebar" x="${(barX+barFt*unit).toFixed(2)}" y="${(barY-.2).toFixed(2)}">${barFt} ft</text>`);
     return segs.join('\n');
   })();
-  // Phase 2B — north arrow, top-right corner
+  // North arrow, top-right corner.
   const northArrow=(()=>{
     const nx=vbW-1.2,ny=1.4,r=0.55;
     return `<g class="north" transform="translate(${nx.toFixed(2)} ${ny.toFixed(2)})">
@@ -504,7 +504,7 @@ async function exportPresentationPDF(){
     pageFooter(pageNo++);
   }
 
-  // === Phase 2C — Furniture schedule + materials legend page ===
+  // Furniture schedule and materials legend page.
   try{
     doc.addPage('a4','landscape');
     doc.setFillColor(246,240,232);
@@ -525,7 +525,7 @@ async function exportPresentationPDF(){
       const cat=reg.category||f.category||'furniture';
       return [label,cat,dims,status];
     });
-    // Phase 2C — totals row: counts by status
+    // Totals row: counts by status.
     const statusCounts=schedRows.reduce((acc,r)=>{const k=String(r[3]||'Other');acc[k]=(acc[k]||0)+1;return acc},{});
     const totalsLabel=Object.entries(statusCounts).map(([k,v])=>`${k} ${v}`).join('   |   ')||'No items';
     const roomArea=polygonArea(curRoom.polygon||[]);
@@ -553,7 +553,7 @@ async function exportPresentationPDF(){
       doc.text(`+${schedRows.length-22} more items (see project file)`,margin+18,y+8);
       y+=14;
     }
-    // Phase 2C — totals footer row
+    // Totals footer row.
     doc.setDrawColor(border);doc.setLineWidth(1);
     doc.line(margin+18,y+6,pageW-margin-18,y+6);
     doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(ink);
@@ -562,7 +562,7 @@ async function exportPresentationPDF(){
     doc.text(totalsLabel,margin+160,y+22);
     doc.text(`Room area: ${formatArea(roomArea)}`,pageW-margin-18,y+22,{align:'right'});
 
-    // Phase 2C — multi-room project summary (only if >1 room)
+    // Multi-room project summary, shown only when the project has more than one room.
     if(Array.isArray(projects)&&projects.length>1){
       doc.addPage('a4','landscape');
       doc.setFillColor(246,240,232);doc.rect(0,0,pageW,pageH,'F');

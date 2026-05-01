@@ -1,6 +1,6 @@
 // Catalog
 const CATALOG_CATEGORY_ORDER=['Seating','Beds','Tables','Storage','Kitchen','Bathroom','Laundry','Lighting','Decor','Rugs','Wall Decor','Openings'];
-// Phase ✨ — Category glyphs (small illustrated icons). Returned as inline SVG markup
+// Category glyphs (small illustrated icons). Returned as inline SVG markup
 // so they render consistently across devices without icon-font dependencies.
 const CATALOG_GLYPHS={
   Seating:'<svg viewBox="0 0 24 24"><path d="M4 13v4M20 13v4M4 17h16M5 13h14a2 2 0 0 0-2-2h-10a2 2 0 0 0-2 2z"/></svg>',

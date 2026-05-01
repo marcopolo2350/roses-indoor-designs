@@ -392,7 +392,7 @@ function resolvePlanSnap(point,room=curRoom,opts={}){
   lastPlanSnapState={source:best.type,guides,point:snapped};
   return {x:Math.round(snapped.x*2)/2,y:Math.round(snapped.y*2)/2,state:lastPlanSnapState};
 }
-// Phase ✨ — Snap pulses: when furniture snaps to another piece's edge/center, record a
+// Snap pulses: when furniture snaps to another piece's edge/center, record a
 // short-lived pulse coord for draw() to render as a fading highlight ring.
 if(typeof window!=='undefined'&&!window._snapPulses)window._snapPulses=[];
 function _recordSnapPulse(x,z){
@@ -553,7 +553,7 @@ function genWalls(room){
   }
   return w;
 }
-// Phase 5A — Polygon auto-cleanup / auto-square (spiritual equivalent of room auto-detect,
+// Polygon auto-cleanup / auto-square (spiritual equivalent of room auto-detect,
 // adapted to Rose Designs' polygon-based room model). Call on demand from UI.
 function autoSquareRoom(room,opts={}){
   if(!room||!Array.isArray(room.polygon)||room.polygon.length<3)return{changed:false,reason:'no polygon'};
@@ -605,7 +605,7 @@ function autoSquareCurrentRoom(){
   if(typeof scheduleRebuild3D==='function')scheduleRebuild3D();
   if(typeof toast==='function')toast(res.changed?`Auto-squared room (${res.vertices} vertices)`:'Room already clean');
 }
-// Phase 5A (full) — Port of blueprint3d findRooms() graph algorithm.
+// Port of the blueprint3d findRooms() graph algorithm.
 // Takes an arbitrary set of wall segments [{x1,y1,x2,y2}, ...] and returns
 // an array of room polygons (each an array of {x,y}) by walking the tightest
 // counter-clockwise cycles in the shared-endpoint graph. CW cycles (outer

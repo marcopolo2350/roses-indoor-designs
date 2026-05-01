@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.79 - 2026-05-01
+
+- removed phase-history comments from runtime modules so source comments describe current behavior
+- extended source-structure validation to block phase-history comments in the runtime bridge
+
 ## 0.5.0-hardening.78 - 2026-05-01
 
 - rebuilt the mobile 3D walk-control dock with DOM nodes and CSS classes instead of injected inline HTML/styles

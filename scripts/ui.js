@@ -784,7 +784,7 @@ function buildStarterFurniture(starter,w,l){
     kitchen:[{label:'Base Cabinet',assetKey:'kitchen_cabinet_base',x:1,y:l-0.5,w:1.5,d:0.65,rotation:180},{label:'Refrigerator',assetKey:'thi_kitchen_fridge',x:w-1.5,y:l-1.2,w:2.8,d:2.2,rotation:180},{label:'Oven',assetKey:'thi_kitchen_oven',x:midX,y:l-1.2,w:2.5,d:2,rotation:180},{label:'Sink',assetKey:'thi_kitchen_sink',x:midX-3,y:l-0.5,w:3,d:0.65,rotation:180},{label:'Range Hood',assetKey:'kn_hood_modern',x:midX,y:l-0.2,w:2.5,d:1.4,rotation:180,mountType:'ceiling',elevation:6.6},{label:'Kitchen Island',assetKey:'kitchen_island',x:midX,y:midY,w:4,d:2.5,rotation:0}],
     bathroom:[{label:'Vanity Sink',assetKey:'thi_bathroom_sink',x:midX,y:l-0.5,w:2.5,d:0.6,rotation:180},{label:'Toilet',assetKey:'thi_toilet',x:w-1,y:l-1.5,w:1.2,d:2,rotation:180},{label:'Bathtub',assetKey:'thi_bathtub',x:2.1,y:2.8,w:2.5,d:5.5,rotation:90},{label:'Towel Rack',assetKey:'thi_towel_rack',x:w-0.1,y:midY,w:1.8,d:0.2,rotation:90,mountType:'wall',elevation:4.2},{label:'Bathroom Mirror',assetKey:'bathroom_mirror',x:midX,y:l-0.1,w:2.5,d:0.2,rotation:180,mountType:'wall',elevation:5}],
     laundry:[{label:'Washing Machine',assetKey:'thi_washing_machine',x:2.2,y:l-1.6,w:2.6,d:2.7,rotation:180},{label:'Dryer',assetKey:'kn_dryer',x:5.1,y:l-1.6,w:2.6,d:2.7,rotation:180},{label:'Small Shelf',assetKey:'shelf_small',x:w-0.15,y:midY,w:2.2,d:0.45,rotation:90,mountType:'wall',elevation:5.2},{label:'Small Trashcan',assetKey:'trashcan_small',x:w-1.1,y:1.2,w:1,d:1,rotation:0}],
-    // Phase 6A — new starter furniture sets
+    // Starter furniture sets.
     home_theater:[{label:'Sectional Sofa',assetKey:'kn_lounge_sectional',x:midX,y:l-4,w:9,d:3.6,rotation:180},{label:'Coffee Table',assetKey:'table_coffee',x:midX,y:l-7,w:3.2,d:1.8,rotation:0},{label:'TV Cabinet',assetKey:'kn_cabinet_tv_doors',x:midX,y:1.2,w:5.2,d:1.6,rotation:0},{label:'Area Rug',assetKey:'rug',x:midX,y:l-5,w:9,d:6,rotation:0},{label:'Floor Lamp',assetKey:'lamp_floor',x:1.5,y:l-2,w:1,d:1,rotation:0}],
     mudroom:[{label:'Bench',assetKey:'bench',x:midX,y:l-1.2,w:4,d:1.4,rotation:180},{label:'Standing Coat Rack',assetKey:'kn_coat_rack_standing',x:1.2,y:2,w:1.4,d:1.4,rotation:0},{label:'Coat Rack',assetKey:'kn_coat_rack',x:w-0.2,y:midY,w:2.4,d:0.2,rotation:90,mountType:'wall',elevation:4.8},{label:'Doormat',assetKey:'kn_rug_doormat',x:midX,y:1.3,w:3,d:1.8,rotation:0}],
     kids_room:[{label:'Bunk Bed',assetKey:'thi_bunk_bed',x:midX-1,y:l-3,w:3.5,d:6.5,rotation:180},{label:'Nightstand',assetKey:'tfp_night_stand',x:midX-3.2,y:l-1.8,w:1.7,d:1.5,rotation:180},{label:'Round Rug',assetKey:'rug_round',x:midX+1,y:midY,w:5,d:5,rotation:0},{label:'Teddy Bear',assetKey:'kn_bear',x:midX+1,y:l-2,w:0.5,d:0.5,rotation:0},{label:'Short Closet',assetKey:'tfp_closet_short',x:w-1,y:2,w:2.8,d:1.8,rotation:270}],
@@ -1515,7 +1515,7 @@ function toggleUnitSystem(){
   draw();
   showP();
 }
-// Phase ✨ — Time-of-day slider wiring (live preview; persists per-room)
+// Time-of-day slider wiring (live preview; persists per-room).
 function _todLabelForValue(v){
   const t=v/100;
   if(t<0.1)return'Midnight';if(t<0.22)return'Dawn';if(t<0.38)return'Morning';
@@ -1534,7 +1534,7 @@ function setTimeOfDay(v){
 }
 if(typeof window!=='undefined'){window.onTimeOfDayChange=onTimeOfDayChange;window.setTimeOfDay=setTimeOfDay}
 
-// Phase ✨ — Undo timeline strip: thumbnail dots showing undo/redo stack position
+// Undo timeline strip: thumbnail dots showing undo/redo stack position.
 function updateUndoStrip(){
   let strip=document.getElementById('undoStrip');
   if(!curRoom||!is3D===false&&!curRoom){if(strip)strip.classList.remove('on');return}
