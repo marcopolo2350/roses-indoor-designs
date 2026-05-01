@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.72 - 2026-05-01
+
+- rebuilt the asset preflight diagnostics panel with DOM nodes and `textContent`
+- extended HTML safety validation to block asset-preflight string rendering from returning
+
 ## 0.5.0-hardening.71 - 2026-05-01
 
 - rebuilt the undo timeline strip so visible undo nodes are DOM-rendered instead of assigned through `innerHTML`

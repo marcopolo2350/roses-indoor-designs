@@ -49,6 +49,24 @@ for (const pattern of [
   }
 }
 
+const assetPreflightRenderer = storage.match(
+  /function\s+renderAssetPreflightPanel[\s\S]*?async\s+function\s+ensureHttpRuntime/,
+);
+if (!assetPreflightRenderer) {
+  errors.push("renderAssetPreflightPanel() was not found for asset-preflight safety validation.");
+} else {
+  const body = assetPreflightRenderer[0];
+  if (/insertAdjacentHTML|innerHTML\s*=/.test(body)) {
+    errors.push("Asset preflight panel must render with DOM nodes, not HTML strings.");
+  }
+  if (
+    !/heading\.textContent\s*=\s*title/.test(body) ||
+    !/item\.textContent\s*=\s*row\.text/.test(body)
+  ) {
+    errors.push("Asset preflight panel must render dynamic text with textContent.");
+  }
+}
+
 if (/out\.innerHTML\s*=/.test(walkthrough)) {
   errors.push("walkthrough.js must render self-test output with textContent/DOM nodes.");
 }

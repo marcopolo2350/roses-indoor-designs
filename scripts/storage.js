@@ -474,6 +474,27 @@ function getAssetBase(){
 function modelUrl(file){
   return new URL(file, getAssetBase()).href;
 }
+function renderAssetPreflightPanel(title,metaText,rows=[]){
+  const el=document.getElementById('assetPreflightPanel');
+  if(!el)return;
+  window.RoseHTML.clear(el);
+  const heading=document.createElement('h4');
+  heading.textContent=title;
+  el.appendChild(heading);
+  const meta=document.createElement('div');
+  meta.className='ap-meta';
+  meta.textContent=metaText;
+  el.appendChild(meta);
+  const list=document.createElement('div');
+  list.className='ap-list';
+  rows.forEach(row=>{
+    const item=document.createElement('div');
+    item.className=`ap-row ${row.ok?'ok':'fail'}`;
+    item.textContent=row.text;
+    list.appendChild(item);
+  });
+  el.appendChild(list);
+}
 async function ensureHttpRuntime(){
   if(location.protocol!=='file:')return true;
   const target='http://127.0.0.1:8000/roses-indoor-designs.html';
@@ -485,13 +506,16 @@ async function ensureHttpRuntime(){
     const el=document.getElementById('assetPreflightPanel');
     if(el){
       el.classList.add('show');
-      el.innerHTML=`<h4>HTTP Required</h4><div class="ap-meta">page: ${esc(window.location.href)}
-asset base: ${esc(getAssetBase())}
+      renderAssetPreflightPanel(
+        'HTTP Required',
+        `page: ${window.location.href}
+asset base: ${getAssetBase()}
 Model loading is blocked in file mode.
 
 Open the app at:
-http://127.0.0.1:8000/roses-indoor-designs.html</div><div class="ap-list"><div class="ap-row fail">Local server not detected at http://127.0.0.1:8000
-GLB loading will fail from file:/// mode.</div></div>`;
+http://127.0.0.1:8000/roses-indoor-designs.html`,
+        [{ok:false,text:'Local server not detected at http://127.0.0.1:8000\nGLB loading will fail from file:/// mode.'}]
+      );
     }
     return false;
   }
@@ -538,10 +562,17 @@ function updateAssetPreflightPanel(entries){
   const sofa=rows.find(r=>r.key==='sofa');
   const hasFail=rows.some(r=>r.status!=='pending'&&!r.ok);
   el.classList.toggle('show',preflightPanelOpen||hasFail);
-  el.innerHTML=`<h4>Asset Preflight</h4><div class="ap-meta">page: ${esc(window.location.href)}
-asset base: ${esc(getAssetBase())}
-sofa url: ${esc(sofa?sofa.url:modelUrl('sofa.glb'))}</div><div class="ap-list">${rows.map(row=>`<div class="ap-row ${row.ok?'ok':'fail'}">${esc(row.key)} -> ${esc(row.status)}${row.error?` (${esc(row.error)})`:''}
-${esc(row.url)}</div>`).join('')}</div>`;
+  renderAssetPreflightPanel(
+    'Asset Preflight',
+    `page: ${window.location.href}
+asset base: ${getAssetBase()}
+sofa url: ${sofa?sofa.url:modelUrl('sofa.glb')}`,
+    rows.map(row=>({
+      ok:row.ok,
+      text:`${row.key} -> ${row.status}${row.error?` (${row.error})`:''}
+${row.url}`
+    }))
+  );
 }
 function togglePreflightPanel(){preflightPanelOpen=!preflightPanelOpen;updateAssetPreflightPanel()}
 function ensureRoomDiagEntry(f,reg){
