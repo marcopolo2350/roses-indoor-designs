@@ -8,6 +8,7 @@ const errors = [];
 const main = read("scripts/main.js");
 const storage = read("scripts/storage.js");
 const ui = read("scripts/ui.js");
+const catalog = read("scripts/catalog.js");
 const shortcuts = read("scripts/ui/shortcuts.js");
 const cloud = read("scripts/cloud/supabase.js");
 const walkthrough = read("scripts/walkthrough.js");
@@ -187,6 +188,21 @@ if (!undoStrip) {
   }
   if (!/node\.textContent\s*=\s*isCurrent/.test(body)) {
     errors.push("updateUndoStrip() must render current-node text with textContent.");
+  }
+}
+
+const pendingFurnitureBar = catalog.match(
+  /function\s+renderPendingFurnitureBar[\s\S]*?function\s+updateCatalogPendingUi/,
+);
+if (!pendingFurnitureBar) {
+  errors.push("renderPendingFurnitureBar() was not found for catalog placement validation.");
+} else {
+  const body = pendingFurnitureBar[0];
+  if (/insertAdjacentHTML|innerHTML\s*=/.test(body)) {
+    errors.push("Catalog placement bar must render with DOM nodes, not HTML strings.");
+  }
+  if (!/title\.textContent\s*=\s*item\.label/.test(body) || !/copy\.textContent\s*=/.test(body)) {
+    errors.push("Catalog placement bar must render dynamic placement copy with textContent.");
   }
 }
 

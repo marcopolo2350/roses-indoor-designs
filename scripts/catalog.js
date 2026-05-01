@@ -270,6 +270,30 @@ function buildVariantSelector(item,selectedId,handlerName,scope='catalog'){
   if(!variants.length)return '';
   return `<div class="variant-row">${variants.map(variant=>`<button class="variant-chip${variant.id===selectedId?' sel':''}" type="button" data-action="catalog-variant" data-variant-handler="${esc(handlerName)}" data-asset-key="${esc(item.assetKey||'')}" data-variant-id="${esc(variant.id)}" data-stop-propagation="${scope==='catalog'?'true':'false'}"><span class="variant-chip-dot" style="background:${variantSwatchMarkup(variant)}"></span><span>${esc(variant.label)}</span></button>`).join('')}</div>`;
 }
+function createVariantSelectorElement(item,selectedId,handlerName,scope='catalog'){
+  const variants=getItemVariants(item);
+  if(!variants.length)return null;
+  const row=document.createElement('div');
+  row.className='variant-row';
+  variants.forEach(variant=>{
+    const btn=document.createElement('button');
+    btn.className=`variant-chip${variant.id===selectedId?' sel':''}`;
+    btn.type='button';
+    btn.dataset.action='catalog-variant';
+    btn.dataset.variantHandler=handlerName;
+    btn.dataset.assetKey=item.assetKey||'';
+    btn.dataset.variantId=variant.id;
+    btn.dataset.stopPropagation=scope==='catalog'?'true':'false';
+    const dot=document.createElement('span');
+    dot.className='variant-chip-dot';
+    dot.style.background=variantSwatchMarkup(variant);
+    const label=document.createElement('span');
+    label.textContent=variant.label;
+    btn.append(dot,label);
+    row.appendChild(btn);
+  });
+  return row;
+}
 function selectedVariantController(records){
   if(!records.length)return null;
   const items=[...new Set(records.map(record=>getFurnitureCatalogItem(record)?.assetKey).filter(Boolean))];
@@ -423,25 +447,62 @@ function pendingFurniturePreviewItemRecord(){
   if(pendFurnPreviewKey)return FURN_ITEM_BY_KEY.get(pendFurnPreviewKey)||FURN_ITEMS.find(item=>item.assetKey===pendFurnPreviewKey)||null;
   return null;
 }
-function pendingFurnitureBarMarkup(item,state){
-  if(!item)return '<div class="catalog-placement-bar empty">Pick a piece to see where it will land.</div>';
+function renderPendingFurnitureBar(bar,item,state){
+  window.RoseHTML.clear(bar);
+  if(!item){
+    const empty=document.createElement('div');
+    empty.className='catalog-placement-bar empty';
+    empty.textContent='Pick a piece to see where it will land.';
+    bar.appendChild(empty);
+    return;
+  }
   const location=state?.snapped?`${formatDistance(state.snapped.x,'compact')} | ${formatDistance(state.snapped.z,'compact')}`:'Choose a spot in the room';
   const statusText=state?.valid?'Ready to place':(state?.reason||'Move the target inside the room');
   const statusClass=state?.valid?'valid':'invalid';
   const selectedVariant=getSelectedCatalogVariant(item);
-  const mobileCta=isTouchUi()&&window.innerWidth<=760
-    ? `<button class="mini-chip${state?.valid?'':' secondary'}" type="button" ${state?.valid?'data-action="catalog-place-pending"':'disabled'}>${state?.valid?'Place Here':'Adjust Target'}</button>`
-    : `<div class="catalog-placement-inline">${state?.valid?'Click the card again to place it.':'Move the target in the room, then click again.'}</div>`;
-  const variantUi=itemSupportsVariants(item)
-    ? `<div class="catalog-placement-variants"><div class="catalog-placement-copy">Style Variant | ${esc(selectedVariant?.label||'')}</div>${buildVariantSelector(item,selectedVariant?.id||'', 'setCatalogVariant','catalog')}</div>`
-    : '';
-  return `<div class="catalog-placement-bar ${statusClass}"><div class="catalog-placement-meta"><div class="catalog-placement-title">${esc(item.label)}</div><div class="catalog-placement-copy">${esc(statusText)} | ${esc(location)}</div>${variantUi}</div>${mobileCta}</div>`;
+  const wrap=document.createElement('div');
+  wrap.className=`catalog-placement-bar ${statusClass}`;
+  const meta=document.createElement('div');
+  meta.className='catalog-placement-meta';
+  const title=document.createElement('div');
+  title.className='catalog-placement-title';
+  title.textContent=item.label;
+  const copy=document.createElement('div');
+  copy.className='catalog-placement-copy';
+  copy.textContent=`${statusText} | ${location}`;
+  meta.append(title,copy);
+  if(itemSupportsVariants(item)){
+    const variants=document.createElement('div');
+    variants.className='catalog-placement-variants';
+    const variantCopy=document.createElement('div');
+    variantCopy.className='catalog-placement-copy';
+    variantCopy.textContent=`Style Variant | ${selectedVariant?.label||''}`;
+    variants.appendChild(variantCopy);
+    const selector=createVariantSelectorElement(item,selectedVariant?.id||'','setCatalogVariant','catalog');
+    if(selector)variants.appendChild(selector);
+    meta.appendChild(variants);
+  }
+  let cta;
+  if(isTouchUi()&&window.innerWidth<=760){
+    cta=document.createElement('button');
+    cta.className=`mini-chip${state?.valid?'':' secondary'}`;
+    cta.type='button';
+    cta.textContent=state?.valid?'Place Here':'Adjust Target';
+    if(state?.valid)cta.dataset.action='catalog-place-pending';
+    else cta.disabled=true;
+  }else{
+    cta=document.createElement('div');
+    cta.className='catalog-placement-inline';
+    cta.textContent=state?.valid?'Click the card again to place it.':'Move the target in the room, then click again.';
+  }
+  wrap.append(meta,cta);
+  bar.appendChild(wrap);
 }
 function updateCatalogPendingUi(){
   const item=pendingFurniturePreviewItemRecord();
   const state=typeof getPendingFurniturePlacementState==='function'?getPendingFurniturePlacementState(curRoom):null;
   const bar=document.getElementById('catalogPlacementBar');
-  if(bar)bar.innerHTML=pendingFurnitureBarMarkup(item,state);
+  if(bar)renderPendingFurnitureBar(bar,item,state);
   document.querySelectorAll('.furn-option').forEach(card=>{
     const active=(card.dataset.assetKey||'')===(item?.assetKey||'');
     card.classList.toggle('selected',active);
