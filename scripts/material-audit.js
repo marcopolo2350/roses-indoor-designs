@@ -74,7 +74,7 @@
     if(mat.emissiveIntensity!==undefined&&mat.emissiveIntensity>1.5)mat.emissiveIntensity=1.2;
     // Enable anisotropy on color maps for crisp grazing-angle textures
     if(renderer&&mat.map){
-      try{mat.map.anisotropy=Math.min(16,renderer.capabilities.getMaxAnisotropy())}catch(_){}
+      try{mat.map.anisotropy=Math.min(16,renderer.capabilities.getMaxAnisotropy())}catch(error){window.reportRoseRecoverableError?.('Material anisotropy update failed',error)}
     }
     mat.needsUpdate=true;
   }

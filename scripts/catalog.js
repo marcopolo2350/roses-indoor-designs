@@ -385,7 +385,7 @@ async function loadAssetManifest(){
       item.defaultVariantId=meta?.defaultVariantId||item.defaultVariantId||(item.variants?.[0]?.id||'');
     });
     await loadCatalogPrefs();
-  }catch(_){}
+  }catch(error){window.reportRoseRecoverableError?.('Catalog preference load failed',error)}
 }
 const FURN_ITEM_BY_KEY=new Map(FURN_ITEMS.filter(item=>item.assetKey).map(item=>[item.assetKey,item]));
 const FURN_ITEM_BY_LABEL=new Map(FURN_ITEMS.map(item=>[(item.label||'').toLowerCase(),item]));

@@ -705,7 +705,7 @@ async function exportPresentationPDF(){
         const hex=(sw.val||'#EFE6DA').replace('#','');
         const r=parseInt(hex.substr(0,2),16)||239,g=parseInt(hex.substr(2,2),16)||230,b=parseInt(hex.substr(4,2),16)||218;
         doc.setFillColor(r,g,b);doc.setDrawColor(border);doc.roundedRect(sx+14,sy+14,swW-28,40,6,6,'FD');
-      }catch(_){}
+      }catch(error){window.reportRoseRecoverableError?.('PDF swatch render failed',error)}
       doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(ink);
       doc.text(sw.label,sx+14,sy+70);
       doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(muted);

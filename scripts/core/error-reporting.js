@@ -11,6 +11,16 @@
     return payload;
   }
 
+  function reportRecoverableError(context, error, options = {}) {
+    const detail =
+      error instanceof Error ? `${error.name}: ${error.message}` : String(error || "Unknown error");
+    const payload = { context, detail, dev: isDevMode(), recoverable: true, ...options };
+    if (isDevMode()) {
+      console.warn(`[rose-warning] ${context}`, error);
+    }
+    return payload;
+  }
+
   function showFatalLoadScreen(message, detail = "") {
     const title = window.APP_CONFIG?.appName || "Application";
     const root = document.createElement("div");
@@ -41,5 +51,6 @@
   }
 
   window.reportRoseError = reportError;
+  window.reportRoseRecoverableError = reportRecoverableError;
   window.showRoseFatalLoadScreen = showFatalLoadScreen;
 })();

@@ -14,7 +14,7 @@ async function openEd(room){
   document.getElementById('threeC').classList.remove('on');document.getElementById('b3d').classList.remove('on');document.getElementById('vLbl').textContent='2D Plan';
   document.getElementById('camBtns').classList.remove('on');document.getElementById('walkHint').classList.remove('on');
   document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.t==='select'));stop3D();initCan();await restoreRoomHistory(room);sel={type:null,idx:-1};panelHidden=!!(typeof isTouchUi==='function'&&isTouchUi()&&window.innerWidth<=760);showP();
-  try{if(!localStorage.getItem('rose_3d_hint'))localStorage.setItem('rose_3d_hint','1')}catch(_){}
+  try{if(!localStorage.getItem('rose_3d_hint'))localStorage.setItem('rose_3d_hint','1')}catch(error){window.reportRoseRecoverableError?.('3D hint storage update failed',error)}
   // Surface old note if returning to a room
   if(window.appState)window.appState.markDirty(false);
   if(room.polygon&&room.polygon.length)maybeSurfaceNote(room.id);checkRoomReturn(room.id)}
@@ -42,7 +42,7 @@ function autoFit(){
   // so sibling-room ghosts stay in frame around the active room.
   let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
   let siblings=[curRoom];
-  try{if(typeof currentFloorRooms==='function'){const s=currentFloorRooms(curRoom,curRoom.floorId);if(s&&s.length)siblings=s;}}catch(_){}
+  try{if(typeof currentFloorRooms==='function'){const s=currentFloorRooms(curRoom,curRoom.floorId);if(s&&s.length)siblings=s;}}catch(error){window.reportRoseRecoverableError?.('Floor room bounds lookup failed',error)}
   siblings.forEach(room=>{if(!room||!room.polygon)return;room.polygon.forEach(p=>{if(p.x<minX)minX=p.x;if(p.y<minY)minY=p.y;if(p.x>maxX)maxX=p.x;if(p.y>maxY)maxY=p.y;});});
   if(!isFinite(minX)){const b=getRoomBounds2D(curRoom);minX=b.x0;maxX=b.x1;minY=b.y0;maxY=b.y1;}
   const width=Math.max(1,maxX-minX),height=Math.max(1,maxY-minY),cx=(minX+maxX)/2,cy=(minY+maxY)/2,pd=64;
@@ -860,7 +860,7 @@ function draw(){
       const show=!curRoom||!curRoom.polygon||curRoom.polygon.length<3;
       es.classList.toggle('on',!!show&&!drawMode&&!document.getElementById('scrEd')?.classList.contains('mode-3d'));
     }
-  }catch(_){}
+  }catch(error){window.reportRoseRecoverableError?.('2D empty-state visibility update failed',error)}
   if(drawMode){if(curRoom&&roomLayerVisible(curRoom,'reference'))drawReferenceOverlay(curRoom);drawFD();return}
   if(!curRoom)return;
   const r=curRoom;

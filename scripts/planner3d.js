@@ -97,7 +97,7 @@ function applyTimeOfDay(t){
   for(let i=0;i<stops.length-1;i++){if(t>=stops[i].t&&t<=stops[i+1].t){a=stops[i];b=stops[i+1];break}}
   const lt=(t-a.t)/Math.max(0.0001,(b.t-a.t));
   const col=_lerpHex(a.c,b.c,lt);
-  try{scene.background=new THREE.Color(col);if(scene.fog)scene.fog.color=new THREE.Color(col)}catch(_){}
+  try{scene.background=new THREE.Color(col);if(scene.fog)scene.fog.color=new THREE.Color(col)}catch(error){window.reportRoseRecoverableError?.('3D time-of-day background update failed',error)}
   // Exposure curve: darker at night, brighter at noon
   if(ren){
     const eBase=0.68+Math.sin(Math.min(1,Math.max(0,t))*Math.PI)*0.42;
@@ -113,7 +113,7 @@ function applyTimeOfDay(t){
   if(dir){
     const warm=t>0.65?_lerpHex('#ffd6a8','#ff9a5b',Math.min(1,(t-0.65)/0.25)):
                t<0.25?_lerpHex('#9ab4d0','#ffd6a8',Math.min(1,t/0.25)):'#fffaf2';
-    try{dir.color=new THREE.Color(warm)}catch(_){}
+    try{dir.color=new THREE.Color(warm)}catch(error){window.reportRoseRecoverableError?.('3D directional light color update failed',error)}
     dir.intensity=(0.24+Math.sin(Math.max(0,Math.min(1,t))*Math.PI)*1.18);
   }
   const hemi=scene.userData?.styleTargets?.hemiLight;
@@ -743,7 +743,7 @@ function buildRoomEnvelope3D(room,{floorFocus,renderer}={}){
   const floorAccentMap=buildFloorAccentTexture(room.materials.floorType||'light_oak');
   const floorGeo=applyPlanarUVs(new THREE.ShapeGeometry(floorShape),room.polygon);
   const floorMat=pushStyleMaterial('floorMats',new THREE.MeshStandardMaterial({color:safeThreeColor(room.materials.floor,floorPreset.color),roughness:Math.max(.8,Number.isFinite(floorPreset.roughness)?floorPreset.roughness:.88),metalness:0,map:floorMap}),room);
-  if(floorMat.map){floorMat.map.needsUpdate=true;try{floorMat.map.anisotropy=Math.min(16,renderer?.capabilities?.getMaxAnisotropy?.()||1)}catch(_){}}
+  if(floorMat.map){floorMat.map.needsUpdate=true;try{floorMat.map.anisotropy=Math.min(16,renderer?.capabilities?.getMaxAnisotropy?.()||1)}catch(error){window.reportRoseRecoverableError?.('3D floor anisotropy update failed',error)}}
   const floorMesh=new THREE.Mesh(floorGeo,floorMat);floorMesh.rotation.x=-Math.PI/2;floorMesh.receiveShadow=true;scene.add(floorMesh);pushStyleNode('floorMeshes',floorMesh,room);
   const accentMat=new THREE.MeshStandardMaterial({color:safeThreeColor(room.materials.floor,floorPreset.color),roughness:1,metalness:0,map:floorAccentMap,transparent:true,opacity:.14,depthWrite:true});
   const accentMesh=new THREE.Mesh(applyPlanarUVs(new THREE.ShapeGeometry(floorShape),room.polygon),accentMat);accentMesh.rotation.x=-Math.PI/2;accentMesh.position.y=.003;accentMesh.renderOrder=-1;scene.add(accentMesh);pushStyleNode('floorAccents',accentMesh,room);
@@ -952,7 +952,7 @@ function build3D(){
       updateOrbitWallCutaway(_smoothCam.pos);
       cam.position.copy(_smoothCam.pos);cam.lookAt(_smoothCam.look);
       // Update Bokeh focus distance dynamically (keeps mid-room in focus as user orbits).
-      if(composer&&composer._bokeh){try{composer._bokeh.uniforms&&composer._bokeh.uniforms.focus&&(composer._bokeh.uniforms.focus.value=Math.max(6,cam.position.distanceTo(_smoothCam.look)*0.85))}catch(_){}}
+      if(composer&&composer._bokeh){try{composer._bokeh.uniforms&&composer._bokeh.uniforms.focus&&(composer._bokeh.uniforms.focus.value=Math.max(6,cam.position.distanceTo(_smoothCam.look)*0.85))}catch(error){window.reportRoseRecoverableError?.('3D bokeh focus update failed',error)}}
       if(composer)composer.render();else ren.render(scene,cam)
     })()
   }catch(err){console.warn('3D build failed:',err);toast(`3D build failed: ${(err&&err.message)||'check room materials or shape'}`);exit3DView()}
@@ -1673,7 +1673,71 @@ function placeFurnitureInScene(f,r){
     if(diagEntry){diagEntry.status='fail';diagEntry.fallbackAttempted=true;diagEntry.error=(err&&err.message)||'load exception';diagEntry.issues=[(err&&err.message)||'load exception'];updateRoomRuntimeDiag();}
   });
 }
-function attach3DPointerControls(){const el=ren.domElement;let pointerId=null;const activePtrs=new Map();const ray=new THREE.Raycaster();let pDown,pUp,pMove,pCancel,pDbl;pDown=e=>{activePtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});if(activePtrs.size===1){d3=true;pointerId=e.pointerId;p3x=e.clientX;p3y=e.clientY;if(el.setPointerCapture)try{el.setPointerCapture(e.pointerId)}catch(_){}}if(activePtrs.size===2){isPinch=true;const pts=[...activePtrs.values()];pinchDist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)}};pUp=e=>{activePtrs.delete(e.pointerId);if(activePtrs.size<2)isPinch=false;if(activePtrs.size===0){d3=false;if(pointerId!==null&&el.releasePointerCapture)try{el.releasePointerCapture(pointerId)}catch(_){}pointerId=null}};pCancel=e=>{if(e&&e.pointerId)activePtrs.delete(e.pointerId);if(activePtrs.size<2)isPinch=false;if(activePtrs.size===0){d3=false;pointerId=null}};pMove=e=>{if(activePtrs.has(e.pointerId))activePtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});if(isPinch&&activePtrs.size===2&&camMode==='orbit'){const pts=[...activePtrs.values()],nd=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);if(pinchDist>0&&nd>0)orbitVel.zoom+=((pinchDist/nd)-1)*cDist*.42;pinchDist=nd;return}if(!d3||activePtrs.size>1)return;const dx=e.clientX-p3x,dy=e.clientY-p3y;p3x=e.clientX;p3y=e.clientY;if(camMode==='orbit'){orbitVel.yaw+=dx*.00066*cDist;orbitVel.pitch+=-dy*.00052*cDist}else{cYaw-=dx*.002;cPitch=Math.max(-.35,Math.min(.25,cPitch+dy*.0015))}};pDbl=e=>{if(!scene||!cam||camMode!=='orbit')return;const rect=el.getBoundingClientRect();const pointer=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);ray.setFromCamera(pointer,cam);const hits=ray.intersectObjects(scene.children,true);const hit=hits.find(entry=>{let obj=entry.object;while(obj){if(obj.userData?.furnitureId)return true;obj=obj.parent}return false});if(!hit)return;let obj=hit.object;while(obj&&!obj.userData?.furnitureId)obj=obj.parent;if(obj?.userData?.furnitureId)focusFurniture3D(obj.userData.furnitureId)};el.addEventListener('pointerdown',pDown);el.addEventListener('pointerup',pUp);el.addEventListener('pointermove',pMove);el.addEventListener('pointercancel',pCancel);el.addEventListener('lostpointercapture',pCancel);el.addEventListener('dblclick',pDbl);ren._listeners={el,pDown,pUp,pMove,pCancel,pDbl}}
+function attach3DPointerControls(){
+  const el=ren.domElement;
+  let pointerId=null;
+  const activePtrs=new Map();
+  const ray=new THREE.Raycaster();
+  let pDown,pUp,pMove,pCancel,pDbl;
+  pDown=e=>{
+    activePtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(activePtrs.size===1){
+      d3=true;pointerId=e.pointerId;p3x=e.clientX;p3y=e.clientY;
+      if(el.setPointerCapture){
+        try{el.setPointerCapture(e.pointerId)}catch(error){window.reportRoseRecoverableError?.('3D pointer capture failed',error)}
+      }
+    }
+    if(activePtrs.size===2){isPinch=true;const pts=[...activePtrs.values()];pinchDist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)}
+  };
+  pUp=e=>{
+    activePtrs.delete(e.pointerId);
+    if(activePtrs.size<2)isPinch=false;
+    if(activePtrs.size===0){
+      d3=false;
+      if(pointerId!==null&&el.releasePointerCapture){
+        try{el.releasePointerCapture(pointerId)}catch(error){window.reportRoseRecoverableError?.('3D pointer release failed',error)}
+      }
+      pointerId=null;
+    }
+  };
+  pCancel=e=>{
+    if(e&&e.pointerId)activePtrs.delete(e.pointerId);
+    if(activePtrs.size<2)isPinch=false;
+    if(activePtrs.size===0){d3=false;pointerId=null}
+  };
+  pMove=e=>{
+    if(activePtrs.has(e.pointerId))activePtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(isPinch&&activePtrs.size===2&&camMode==='orbit'){
+      const pts=[...activePtrs.values()],nd=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);
+      if(pinchDist>0&&nd>0)orbitVel.zoom+=((pinchDist/nd)-1)*cDist*.42;
+      pinchDist=nd;
+      return;
+    }
+    if(!d3||activePtrs.size>1)return;
+    const dx=e.clientX-p3x,dy=e.clientY-p3y;
+    p3x=e.clientX;p3y=e.clientY;
+    if(camMode==='orbit'){orbitVel.yaw+=dx*.00066*cDist;orbitVel.pitch+=-dy*.00052*cDist}else{cYaw-=dx*.002;cPitch=Math.max(-.35,Math.min(.25,cPitch+dy*.0015))}
+  };
+  pDbl=e=>{
+    if(!scene||!cam||camMode!=='orbit')return;
+    const rect=el.getBoundingClientRect();
+    const pointer=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);
+    ray.setFromCamera(pointer,cam);
+    const hits=ray.intersectObjects(scene.children,true);
+    const hit=hits.find(entry=>{let obj=entry.object;while(obj){if(obj.userData?.furnitureId)return true;obj=obj.parent}return false});
+    if(!hit)return;
+    let obj=hit.object;
+    while(obj&&!obj.userData?.furnitureId)obj=obj.parent;
+    if(obj?.userData?.furnitureId)focusFurniture3D(obj.userData.furnitureId);
+  };
+  el.addEventListener('pointerdown',pDown);
+  el.addEventListener('pointerup',pUp);
+  el.addEventListener('pointermove',pMove);
+  el.addEventListener('pointercancel',pCancel);
+  el.addEventListener('lostpointercapture',pCancel);
+  el.addEventListener('dblclick',pDbl);
+  ren._listeners={el,pDown,pUp,pMove,pCancel,pDbl}
+}
 
 function verificationTargetSize(key){
   const map={rug:{w:3.8,d:2.8,h:.2},runner_rug:{w:6.5,d:2,h:.2},rug_round:{w:4.2,d:4.2,h:.2},curtains:{w:3.8,d:.3,h:4},blinds:{w:3.5,d:.2,h:2.7},wall_art_01:{w:2.2,d:.2,h:1.4},wall_art_04:{w:2.2,d:.2,h:1.4},wall_art_06:{w:2.2,d:.2,h:1.4},mirror:{w:1.8,d:.2,h:2.6},lamp_wall:{w:1.4,d:.4,h:2.2},lamp_table:{w:1.1,d:1.1,h:1.45},lamp_chandelier:{w:2,d:2,h:1.65},lamp_ceiling:{w:1.6,d:1.6,h:1.2},lamp_cube:{w:1.35,d:1.35,h:1.35},lamp_pendant:{w:1.6,d:1.6,h:1.9},lamp_stand:{w:1,d:1,h:4.2},shelving:{w:2.8,d:.6,h:2.1},shelf_small:{w:2.1,d:.45,h:1.2},plant_small:{w:1.1,d:1.1,h:1.6},plant_cactus:{w:1,d:1,h:1.8},plant_leafy:{w:1.4,d:1.4,h:2.1},plant_palm:{w:1.6,d:1.6,h:2.8},plant_round:{w:1.25,d:1.25,h:1.7},chair_office:{w:2,d:2,h:3},nightstand:{w:1.8,d:1.5,h:2.2},nightstand_alt:{w:1.8,d:1.55,h:2.25},dresser:{w:3.8,d:1.8,h:3.2},dresser_tall:{w:3.3,d:1.7,h:4.1},console_low:{w:4.6,d:1.35,h:2.4},tv_console:{w:4.8,d:1.5,h:2.8},dining_table:{w:5.2,d:3,h:2.8},table_round_large:{w:4.2,d:4.2,h:2.8},table_round_small:{w:2.4,d:2.4,h:2.2},stool:{w:1.4,d:1.4,h:1.9},bench:{w:3.6,d:1.4,h:2.2},sofa_small:{w:3.4,d:2.05,h:2.8},sofa_compact:{w:3.6,d:2.1,h:3},sofa_medium:{w:4.4,d:2.35,h:3.05},sofa_large:{w:5.8,d:2.6,h:3.1},sofa_modern:{w:5.2,d:2.55,h:3.05},sofa_grand:{w:6.4,d:2.8,h:3.2},bed_king:{w:6.4,d:7.4,h:2.7},bed_double:{w:5.5,d:6.8,h:2.6},bed_twin:{w:3.6,d:6.6,h:2.5},bunk_bed:{w:4.4,d:6.8,h:5.8},bookcase_books:{w:3.1,d:1.1,h:4.8},closet_tall:{w:3.4,d:1.8,h:6.2},closet_full:{w:3.7,d:1.9,h:6.6},closet_short:{w:3.1,d:1.7,h:4.2},fireplace:{w:4.2,d:1.3,h:3.6},kitchen_cabinet_base:{w:3,d:2,h:3},kitchen_cabinet_upper:{w:3,d:1.1,h:2},kitchen_island:{w:4.2,d:2.5,h:3},kitchen_fridge:{w:3,d:2.6,h:6.6},kitchen_stove:{w:2.6,d:2.2,h:3.2},kitchen_hood:{w:2.6,d:1,h:1.8},kitchen_sink:{w:3,d:2.1,h:3.3},kitchen_dishwasher:{w:2,d:2.1,h:3},bathroom_vanity_single:{w:2.6,d:1.9,h:3.2},bathroom_vanity_double:{w:4.4,d:1.9,h:3.2},bathroom_toilet:{w:1.4,d:2.4,h:2.9},bathroom_tub:{w:2.8,d:5.7,h:2.4},bathroom_shower:{w:3,d:3,h:6.8},bathroom_mirror:{w:2.4,d:.2,h:2.6},bathroom_towel_bar:{w:2,d:.35,h:1.1},washing_machine:{w:2.7,d:2.8,h:3.6},column_round:{w:1.4,d:1.4,h:8.2},trashcan_small:{w:1,d:1,h:1.4},trashcan_large:{w:1.2,d:1.2,h:2.2},square_plate:{w:.9,d:.9,h:.18},table_rect:{w:4.4,d:2.6,h:2.8}};
@@ -1982,7 +2046,7 @@ const wc2=document.getElementById('walkCtrl');if(wc2)wc2.remove();stopWalkMove()
     ren=null}
   const cont=document.getElementById('threeC');if(cont)cont.innerHTML='';
   document.getElementById('scrEd')?.classList.remove('mode-3d');
-  if(composer){try{composer.passes&&composer.passes.forEach(p=>p.dispose&&p.dispose())}catch(_){}composer=null}
+  if(composer){try{composer.passes&&composer.passes.forEach(p=>p.dispose&&p.dispose())}catch(error){window.reportRoseRecoverableError?.('3D composer disposal failed',error)}composer=null}
   scene=null;cam=null}
 
 // Presentation / reveal polish overrides

@@ -10,7 +10,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - App identity is centralized in `scripts/core/app-config.js`.
 - Runtime boot has an explicit documented bridge in `scripts/main.js`.
 - Package scripts exist for dev, syntax checks, lint, format, manifest validation, self-test, smoke, Playwright specs, thumbnails, and cleanup.
-- CI runs install, syntax checks, lint, format checks, manifest validation, delegated UI handler validation, built-in self-test, Playwright spec, and smoke checks.
+- CI runs install, syntax checks, lint, format checks, manifest validation, delegated UI handler validation, silent-catch validation, built-in self-test, Playwright spec, and smoke checks.
 - `scripts/core/app-state.js` owns the first central runtime metadata surface.
 - `scripts/core/history.js` owns shared room history and undo/redo behavior.
 - `scripts/core/storage-keys.js` owns localStorage and IndexedDB key naming.
@@ -29,6 +29,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Home project cards, create-room starter cards, delete confirmation buttons, and undo timeline nodes use delegated `data-action` handlers.
 - Generated 3D reveal, walkthrough, photo, and mobile walk-control trays use delegated `data-action` or hold handlers.
 - Runtime diagnostics, cloud sync modal buttons, canvas pointer events, and reference file input use delegated actions or `addEventListener` instead of handler properties.
+- Empty catch blocks have been replaced with explicit recoverable error reporting and are guarded by `npm run validate:error-handling`.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
 - Standard Playwright config and a shell smoke spec exist for desktop and mobile Chromium viewports.
 - README, changelog, roadmap, architecture, data model, testing, deployment, and limitations docs exist.
@@ -54,7 +55,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 
 - `scripts/ui.js`, `scripts/catalog.js`, `scripts/planner2d.js`, and `scripts/planner3d.js` are still large browser-global files.
 - Some legacy globals and large files remain; the event-handler cleanup is now substantially cleaner, but the browser-global architecture is still transitional.
-- Some catches remain intentionally soft for rendering/math fallbacks and should be reviewed in smaller passes.
+- Some catches remain intentionally soft for rendering/math fallbacks, but empty catches are now blocked by validation.
 - Catalog metadata still has model aliases, now documented through validation overrides.
 - The app still relies on CDN-loaded Three.js, jsPDF, and pdf.js at runtime.
 
@@ -67,6 +68,7 @@ npm run check
 npm run lint
 npm run format
 npm run validate:manifest
+npm run validate:error-handling
 npm run test:playwright
 npm test
 npm run test:smoke

@@ -180,7 +180,7 @@ function resolveWalkRooms(roomOrRooms=curRoom){
         const floorRooms=currentFloorRooms(roomOrRooms,roomOrRooms.floorId||activeProjectFloorId);
         if(floorRooms?.length)return floorRooms.filter(room=>room?.polygon?.length);
       }
-    }catch(_){}
+    }catch(error){window.reportRoseRecoverableError?.('Related room lookup failed',error)}
     return [roomOrRooms];
   }
   return [];
@@ -443,7 +443,7 @@ function snapFurniturePoint(x,z){
       if(dx<bestX){bestX=dx;sx=pt.x;alignedX=true}
       if(dz<bestZ){bestZ=dz;sz=pt.y;alignedZ=true}
     });
-  }catch(_){}
+  }catch(error){window.reportRoseRecoverableError?.('Furniture alignment guide lookup failed',error)}
   if(bestX>=ALIGN_TOL)sx=snapFurnitureValue(x);
   if(bestZ>=ALIGN_TOL)sz=snapFurnitureValue(z);
   if(alignedX)guides.push({type:'axis-x',x:sx});
