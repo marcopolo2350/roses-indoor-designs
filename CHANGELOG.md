@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.20 - 2026-04-30
+
+- moved home project cards, create-room starter cards, delete confirmation buttons, and undo timeline nodes to delegated `data-action` handlers
+- removed a stale unused room-card mini markup path from the catalog property panel
+- extended desktop/mobile smoke coverage for create-modal, hidden home-card, and undo-strip inline handler checks
+
 ## 0.5.0-hardening.19 - 2026-04-30
 
 - moved selected geometry and annotation property controls to delegated `data-action` handlers

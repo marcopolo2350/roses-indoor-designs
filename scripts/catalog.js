@@ -916,7 +916,7 @@ function projectFloorBoardMarkup(floor,projectRoot,floors,currentFloorId){
     <div class="room-card-stack">${cards}</div>
   </div>`;
 }
-function renderRoomPanelNoSelection(r,{cBtn,activeLightingPreset,ref,refLoaded,refScale,refWidth,floors,currentFloorId,roomCards}){
+function renderRoomPanelNoSelection(r,{cBtn,activeLightingPreset,ref,refLoaded,refScale,refWidth,floors,currentFloorId}){
   const currentFloor=floors.find(floor=>floor.id===currentFloorId)||floors[0];
   const floorSwitcher=`<div class="mat-grid tall">${floors.map(floor=>`<button class="mat-btn${currentFloorId===floor.id?' sel':''}" type="button" data-action="set-active-floor" data-floor-id="${floor.id}"><span class="mat-btn-title">${esc(floor.label)}</span><span class="mat-btn-meta">${floor.rooms.length} room${floor.rooms.length===1?'':'s'}</span></button>`).join('')}</div>`;
   const currentRoomTargets=floors.filter(floor=>floor.id!==(r.floorId||currentFloorId));
@@ -966,15 +966,7 @@ function showP(){
     const refWidth=refBounds?formatDistance(refBounds.width,'friendly'):'';
     const floors=projectFloors(r);
     const currentFloorId=activeProjectFloorId||r.floorId||'floor_1';
-    const floorRooms=currentFloorRooms(r,currentFloorId);
-    const roomCards=floorRooms.map(room=>{
-      const baseId=room.baseRoomId||room.id;
-      const active=(curRoom.baseRoomId||curRoom.id)===baseId;
-      const optionCount=optionSiblings(room).length;
-      const connections=(room.connections||[]).filter(link=>projectRooms(r).some(candidate=>candidate.id===link.roomId));
-      return `<div class="room-card-mini${active?' active':''}"><div class="room-card-main" onclick="openProjectRoom('${baseId}')"><div class="room-card-title">${esc(room.name)}</div><div class="room-card-meta">${esc(room.floorLabel||'Floor 1')}${optionCount>1?` Ãƒâ€šÃ‚Â· ${optionCount} options`:''}${connections.length?` Ãƒâ€šÃ‚Â· ${connections.length} connection${connections.length===1?'':'s'}`:''}</div></div><div class="room-card-actions"><button class="mini-chip secondary" type="button" onclick="openProjectRoom('${baseId}')">Open</button>${active?`<button class="mini-chip secondary" type="button" onclick="duplicateCurrentRoom()">Duplicate</button><button class="mini-chip secondary" type="button" onclick="deleteCurrentRoom()">Delete</button>`:''}</div></div>`;
-    }).join('');
-    p.innerHTML=renderRoomPanelNoSelection(r,{cBtn,activeLightingPreset,ref,refLoaded,refScale,refWidth,floors,currentFloorId,roomCards});
+    p.innerHTML=renderRoomPanelNoSelection(r,{cBtn,activeLightingPreset,ref,refLoaded,refScale,refWidth,floors,currentFloorId});
     restyleRoomPanelText(p);
     p.classList.add('on');
     return;

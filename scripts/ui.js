@@ -17,6 +17,8 @@ function dismissWelcome(){
 
 function handleUiAction(action,target,event){
   if(!action)return;
+  if(target?.dataset?.stopPropagation==='true')event?.stopPropagation();
+  if(target?.dataset?.preventDefault==='true')event?.preventDefault();
   if(action==='dismiss-welcome')return dismissWelcome();
   if(action==='choose-profile')return chooseProfile(target?.dataset?.profile||'rose');
   if(action==='open-profile-switcher')return openProfileSwitcher();
@@ -24,6 +26,12 @@ function handleUiAction(action,target,event){
   if(action==='open-create-room')return openCrModal(target?.dataset?.roomType||'');
   if(action==='open-create-room-brief')return openCrModalWithBrief(target?.dataset?.roomType||'',target?.dataset?.brief||'');
   if(action==='open-last-project')return openLastProject();
+  if(action==='open-project')return openPrj(target?.dataset?.projectId||'');
+  if(action==='favorite-project')return toggleFavoriteProject(target?.dataset?.projectId||'');
+  if(action==='duplicate-project-card')return dupPrj(target?.dataset?.projectId||'');
+  if(action==='delete-project-card')return showDeleteConfirm(target?.dataset?.projectId||'');
+  if(action==='close-delete-confirm')return closeDeleteConfirm();
+  if(action==='confirm-delete')return confirmDelete();
   if(action==='exit-editor')return exitEd();
   if(action==='undo')return doUndo();
   if(action==='redo')return doRedo();
@@ -57,7 +65,9 @@ function handleUiAction(action,target,event){
     return;
   }
   if(action==='set-create-room-layout')return setCreateRoomLayoutMode(target?.dataset?.layoutMode||'empty');
+  if(action==='select-create-room-preset')return selPre(target?.dataset?.presetId||'',target);
   if(action==='create-room-from-preset')return createFromPreset();
+  if(action==='jump-undo-step')return jumpUndoStep(Number(target?.dataset?.step||0));
   if(action==='start-free-draw')return startFreeDraw();
   if(action==='cancel-reference-calibration')return cancelReferenceCalibrationModal();
   if(action==='submit-reference-calibration')return submitReferenceCalibration();
@@ -163,6 +173,9 @@ function handleUiAction(action,target,event){
 function bindStaticUiActions(){
   if(document.body?.dataset?.uiActionsBound==='1')return;
   document.body.dataset.uiActionsBound='1';
+  document.getElementById('crMod')?.addEventListener('click',event=>{
+    if(event.target===event.currentTarget)closeCr();
+  });
   document.addEventListener('click',event=>{
     const target=event.target.closest('[data-action]');
     if(!target)return;
@@ -395,7 +408,7 @@ function renderHome(){
       :(p.polygon?.length
         ?`<div class="pci" style="background:linear-gradient(145deg,${wall} 0%,${wall} 44%,${floor} 44%,${floor} 100%);border:2px solid ${typeof trim==='string'?trim:'rgba(0,0,0,.08)'};box-shadow:var(--sh)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>`
         :`<div class="pci">${p.favorite?'\u2728':'\u{1F3E0}'}</div>`);
-    return `<div class="pc" onclick="openPrj('${p.projectId||p.id}')">${previewEl}<div class="pcf"><h3>${esc(p.projectName||p.name)}</h3><p>${roomCount} room${roomCount===1?'':'s'} &middot; ${floorCount} floor${floorCount===1?'':'s'} &middot; ${edited}</p><div class="pcmeta"><span class="chip">${esc(primaryChip)}</span><span class="chip">${esc(type)}</span>${optionChip}${optionCount}</div></div><div class="pca"><button class="pab" onpointerdown="favPrjClick(event,'${p.projectId||p.id}')" title="Favorite"><svg viewBox="0 0 24 24"><path d="M12 17.3 5.8 21l1.7-7-5.5-4.8 7.2-.6L12 2l2.8 6.6 7.2.6-5.5 4.8 1.7 7z"/></svg></button><button class="pab" onpointerdown="dupPrjClick(event,'${p.projectId||p.id}')" title="Duplicate"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="pab" onpointerdown="delPrjClick(event,'${p.projectId||p.id}')" title="Delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></div>`}).join('')}
+    return `<div class="pc" role="button" tabindex="0" data-action="open-project" data-project-id="${p.projectId||p.id}">${previewEl}<div class="pcf"><h3>${esc(p.projectName||p.name)}</h3><p>${roomCount} room${roomCount===1?'':'s'} &middot; ${floorCount} floor${floorCount===1?'':'s'} &middot; ${edited}</p><div class="pcmeta"><span class="chip">${esc(primaryChip)}</span><span class="chip">${esc(type)}</span>${optionChip}${optionCount}</div></div><div class="pca"><button class="pab" type="button" data-action="favorite-project" data-project-id="${p.projectId||p.id}" data-stop-propagation="true" data-prevent-default="true" title="Favorite"><svg viewBox="0 0 24 24"><path d="M12 17.3 5.8 21l1.7-7-5.5-4.8 7.2-.6L12 2l2.8 6.6 7.2.6-5.5 4.8 1.7 7z"/></svg></button><button class="pab" type="button" data-action="duplicate-project-card" data-project-id="${p.projectId||p.id}" data-stop-propagation="true" data-prevent-default="true" title="Duplicate"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="pab" type="button" data-action="delete-project-card" data-project-id="${p.projectId||p.id}" data-stop-propagation="true" data-prevent-default="true" title="Delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></div>`}).join('')}
 function openPrj(id){const p=projectPrimaryRoom(id)||projects.find(r=>r.id===id);if(p)openEd(p)}
 function dupPrj(id){
   const sourceRooms=projectRooms(id);
@@ -432,9 +445,6 @@ function toggleFavoriteProject(id){
   rooms.forEach(room=>room.favorite=next);
   saveAll();renderHome();toast(next?'Saved to favorites':'Removed from favorites')
 }
-function dupPrjClick(e,id){e.stopPropagation();e.preventDefault();dupPrj(id)}
-function delPrjClick(e,id){e.stopPropagation();e.preventDefault();showDeleteConfirm(id)}
-function favPrjClick(e,id){e.stopPropagation();e.preventDefault();toggleFavoriteProject(id)}
 // Custom delete confirmation modal (replaces browser confirm)
 let pendingDeleteId=null;
 function showDeleteConfirm(id){
@@ -448,8 +458,8 @@ function showDeleteConfirm(id){
         <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:6px">Delete project?</div>
         <div style="font-size:12px;color:var(--taupe);margin-bottom:16px">${esc(name)}</div>
         <div style="display:flex;gap:8px">
-          <button style="flex:1;padding:10px;border-radius:50px;background:var(--bg2);font-size:12px;font-weight:600" onclick="closeDeleteConfirm()">Cancel</button>
-          <button style="flex:1;padding:10px;border-radius:50px;background:#C55;color:#fff;font-size:12px;font-weight:600" onclick="confirmDelete()">Delete</button>
+          <button type="button" style="flex:1;padding:10px;border-radius:50px;background:var(--bg2);font-size:12px;font-weight:600" data-action="close-delete-confirm">Cancel</button>
+          <button type="button" style="flex:1;padding:10px;border-radius:50px;background:#C55;color:#fff;font-size:12px;font-weight:600" data-action="confirm-delete">Delete</button>
         </div>
       </div>
     </div>`)}
@@ -463,7 +473,7 @@ const PRESET_SVGS={
   ushape:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><path d="M4 4h52v32H40V18H20v18H4z" fill="none" stroke="#8B7E74" stroke-width="1.5"/></svg>',
   free:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><path d="M8 30L15 8L35 4L52 15L48 34L25 36Z" fill="none" stroke="#B8918E" stroke-width="1.5" stroke-dasharray="3 2"/></svg>'
 };
-function popPresets(){document.getElementById('preG').innerHTML=ROOM_STARTERS.map(p=>`<div class="pi${p.id===selPreset?' sel':''}" onclick="selPre('${p.id}',this)"><span class="starter-tag">${p.tag}</span>${PRESET_SVGS[p.shape]||PRESET_SVGS.rect}<span>${p.name}</span><small>${p.hint}</small></div>`).join('')}
+function popPresets(){document.getElementById('preG').innerHTML=ROOM_STARTERS.map(p=>`<div class="pi${p.id===selPreset?' sel':''}" role="button" tabindex="0" data-action="select-create-room-preset" data-preset-id="${p.id}"><span class="starter-tag">${p.tag}</span>${PRESET_SVGS[p.shape]||PRESET_SVGS.rect}<span>${p.name}</span><small>${p.hint}</small></div>`).join('')}
 function defaultPersonalRoomName(){return activeProfile==='rose'?"Living Room":"Living Room"}
 function selPre(id,el){
   selPreset=id;
@@ -495,7 +505,6 @@ function openCrModalWithBrief(roomType, briefId) {
 }
 
 function closeCr(){document.getElementById('crMod').classList.remove('on')}
-document.getElementById('crMod').onclick=function(e){if(e.target===this)closeCr()};
 function buildStarterFurniture(starter,w,l){
   const midX=w/2,midY=l/2;
   const sets={
@@ -1281,7 +1290,7 @@ function updateUndoStrip(){
     const idx=i+offset;
     const isCurrent=idx===cur;
     const stepsBack=cur-idx;
-    nodes.push(`<div class="undo-node${isCurrent?' current':''}" data-step="${stepsBack}" title="${stepsBack===0?'Current':stepsBack>0?stepsBack+' step back':(-stepsBack)+' step forward'}" onclick="jumpUndoStep(${stepsBack})">${isCurrent?'•':''}</div>`);
+    nodes.push(`<div class="undo-node${isCurrent?' current':''}" role="button" tabindex="0" data-action="jump-undo-step" data-step="${stepsBack}" title="${stepsBack===0?'Current':stepsBack>0?stepsBack+' step back':(-stepsBack)+' step forward'}">${isCurrent?'•':''}</div>`);
   }
   strip.innerHTML=nodes.join('');
   strip.classList.add('on');

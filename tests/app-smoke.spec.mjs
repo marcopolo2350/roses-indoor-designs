@@ -63,8 +63,17 @@ test("canonical shell boots and delegated actions work", async ({ page }, testIn
 
   await page.locator('[data-action="open-create-room"]').first().click();
   await expect(page.locator("#crMod")).toHaveClass(/on/);
+  const createModalInlineHandlers = await page
+    .locator("#crMod [onclick], #crMod [oninput], #crMod [onchange]")
+    .count();
+  expect(createModalInlineHandlers).toBe(0);
+  await page.locator('[data-action="select-create-room-preset"]').first().click();
   await page.locator('[data-action="create-room-from-preset"]').click();
   await expect(page.locator("#scrEd")).toHaveClass(/on/);
+  const homeCardInlineHandlers = await page
+    .locator("#prjList [onclick], #prjList [onpointerdown]")
+    .count();
+  expect(homeCardInlineHandlers).toBe(0);
 
   const buildTab = await ensureRoomPanelOpen(page);
   await page.locator('[data-action="room-panel-group"][data-group="style"]').click();
@@ -288,6 +297,8 @@ test("canonical shell boots and delegated actions work", async ({ page }, testIn
   await page
     .locator('[data-action="update-selected-dimension-annotation"][data-field="label"]')
     .dispatchEvent("change");
+  const undoStripInlineHandlers = await page.locator("#undoStrip [onclick]").count();
+  expect(undoStripInlineHandlers).toBe(0);
 
   expect(runtimeErrors).toEqual([]);
 });
