@@ -142,6 +142,19 @@ if (!presetCard) {
   }
 }
 
+const undoStrip = ui.match(/function\s+updateUndoStrip[\s\S]*?function\s+jumpUndoStep/);
+if (!undoStrip) {
+  errors.push("updateUndoStrip() was not found for undo-strip safety validation.");
+} else {
+  const body = undoStrip[0];
+  if (/strip\.innerHTML|insertAdjacentHTML|outerHTML\s*=/.test(body)) {
+    errors.push("updateUndoStrip() must render undo nodes with DOM nodes, not HTML strings.");
+  }
+  if (!/node\.textContent\s*=\s*isCurrent/.test(body)) {
+    errors.push("updateUndoStrip() must render current-node text with textContent.");
+  }
+}
+
 const deleteConfirmKeys = ui.match(
   /function\s+handleDeleteConfirmKeydown[\s\S]*?function\s+showDeleteConfirm/,
 );

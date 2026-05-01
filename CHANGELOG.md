@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.71 - 2026-05-01
+
+- rebuilt the undo timeline strip so visible undo nodes are DOM-rendered instead of assigned through `innerHTML`
+- extended HTML safety validation to block undo-strip string rendering from returning
+
 ## 0.5.0-hardening.70 - 2026-05-01
 
 - rebuilt create-room starter cards and their SVG previews with DOM nodes instead of `innerHTML`

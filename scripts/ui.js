@@ -1548,16 +1548,23 @@ function updateUndoStrip(){
   if(total<=1){strip.classList.remove('on');return}
   // Current position: at index (totalUndo-1) from left
   const cur=totalUndo-1;
-  const nodes=[];
   const max=Math.min(total,12);
   const offset=Math.max(0,cur-Math.floor(max/2));
+  window.RoseHTML.clear(strip);
   for(let i=0;i<max&&(i+offset)<total;i++){
     const idx=i+offset;
     const isCurrent=idx===cur;
     const stepsBack=cur-idx;
-    nodes.push(`<div class="undo-node${isCurrent?' current':''}" role="button" tabindex="0" data-action="jump-undo-step" data-step="${stepsBack}" title="${stepsBack===0?'Current':stepsBack>0?stepsBack+' step back':(-stepsBack)+' step forward'}">${isCurrent?'•':''}</div>`);
+    const node=document.createElement('div');
+    node.className=`undo-node${isCurrent?' current':''}`;
+    node.setAttribute('role','button');
+    node.tabIndex=0;
+    node.dataset.action='jump-undo-step';
+    node.dataset.step=String(stepsBack);
+    node.title=stepsBack===0?'Current':stepsBack>0?`${stepsBack} step back`:`${-stepsBack} step forward`;
+    node.textContent=isCurrent?'\u2022':'';
+    strip.appendChild(node);
   }
-  strip.innerHTML=nodes.join('');
   strip.classList.add('on');
   clearTimeout(strip._t);
   strip._t=setTimeout(()=>strip.classList.remove('on'),3200);
