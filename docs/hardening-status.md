@@ -49,6 +49,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Every manifest entry now carries a `sourceId`, and `npm run validate:asset-sources` checks it against `data/asset-sources.json`.
 - Static app-shell accessibility basics are guarded by `npm run validate:static-a11y` for button types, icon labels, dialog metadata, and decorative SVG hiding.
 - Dev/debug surfaces are guarded by `npm run validate:dev-mode` so model audits, diagnostics, and asset verification stay behind dev mode.
+- GitHub PR and issue templates are guarded by `npm run validate:github-templates` so future work keeps hardening scope and verification prompts.
 - Standard Playwright config and a shell smoke spec exist for desktop and mobile Chromium viewports.
 - README, changelog, roadmap, architecture, data model, testing, deployment, and limitations docs exist.
 
@@ -90,6 +91,7 @@ npm run validate:asset-sizes
 npm run validate:asset-sources
 npm run validate:static-a11y
 npm run validate:dev-mode
+npm run validate:github-templates
 npm run validate:error-handling
 npm run validate:runtime-modules
 npm run validate:dependencies

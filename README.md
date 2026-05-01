@@ -73,6 +73,7 @@ npm run validate:asset-sizes
 npm run validate:asset-sources
 npm run validate:static-a11y
 npm run validate:dev-mode
+npm run validate:github-templates
 npm run validate:inline-handlers
 npm run validate:error-handling
 npm run validate:runtime-modules
@@ -102,6 +103,7 @@ What they do:
 - `validate:asset-sources` - verifies every catalog entry points to a documented source registry entry
 - `validate:static-a11y` - checks static app-shell button names, button types, dialogs, and decorative SVG hiding
 - `validate:dev-mode` - checks debug/model/diagnostic surfaces stay behind `.dev-only`
+- `validate:github-templates` - checks issue/PR templates keep hardening scope and verification prompts current
 - `validate:inline-handlers` - blocks inline and direct handler regressions
 - `validate:error-handling` - blocks empty catch blocks
 - `validate:runtime-modules` - verifies the transitional runtime module bridge

@@ -57,6 +57,9 @@ jobs:
       - name: Validate dev-mode boundaries
         run: npm run validate:dev-mode
 
+      - name: Validate GitHub templates
+        run: npm run validate:github-templates
+
       - name: Validate delegated UI handlers
         run: npm run validate:inline-handlers
 

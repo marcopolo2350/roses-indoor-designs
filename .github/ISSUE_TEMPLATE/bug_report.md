@@ -12,13 +12,24 @@ assignees: ""
 
 ## Steps to reproduce
 
+1.
+2.
+3.
+
 ## Environment
 
 - browser:
 - viewport:
 - local or deployed:
+- app version:
 
-## Notes
+## Evidence
 
-- screenshots
-- console errors
+- screenshots or recording:
+- console errors/warnings:
+- project JSON involved:
+
+## Regression Risk
+
+- first noticed after:
+- related room/project/assets:

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.43 - 2026-04-30
+
+- expanded PR and issue templates with current hardening verification, evidence, and scope-discipline prompts
+- added `npm run validate:github-templates` and a CI gate so repository process docs do not drift behind the test suite
+
 ## 0.5.0-hardening.42 - 2026-04-30
 
 - added a dev-mode boundary validator to keep model audit, diagnostics, preflight, and asset verification surfaces hidden from normal UI

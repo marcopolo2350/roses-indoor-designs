@@ -13,3 +13,13 @@ assignees: ""
 ## Why this belongs during hardening
 
 ## Alternatives considered
+
+## Non-goals
+
+- new product modes:
+- new furniture categories:
+- visual polish unrelated to reliability:
+
+## Verification Needed
+
+- checks/tests that should prove this change:
