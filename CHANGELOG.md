@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0-hardening.26 - 2026-04-30
+
+- introduced readable storage-service bridge names (`openDatabase`, `getRecord`, `setRecord`) while preserving legacy `odb`/`dg`/`ds` compatibility
+
 ## 0.5.0-hardening.25 - 2026-04-30
 
 - changed the fatal-load screen to build DOM nodes with `textContent` instead of rendering boot error text through `innerHTML`

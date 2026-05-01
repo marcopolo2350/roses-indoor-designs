@@ -14,6 +14,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - `scripts/core/app-state.js` owns the first central runtime metadata surface.
 - `scripts/core/history.js` owns shared room history and undo/redo behavior.
 - `scripts/core/storage-keys.js` owns localStorage and IndexedDB key naming.
+- IndexedDB access now exposes readable storage-service bridge names (`openDatabase`, `getRecord`, `setRecord`) while legacy callers migrate.
 - `scripts/cloud/supabase.js` isolates experimental cloud sync behavior.
 - `scripts/ui/shortcuts.js` owns keyboard shortcuts and shortcut-sheet rendering.
 - Generated catalog picker interactions use delegated `data-action` handlers instead of inline event attributes.
