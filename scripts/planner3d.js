@@ -453,12 +453,7 @@ function capturePhotoMode(download=true){
   ren.setSize(size.x,size.y,false);
   if(composer){composer.setSize(size.x,size.y);if(composer._fxaa){const pr=ren.getPixelRatio();composer._fxaa.material.uniforms['resolution'].value.set(1/(size.x*pr),1/(size.y*pr))}composer.render()}else ren.render(scene,cam);
   if(download){
-    const a=document.createElement('a');
-    a.href=dataUrl;
-    a.download=`${(curRoom?.name||'room').replace(/[^a-z0-9]/gi,'_')}_photo_mode.png`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    window.ExportDownloads.downloadDataUrl(dataUrl,window.ExportFilenames.fileName(curRoom,'photo_mode','png'));
     toast('Photo capture exported');
   }
   return dataUrl;
@@ -2133,12 +2128,7 @@ function capturePresentationStill(){
   ren.setPixelRatio(prevRatio);
   ren.setSize(size.x,size.y,false);
   if(composer){composer.setSize(size.x,size.y);if(composer._fxaa){const pr=ren.getPixelRatio();composer._fxaa.material.uniforms['resolution'].value.set(1/(size.x*pr),1/(size.y*pr))}composer.render()}else ren.render(scene,cam);
-  const a=document.createElement('a');
-  a.href=dataUrl;
-  a.download=`${(curRoom?.name||'room').replace(/[^a-z0-9]/gi,'_')}_reveal_cover.png`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  window.ExportDownloads.downloadDataUrl(dataUrl,window.ExportFilenames.fileName(curRoom,'reveal_cover','png'));
   toast('Reveal cover exported');
   return dataUrl;
 }

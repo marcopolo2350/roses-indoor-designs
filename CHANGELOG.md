@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.54 - 2026-05-01
+
+- added `scripts/export/downloads.js` as the shared download helper for exported data URLs, blobs, and text files
+- routed PNG, comparison, design summary, photo mode, reveal cover, and text downloads through the shared helper
+- extended source-structure and export validation so download helpers load before export/3D runtime code
+
 ## 0.5.0-hardening.53 - 2026-05-01
 
 - rebuilt the project delete confirmation modal with DOM nodes and `textContent` instead of `insertAdjacentHTML`

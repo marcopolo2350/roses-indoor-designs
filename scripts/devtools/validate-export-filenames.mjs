@@ -1,8 +1,12 @@
+import { readFileSync } from "node:fs";
+
 globalThis.window = globalThis;
 
 await import("../export/filenames.js");
+await import("../export/downloads.js");
 
 const names = window.ExportFilenames;
+const downloads = window.ExportDownloads;
 
 if (names.sanitizeBaseName(' Bad <Room>: "One" ') !== "Bad_Room_One") {
   throw new Error("sanitizeBaseName did not remove unsafe filename characters");
@@ -20,4 +24,20 @@ if (
   throw new Error("fileName did not produce expected filename");
 }
 
-console.log("Export filename validation passed.");
+if (downloads.safeDownloadName(' Bad <Room>: "One".svg ') !== "Bad_Room_One.svg") {
+  throw new Error("safeDownloadName did not sanitize unsafe download names");
+}
+
+for (const file of ["scripts/export.js", "scripts/planner3d.js"]) {
+  const source = readFileSync(file, "utf8");
+  if (/document\.createElement\(["']a["']\)/.test(source)) {
+    throw new Error(
+      `${file} should use window.ExportDownloads instead of creating download anchors directly`,
+    );
+  }
+  if (/URL\.createObjectURL/.test(source)) {
+    throw new Error(`${file} should use window.ExportDownloads for object URL downloads`);
+  }
+}
+
+console.log("Export filename and download validation passed.");

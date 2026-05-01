@@ -28,6 +28,7 @@ const requiredFiles = [
   "scripts/planner3d/lifecycle.js",
   "scripts/catalog/manifest.js",
   "scripts/export/filenames.js",
+  "scripts/export/downloads.js",
   "scripts/cloud/supabase.js",
 ];
 
@@ -68,6 +69,9 @@ function assertModuleBefore(before, after) {
 assertModuleBefore("./scripts/core/html.js", "./scripts/core/error-reporting.js");
 assertModuleBefore("./scripts/catalog/manifest.js", "./scripts/catalog.js");
 assertModuleBefore("./scripts/export/filenames.js", "./scripts/export.js");
+assertModuleBefore("./scripts/export/filenames.js", "./scripts/export/downloads.js");
+assertModuleBefore("./scripts/export/downloads.js", "./scripts/export.js");
+assertModuleBefore("./scripts/export/downloads.js", "./scripts/planner3d.js");
 assertModuleBefore("./scripts/planner3d/lifecycle.js", "./scripts/planner3d.js");
 
 if (errors.length) {

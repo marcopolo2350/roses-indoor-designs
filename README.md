@@ -130,7 +130,7 @@ What they do:
 - `validate:app-state` - checks the central app state dispatcher bridge
 - `validate:geometry` - checks pure 2D geometry helpers
 - `validate:3d-lifecycle` - checks 3D disposal/lifecycle helpers
-- `validate:export-filenames` - checks shared export filename sanitizing
+- `validate:export-filenames` - checks shared export filename sanitizing and centralized download helpers
 - `test:playwright` - runs the standard Playwright spec suite
 - `test:self` - runs the built-in `#selftest` flow through Playwright
 - `test:smoke` - starts a temporary local server and runs the Playwright smoke helper against the app

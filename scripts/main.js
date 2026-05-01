@@ -14,6 +14,7 @@ const RUNTIME_MODULES = [
   "./scripts/catalog/manifest.js",
   "./scripts/catalog.js",
   "./scripts/export/filenames.js",
+  "./scripts/export/downloads.js",
   "./scripts/export.js",
   "./scripts/planner3d/lifecycle.js",
   "./scripts/planner3d.js",

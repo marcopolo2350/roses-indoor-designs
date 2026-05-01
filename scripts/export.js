@@ -7,8 +7,8 @@ function exportPNG(){
   }
   else if(canvas){dataUrl=canvas.toDataURL('image/png')}
   else{toast('Nothing to export');return}
-  const a=document.createElement('a');a.href=dataUrl;a.download=window.ExportFilenames.fileName(curRoom,is3D?(photoMode?'photo':'3d'):'plan','png');
-  document.body.appendChild(a);a.click();document.body.removeChild(a);toast('PNG exported')
+  window.ExportDownloads.downloadDataUrl(dataUrl,window.ExportFilenames.fileName(curRoom,is3D?(photoMode?'photo':'3d'):'plan','png'));
+  toast('PNG exported')
 }
 function renderPlanModeToDataURL(mode,width=1100,height=800){
   return renderRoomModeToDataURL(curRoom,mode,width,height,{legend:true,measurements:true});
@@ -79,12 +79,7 @@ function exportComparisonSheet(){
     if(loaded<2)return;
     drawCard(beforeImg,'Existing Room',120);
     drawCard(afterImg,'Redesign Direction',1260);
-    const a=document.createElement('a');
-    a.href=out.toDataURL('image/png');
-    a.download=window.ExportFilenames.fileName(curRoom,'comparison_sheet','png');
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    window.ExportDownloads.downloadDataUrl(out.toDataURL('image/png'),window.ExportFilenames.fileName(curRoom,'comparison_sheet','png'));
     toast('Comparison sheet exported');
   };
   beforeImg.onload=finalize;
@@ -154,12 +149,7 @@ function exportDesignSummary(){
       });
       if(line)c.fillText(line,margin+500,lineY);
     });
-    const a=document.createElement('a');
-    a.href=out.toDataURL('image/png');
-    a.download=window.ExportFilenames.fileName(curRoom,'design_summary','png');
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    window.ExportDownloads.downloadDataUrl(out.toDataURL('image/png'),window.ExportFilenames.fileName(curRoom,'design_summary','png'));
     toast('Design summary exported');
   });
 }
@@ -167,15 +157,7 @@ function exportBaseName(room=curRoom,suffix='plan'){
   return window.ExportFilenames.roomBaseName(room,suffix);
 }
 function downloadTextFile(filename,text,type='text/plain;charset=utf-8'){
-  const blob=new Blob([text],{type});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download=window.ExportFilenames.sanitizeBaseName(String(filename||'export').replace(/\.[^.]+$/,''),'export')+(String(filename||'').match(/\.[^.]+$/)?.[0]||'');
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(()=>URL.revokeObjectURL(url),500);
+  return window.ExportDownloads.downloadTextFile(filename,text,type);
 }
 function rotatedFurnitureCorners(item){
   const hw=(item.w||2)/2,hd=(item.d||1.5)/2,an=((item.rotation||0)*Math.PI)/180;
