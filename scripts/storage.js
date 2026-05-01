@@ -570,7 +570,7 @@ function updateRoomRuntimeDiag(){
   const summary=ROOM_RUNTIME_DIAG.summary;
   const hasAlert=items.some(item=>item.status==='fail'||item.status==='blocked'||item.issues.length);
   el.classList.toggle('on',runtimeDiagOpen||hasAlert);
-  el.innerHTML=`<div class="runtime-diag-head"><div><h4>Room Runtime Diagnostics</h4><div class="runtime-diag-note">${summary?`ok ${summary.ok} · fail ${summary.fail} · invisible/offscreen ${summary.invisible} · blocked ${summary.blocked}`:'live asset placement diagnostics'}</div></div><button class="runtime-btn" onclick="document.getElementById('roomRuntimeDiag').classList.remove('on')">Hide</button></div><div class="runtime-diag-list">${items.map(item=>`<div class="runtime-diag-card ${item.status}"><div class="rd-title"><span>${item.key}</span><span>${item.status}</span></div><div class="rd-meta">path: ${item.file}
+  el.innerHTML=`<div class="runtime-diag-head"><div><h4>Room Runtime Diagnostics</h4><div class="runtime-diag-note">${summary?`ok ${summary.ok} · fail ${summary.fail} · invisible/offscreen ${summary.invisible} · blocked ${summary.blocked}`:'live asset placement diagnostics'}</div></div><button class="runtime-btn" type="button" data-action="hide-room-runtime-diagnostics">Hide</button></div><div class="runtime-diag-list">${items.map(item=>`<div class="runtime-diag-card ${item.status}"><div class="rd-title"><span>${item.key}</span><span>${item.status}</span></div><div class="rd-meta">path: ${item.file}
 mount: ${item.mountType}
 world: ${formatVec3(item.worldPosition)}
 bbox: ${formatSize3(item.bboxSize)}

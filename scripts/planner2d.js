@@ -28,7 +28,14 @@ function initCan(){
   const w=document.getElementById('cWrap');canvas=document.getElementById('edCan');ctx=canvas.getContext('2d');
   function rs(){canvas.width=w.clientWidth;canvas.height=w.clientHeight;if(!drawMode&&curRoom&&curRoom.polygon.length)autoFit();draw()}
   if(resH)window.removeEventListener('resize',resH);resH=rs;window.addEventListener('resize',resH);rs();
-  canvas.onpointerdown=onD;canvas.onpointermove=onM;canvas.onpointerup=onU;canvas.addEventListener('wheel',onW,{passive:false})}
+  canvas.removeEventListener('pointerdown',onD);
+  canvas.removeEventListener('pointermove',onM);
+  canvas.removeEventListener('pointerup',onU);
+  canvas.removeEventListener('wheel',onW);
+  canvas.addEventListener('pointerdown',onD);
+  canvas.addEventListener('pointermove',onM);
+  canvas.addEventListener('pointerup',onU);
+  canvas.addEventListener('wheel',onW,{passive:false})}
 function autoFit(){
   if(!curRoom||!canvas||!curRoom.polygon.length)return;
   // Multi-room home layout: fit the whole floor if there's more than one room,
@@ -359,7 +366,7 @@ function importReferenceAsset(){
     input.accept='image/*,.pdf,application/pdf';
     input.id='refAssetInput';
     input.style.display='none';
-    input.onchange=()=>handleReferenceFile(input.files?.[0]||null);
+    input.addEventListener('change',()=>handleReferenceFile(input.files?.[0]||null));
     document.body.appendChild(input);
   }
   input.value='';

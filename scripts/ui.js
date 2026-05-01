@@ -27,6 +27,7 @@ function handleUiAction(action,target,event){
   if(action==='open-create-room-brief')return openCrModalWithBrief(target?.dataset?.roomType||'',target?.dataset?.brief||'');
   if(action==='open-last-project')return openLastProject();
   if(action==='open-project')return openPrj(target?.dataset?.projectId||'');
+  if(action==='hide-room-runtime-diagnostics')return document.getElementById('roomRuntimeDiag')?.classList.remove('on');
   if(action==='favorite-project')return toggleFavoriteProject(target?.dataset?.projectId||'');
   if(action==='duplicate-project-card')return dupPrj(target?.dataset?.projectId||'');
   if(action==='delete-project-card')return showDeleteConfirm(target?.dataset?.projectId||'');

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.22 - 2026-04-30
+
+- replaced remaining runtime diagnostics, cloud modal, canvas, and reference-file direct handler assignments with delegated actions or `addEventListener`
+- added an inline-handler audit check confirming no `onclick`/`onchange`/pointer property handlers remain under `scripts/`
+
 ## 0.5.0-hardening.21 - 2026-04-30
 
 - moved generated 3D reveal, walkthrough, photo, and mobile walk-control tray actions to delegated `data-action` and hold handlers

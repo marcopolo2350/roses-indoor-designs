@@ -28,6 +28,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Selected geometry and annotation property panels use delegated `data-action` handlers and are covered by desktop/mobile smoke checks.
 - Home project cards, create-room starter cards, delete confirmation buttons, and undo timeline nodes use delegated `data-action` handlers.
 - Generated 3D reveal, walkthrough, photo, and mobile walk-control trays use delegated `data-action` or hold handlers.
+- Runtime diagnostics, cloud sync modal buttons, canvas pointer events, and reference file input use delegated actions or `addEventListener` instead of handler properties.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
 - Standard Playwright config and a shell smoke spec exist for desktop and mobile Chromium viewports.
 - README, changelog, roadmap, architecture, data model, testing, deployment, and limitations docs exist.
@@ -36,7 +37,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 
 - The runtime is still browser-global, but the bridge is explicit and several core surfaces have been extracted.
 - State is still largely mutable globals, but high-risk metadata and history now have central owners.
-- Inline handlers are removed from the static app shell, generated catalog picker, generated property-panel surfaces in `scripts/catalog.js`, home project cards, create-room starter cards, delete confirmation buttons, undo timeline nodes, and generated 3D tray markup.
+- Inline handlers and direct `on*` handler properties are removed from the static app shell and application scripts.
 - Manifest validation is stricter and quieter, but asset licensing and heavy GLB audits are still not complete.
 - Cloud sync is isolated and marked experimental, but conflict handling is still timestamp-oriented.
 - Playwright coverage exists for desktop and mobile smoke paths, but it is still smoke-level rather than a full workflow suite.
@@ -52,7 +53,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 ## Current Known Debt
 
 - `scripts/ui.js`, `scripts/catalog.js`, `scripts/planner2d.js`, and `scripts/planner3d.js` are still large browser-global files.
-- Runtime diagnostics, cloud sync modal buttons, and low-level canvas/file-input setup still have inline event handlers or direct DOM handler assignment.
+- Some legacy globals and large files remain; the event-handler cleanup is now substantially cleaner, but the browser-global architecture is still transitional.
 - Some catches remain intentionally soft for rendering/math fallbacks and should be reviewed in smaller passes.
 - Catalog metadata still has model aliases, now documented through validation overrides.
 - The app still relies on CDN-loaded Three.js, jsPDF, and pdf.js at runtime.

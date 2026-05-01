@@ -218,13 +218,13 @@ function openCloudSyncSettings() {
   wrap.addEventListener("click", (event) => {
     if (event.target === wrap) close();
   });
-  document.getElementById("cloudCancelBtn").onclick = close;
-  document.getElementById("cloudDisableBtn").onclick = () => {
+  document.getElementById("cloudCancelBtn")?.addEventListener("click", close);
+  document.getElementById("cloudDisableBtn")?.addEventListener("click", () => {
     cloudSetConfig("", "", false);
     if (typeof toast === "function") toast("Cloud sync disabled");
     close();
-  };
-  document.getElementById("cloudTestBtn").onclick = async () => {
+  });
+  document.getElementById("cloudTestBtn")?.addEventListener("click", async () => {
     const url = document.getElementById("cloudUrl").value.trim();
     const key = document.getElementById("cloudKey").value.trim();
     cloudSetConfig(url, key, true);
@@ -234,15 +234,15 @@ function openCloudSyncSettings() {
     const test = await cloudTestConnection();
     result.textContent = test.msg;
     result.style.color = test.ok ? "#3A7A3A" : "#B14A3A";
-  };
-  document.getElementById("cloudSaveBtn").onclick = () => {
+  });
+  document.getElementById("cloudSaveBtn")?.addEventListener("click", () => {
     const url = document.getElementById("cloudUrl").value.trim();
     const key = document.getElementById("cloudKey").value.trim();
     const enabled = document.getElementById("cloudEnabled").checked;
     cloudSetConfig(url, key, enabled);
     if (typeof toast === "function") toast(enabled ? "Cloud sync enabled" : "Cloud sync disabled");
     close();
-  };
+  });
 }
 
 window.openCloudSyncSettings = openCloudSyncSettings;
