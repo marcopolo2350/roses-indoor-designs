@@ -317,5 +317,39 @@ test("canonical shell boots and delegated actions work", async ({ page }, testIn
   const undoStripInlineHandlers = await page.locator("#undoStrip [onclick]").count();
   expect(undoStripInlineHandlers).toBe(0);
 
+  const beforeImportCount = await page.evaluate(() => projects.length);
+  const projectImportDocument = JSON.stringify({
+    schemaVersion: 2,
+    appVersion: "playwright-smoke",
+    projects: [
+      {
+        id: "playwright-import-room",
+        name: "Imported Smoke Room",
+        polygon: [
+          { x: 0, y: 0 },
+          { x: 9, y: 0 },
+          { x: 9, y: 8 },
+          { x: 0, y: 8 },
+        ],
+        walls: [],
+        openings: [],
+        structures: [],
+        furniture: [],
+        dimensionAnnotations: [],
+        textAnnotations: [],
+      },
+    ],
+  });
+  await page.locator("#projectJsonInput").setInputFiles({
+    name: "rose-import-smoke.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(projectImportDocument),
+  });
+  await expect
+    .poll(() => page.evaluate(() => projects.some((room) => room.name === "Imported Smoke Room")))
+    .toBe(true);
+  const afterImportCount = await page.evaluate(() => projects.length);
+  expect(afterImportCount).toBe(beforeImportCount + 1);
+
   expect(runtimeErrors).toEqual([]);
 });

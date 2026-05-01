@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-01
 
-Current app version: `0.5.0-hardening.59`
+Current app version: `0.5.0-hardening.60`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -69,6 +69,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - README, testing docs, deployment notes, hardening status, and PR verification commands are guarded by `npm run validate:docs`.
 - The Verify workflow uses current Node 24-compatible official action majors and keeps `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true` guarded by repository validation.
 - Standard Playwright config and a shell smoke spec exist for desktop and mobile Chromium viewports.
+- Playwright smoke coverage includes Project JSON import through the real hidden file input.
 - README, changelog, roadmap, architecture, data model, testing, deployment, and limitations docs exist.
 
 ## Partially Completed

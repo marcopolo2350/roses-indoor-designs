@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.60 - 2026-05-01
+
+- added Playwright smoke coverage for Project JSON import through the real file input
+- verified imported rooms are validated, normalized, saved, and added to project state without console/page errors
+
 ## 0.5.0-hardening.59 - 2026-05-01
 
 - added `eslint.config.js` to syntax and formatting checks so the tool config is verified with runtime code
