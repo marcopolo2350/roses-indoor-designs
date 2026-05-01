@@ -12,6 +12,7 @@ npm run validate:dependencies
 npm run validate:project-schema
 npm run validate:app-state
 npm run validate:geometry
+npm run validate:3d-lifecycle
 npm run test:playwright
 npm run test:self
 npm run test:smoke
@@ -29,6 +30,7 @@ npm test
 - `validate:project-schema` - exercises project JSON import/export schema validation
 - `validate:app-state` - exercises the central app state dispatcher bridge
 - `validate:geometry` - exercises pure 2D polygon, segment, and intersection helpers
+- `validate:3d-lifecycle` - exercises 3D disposal helpers for scene, renderer, listeners, and composer cleanup
 - `test:playwright` - runs the standard Playwright spec suite
 - `test:self` - launches the app locally and waits for the built-in `#selftest` flow
 - `test:smoke` - runs the Playwright smoke helper against `index.html`

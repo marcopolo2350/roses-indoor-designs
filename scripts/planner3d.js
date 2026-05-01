@@ -2004,23 +2004,10 @@ function rebuild3D(){
   updatePhotoTray();
 }
 function disposeMaterial(mat){
-  if(!mat)return;
-  const mats=Array.isArray(mat)?mat:[mat];
-  mats.forEach(m=>{
-    if(!m)return;
-    ['map','alphaMap','aoMap','bumpMap','displacementMap','emissiveMap','envMap','lightMap','metalnessMap','normalMap','roughnessMap'].forEach(key=>{
-      const tex=m[key];
-      if(tex&&typeof tex.dispose==='function')tex.dispose();
-    });
-    if(typeof m.dispose==='function')m.dispose();
-  });
+  window.Planner3DLifecycle.disposeMaterial(mat);
 }
 function disposeSceneGraph(root){
-  if(!root)return;
-  root.traverse(obj=>{
-    if(obj.geometry&&typeof obj.geometry.dispose==='function')obj.geometry.dispose();
-    if(obj.material)disposeMaterial(obj.material);
-  });
+  window.Planner3DLifecycle.disposeSceneGraph(root);
 }
 function stop3D(){
   if(raf3d){cancelAnimationFrame(raf3d);raf3d=null}
@@ -2030,23 +2017,10 @@ const wc2=document.getElementById('walkCtrl');if(wc2)wc2.remove();stopWalkMove()
   document.getElementById('tourTray')?.remove();
   document.getElementById('presentTray')?.remove();
   if(scene)disposeSceneGraph(scene);
-  if(ren){
-    if(ren._listeners){
-      const L=ren._listeners;
-      L.el.removeEventListener('pointerdown',L.pDown);
-      L.el.removeEventListener('pointerup',L.pUp);
-      L.el.removeEventListener('pointermove',L.pMove);
-      L.el.removeEventListener('pointercancel',L.pCancel);
-      L.el.removeEventListener('lostpointercapture',L.pCancel);
-    }
-    ren._listeners=null;
-    ren.dispose();
-    ren.forceContextLoss?.();
-    if(ren.domElement&&ren.domElement.parentNode)ren.domElement.parentNode.removeChild(ren.domElement);
-    ren=null}
+  if(ren){window.Planner3DLifecycle.disposeRenderer(ren);ren=null}
   const cont=document.getElementById('threeC');if(cont)cont.innerHTML='';
   document.getElementById('scrEd')?.classList.remove('mode-3d');
-  if(composer){try{composer.passes&&composer.passes.forEach(p=>p.dispose&&p.dispose())}catch(error){window.reportRoseRecoverableError?.('3D composer disposal failed',error)}composer=null}
+  if(composer){window.Planner3DLifecycle.disposeComposer(composer,error=>window.reportRoseRecoverableError?.('3D composer disposal failed',error));composer=null}
   scene=null;cam=null}
 
 // Presentation / reveal polish overrides

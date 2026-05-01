@@ -8,6 +8,7 @@ export default [
       "scripts/core/**/*.js",
       "scripts/ui/**/*.js",
       "scripts/planner2d/**/*.js",
+      "scripts/planner3d/**/*.js",
       "scripts/cloud/**/*.js",
       "scripts/devtools/**/*.mjs",
     ],

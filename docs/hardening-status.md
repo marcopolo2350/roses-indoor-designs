@@ -40,6 +40,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Project JSON import validation now checks room text fields, polygon geometry, array fields, and furniture geometry through `npm run validate:project-schema`.
 - Experimental cloud sync validates room payloads before push/pull and reports config storage failures instead of silently swallowing them.
 - Pure 2D geometry helpers are isolated in `scripts/planner2d/geometry.js` and covered by `npm run validate:geometry`.
+- 3D material, scene, renderer, listener, and composer disposal helpers are isolated in `scripts/planner3d/lifecycle.js` and covered by `npm run validate:3d-lifecycle`.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
 - Standard Playwright config and a shell smoke spec exist for desktop and mobile Chromium viewports.
 - README, changelog, roadmap, architecture, data model, testing, deployment, and limitations docs exist.
@@ -84,6 +85,7 @@ npm run validate:dependencies
 npm run validate:project-schema
 npm run validate:app-state
 npm run validate:geometry
+npm run validate:3d-lifecycle
 npm run test:playwright
 npm test
 npm run test:smoke

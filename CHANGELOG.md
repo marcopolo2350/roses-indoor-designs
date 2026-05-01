@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0-hardening.35 - 2026-04-30
+
+- extracted 3D disposal helpers into `scripts/planner3d/lifecycle.js` and added validation for material, scene, renderer, listener, and composer cleanup
+
 ## 0.5.0-hardening.34 - 2026-04-30
 
 - extracted pure 2D geometry helpers into `scripts/planner2d/geometry.js` with a reproducible validator while keeping compatibility wrappers in `state.js`
