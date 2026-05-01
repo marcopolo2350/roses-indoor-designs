@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0-hardening.28 - 2026-04-30
+
+- documented the remaining runtime CDN dependencies and added validation for pinned CDN versions and consistent Three.js loader versions
+
 ## 0.5.0-hardening.27 - 2026-04-30
 
 - added a runtime-module bridge validator to catch missing, duplicate, or incorrectly ordered classic runtime modules before browser boot

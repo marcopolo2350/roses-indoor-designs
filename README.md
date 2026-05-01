@@ -29,8 +29,8 @@ This repo contains a real working app, but it is still in a transition phase bet
 - runtime still depends on ordered browser globals
 - app boot uses sequential script injection instead of real `import` / `export`
 - state is still shared through broad mutable globals
-- generated editor/catalog panels still contain inline event handlers
-- package/tooling is only partially formalized
+- runtime dependencies still load from pinned CDNs instead of a bundle
+- large browser-global files still need gradual extraction
 
 ## Run Locally
 
@@ -69,6 +69,10 @@ npm run check
 npm run lint
 npm run format
 npm run validate:manifest
+npm run validate:inline-handlers
+npm run validate:error-handling
+npm run validate:runtime-modules
+npm run validate:dependencies
 npm run test:playwright
 npm run test:self
 npm run test:smoke
@@ -85,6 +89,10 @@ What they do:
 - `lint` - lints the new hardening boundary files
 - `format` - checks formatting for docs and the new hardening files
 - `validate:manifest` - verifies asset manifest entries, models, and thumbnails
+- `validate:inline-handlers` - blocks inline and direct handler regressions
+- `validate:error-handling` - blocks empty catch blocks
+- `validate:runtime-modules` - verifies the transitional runtime module bridge
+- `validate:dependencies` - verifies pinned CDN dependency versions
 - `test:playwright` - runs the standard Playwright spec suite
 - `test:self` - runs the built-in `#selftest` flow through Playwright
 - `test:smoke` - starts a temporary local server and runs the Playwright smoke helper against the app

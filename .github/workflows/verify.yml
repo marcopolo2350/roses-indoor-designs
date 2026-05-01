@@ -54,6 +54,9 @@ jobs:
       - name: Validate runtime module bridge
         run: npm run validate:runtime-modules
 
+      - name: Validate dependency pins
+        run: npm run validate:dependencies
+
       - name: Run built-in self-test
         run: npm run test:self
 
