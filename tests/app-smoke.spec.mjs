@@ -26,6 +26,13 @@ async function ensureRoomPanelOpen(page) {
   return buildTab;
 }
 
+async function expectPropsPanelHasNoInlineHandlers(page) {
+  const inlineHandlers = await page
+    .locator("#propsP [onclick], #propsP [oninput], #propsP [onchange]")
+    .count();
+  expect(inlineHandlers).toBe(0);
+}
+
 test("canonical shell boots and delegated actions work", async ({ page }, testInfo) => {
   const runtimeErrors = [];
   page.on("console", (message) => {
@@ -188,6 +195,99 @@ test("canonical shell boots and delegated actions work", async ({ page }, testIn
     .click();
   await page.locator('[data-action="set-selected-redesign-action"]').first().click();
   await page.locator('[data-action="set-selected-furniture-source"][data-source="new"]').click();
+  await page.evaluate(() => {
+    sel = { type: "vertex", idx: 0 };
+    panelHidden = false;
+    showP();
+  });
+  await expect(page.locator("#propsP")).toContainText("Vertex");
+  await expectPropsPanelHasNoInlineHandlers(page);
+  await page.locator('[data-action="update-selected-vertex"][data-field="x"]').fill("0.5");
+  await page
+    .locator('[data-action="update-selected-vertex"][data-field="x"]')
+    .dispatchEvent("change");
+  await page.evaluate(() => {
+    curRoom.openings.push({
+      id: uid(),
+      type: "door",
+      wallId: curRoom.walls[0].id,
+      offset: 1,
+      width: 3,
+      height: 7,
+      sillHeight: 0,
+      swing: "in",
+      hinge: "left",
+    });
+    sel = { type: "opening", idx: curRoom.openings.length - 1 };
+    panelHidden = false;
+    showP();
+  });
+  await expect(page.locator("#propsP")).toContainText("Door");
+  await expectPropsPanelHasNoInlineHandlers(page);
+  await page
+    .locator('[data-action="update-selected-opening"][data-field="swing"]')
+    .selectOption("out");
+  await page.evaluate(() => {
+    curRoom.structures.push({
+      id: uid(),
+      type: "closet",
+      rect: { x: 1, y: 1, w: 2, h: 2 },
+      finish: "white_shaker",
+    });
+    sel = { type: "structure", idx: curRoom.structures.length - 1 };
+    panelHidden = false;
+    showP();
+  });
+  await expect(page.locator("#propsP")).toContainText("Closet");
+  await expectPropsPanelHasNoInlineHandlers(page);
+  await page
+    .locator('[data-action="update-selected-structure"][data-field="finish"]')
+    .selectOption("natural_oak");
+  await page.evaluate(() => {
+    curRoom.textAnnotations.push({
+      id: uid(),
+      text: "Smoke note",
+      x: 2,
+      z: 2,
+      fontSize: 14,
+      color: "#8E6E6B",
+    });
+    sel = { type: "annotation", idx: curRoom.textAnnotations.length - 1 };
+    panelHidden = false;
+    showP();
+  });
+  await expect(page.locator("#propsP")).toContainText("Annotation");
+  await expectPropsPanelHasNoInlineHandlers(page);
+  await page
+    .locator('[data-action="update-selected-annotation"][data-field="text"]')
+    .fill("Updated note");
+  await page
+    .locator('[data-action="update-selected-annotation"][data-field="text"]')
+    .dispatchEvent("change");
+  await page.evaluate(() => {
+    curRoom.dimensionAnnotations.push({
+      id: uid(),
+      label: "",
+      x1: 1,
+      z1: 1,
+      x2: 3,
+      z2: 1,
+      offset: 0.8,
+      fontSize: 13,
+      color: "#8E6E6B",
+    });
+    sel = { type: "dim_annotation", idx: curRoom.dimensionAnnotations.length - 1 };
+    panelHidden = false;
+    showP();
+  });
+  await expect(page.locator("#propsP")).toContainText("Dimension Note");
+  await expectPropsPanelHasNoInlineHandlers(page);
+  await page
+    .locator('[data-action="update-selected-dimension-annotation"][data-field="label"]')
+    .fill("Smoke dimension");
+  await page
+    .locator('[data-action="update-selected-dimension-annotation"][data-field="label"]')
+    .dispatchEvent("change");
 
   expect(runtimeErrors).toEqual([]);
 });

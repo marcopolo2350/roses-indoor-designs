@@ -144,6 +144,11 @@ function handleUiAction(action,target,event){
   if(action==='clear-selected-replacement-pair')return clearSelectedReplacementPair();
   if(action==='set-furniture-finish')return setFurnitureFinish(target?.dataset?.color||'');
   if(action==='delete-selected-furniture')return dF();
+  if(action==='delete-selected-vertex')return dV();
+  if(action==='delete-selected-opening')return dO();
+  if(action==='delete-selected-structure')return dS();
+  if(action==='delete-selected-annotation')return dA();
+  if(action==='delete-selected-dimension-annotation')return dDA();
   if(action==='export-comparison-sheet')return exportComparisonSheet();
   if(action==='toggle-room-layer')return toggleRoomLayer(target?.dataset?.layer||'furniture');
   if(action==='create-room-option-from-current')return createRoomOptionFromCurrent();
@@ -187,6 +192,11 @@ function bindStaticUiActions(){
     if(target?.dataset?.action==='rename-current-option')renameCurrentOption(target.value);
     if(target?.dataset?.action==='set-current-option-notes')setCurrentOptionNotes(target.value);
     if(target?.dataset?.action==='update-selected-furniture')uF(target.dataset.field,target.value);
+    if(target?.dataset?.action==='update-selected-vertex')uV(target.dataset.field,target.value);
+    if(target?.dataset?.action==='update-selected-opening')uO(target.dataset.field,target.value);
+    if(target?.dataset?.action==='update-selected-structure')uS(target.dataset.field,target.value);
+    if(target?.dataset?.action==='update-selected-annotation')uA(target.dataset.field,target.value);
+    if(target?.dataset?.action==='update-selected-dimension-annotation')uDA(target.dataset.field,target.value);
   });
   document.addEventListener('input',event=>{
     const target=event.target;

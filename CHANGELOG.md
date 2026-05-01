@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.19 - 2026-04-30
+
+- moved selected geometry and annotation property controls to delegated `data-action` handlers
+- extended desktop/mobile Playwright smoke coverage for vertex, door, closet, text annotation, and dimension annotation panels
+
 ## 0.5.0-hardening.18 - 2026-04-30
 
 - moved selected-furniture property controls to delegated `data-action` handlers
