@@ -1,0 +1,44 @@
+[
+  {
+    "id": "rose_legacy_catalog",
+    "label": "Legacy Rose Designs catalog",
+    "license": "Review pending",
+    "reviewStatus": "needs-review",
+    "attributionRequired": false,
+    "notes": "Original local catalog assets that predate source tracking. Keep, but do not add new legacy entries without source review."
+  },
+  {
+    "id": "poly_haven",
+    "label": "Poly Haven",
+    "license": "CC0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "reviewStatus": "cleared",
+    "attributionRequired": false,
+    "notes": "Public-domain Poly Haven models used by the catalog."
+  },
+  {
+    "id": "kenney_furniture_kit",
+    "label": "Kenney Furniture Kit",
+    "license": "CC0",
+    "licenseUrl": "https://kenney.nl/assets/furniture-kit",
+    "reviewStatus": "cleared",
+    "attributionRequired": false,
+    "notes": "Kenney Furniture Kit assets and converted GLBs used selectively for missing catalog gaps."
+  },
+  {
+    "id": "temp_house_interior",
+    "label": "temp_house_interior import pack",
+    "license": "Review pending",
+    "reviewStatus": "needs-review",
+    "attributionRequired": false,
+    "notes": "Downloaded local import pack. Assets remain tracked but should not be treated as cleared for public redistribution until license provenance is verified."
+  },
+  {
+    "id": "temp_furniture_pack",
+    "label": "temp_furniture_pack import pack",
+    "license": "Review pending",
+    "reviewStatus": "needs-review",
+    "attributionRequired": false,
+    "notes": "Downloaded local import pack. Assets remain tracked but should not be treated as cleared for public redistribution until license provenance is verified."
+  }
+]

@@ -44,6 +44,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Export filenames are sanitized through `scripts/export/filenames.js` and covered by `npm run validate:export-filenames`.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
 - GLB asset file sizes are guarded by `npm run validate:asset-sizes` with a 10 MB per-model ceiling.
+- Every manifest entry now carries a `sourceId`, and `npm run validate:asset-sources` checks it against `data/asset-sources.json`.
 - Standard Playwright config and a shell smoke spec exist for desktop and mobile Chromium viewports.
 - README, changelog, roadmap, architecture, data model, testing, deployment, and limitations docs exist.
 
@@ -52,7 +53,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - The runtime is still browser-global, but the bridge is explicit and several core surfaces have been extracted.
 - State is still largely mutable globals, but high-risk metadata and history now have central owners.
 - Inline handlers and direct `on*` handler properties are removed from the static app shell and application scripts.
-- Manifest validation is stricter and quieter, but asset licensing and heavy GLB audits are still not complete.
+- Manifest validation is stricter and quieter, and source tracking now marks cleared versus needs-review asset families; full provenance cleanup is still not complete.
 - Cloud sync is isolated and marked experimental, but conflict handling is still timestamp-oriented.
 - Playwright coverage exists for desktop and mobile smoke paths, but it is still smoke-level rather than a full workflow suite.
 
@@ -82,6 +83,7 @@ npm run lint
 npm run format
 npm run validate:manifest
 npm run validate:asset-sizes
+npm run validate:asset-sources
 npm run validate:error-handling
 npm run validate:runtime-modules
 npm run validate:dependencies

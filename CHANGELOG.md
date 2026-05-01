@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.38 - 2026-04-30
+
+- added `data/asset-sources.json` and `sourceId` tracking for every manifest item so catalog provenance is explicit and machine-checkable
+- added `npm run validate:asset-sources` and a CI gate for asset source registry drift
+
 ## 0.5.0-hardening.37 - 2026-04-30
 
 - added a GLB size validation command and CI gate so oversized catalog assets are caught before they bloat the app

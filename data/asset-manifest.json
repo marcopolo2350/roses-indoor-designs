@@ -60,7 +60,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "linen_sand"
+    "defaultVariantId": "linen_sand",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "bed_king",
@@ -123,7 +125,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "linen_sand"
+    "defaultVariantId": "linen_sand",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "bed_twin",
@@ -186,7 +190,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "linen_sand"
+    "defaultVariantId": "linen_sand",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "bench",
@@ -250,7 +256,9 @@
         "tintStrength": 0.72
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "blinds",
@@ -272,7 +280,9 @@
       "dining_room"
     ],
     "mountType": "wall",
-    "snapToOpening": true
+    "snapToOpening": true,
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "bookcase_books",
@@ -338,7 +348,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "bookshelf",
@@ -404,7 +416,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "bunk_bed",
@@ -467,7 +481,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "linen_sand"
+    "defaultVariantId": "linen_sand",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "cabinet",
@@ -532,7 +548,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "chair",
@@ -597,7 +615,9 @@
         "tintStrength": 0.72
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "chair_office",
@@ -663,7 +683,9 @@
         "tintStrength": 0.72
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "closet_short",
@@ -728,7 +750,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "closet_tall",
@@ -793,7 +817,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "console_low",
@@ -858,7 +884,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "curtains",
@@ -878,7 +906,9 @@
       "dining_room"
     ],
     "mountType": "wall",
-    "snapToOpening": true
+    "snapToOpening": true,
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "desk",
@@ -944,7 +974,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "dining_table",
@@ -1010,7 +1042,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "door_single",
@@ -1028,7 +1062,9 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "dresser",
@@ -1091,7 +1127,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "dresser_tall",
@@ -1154,7 +1192,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "fireplace",
@@ -1172,7 +1212,9 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "lamp_ceiling",
@@ -1239,7 +1281,9 @@
         "tintStrength": 0.56
       }
     ],
-    "defaultVariantId": "brushed_brass"
+    "defaultVariantId": "brushed_brass",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "lamp_chandelier",
@@ -1306,7 +1350,9 @@
         "tintStrength": 0.56
       }
     ],
-    "defaultVariantId": "brushed_brass"
+    "defaultVariantId": "brushed_brass",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "lamp_cube",
@@ -1373,7 +1419,9 @@
         "tintStrength": 0.56
       }
     ],
-    "defaultVariantId": "brushed_brass"
+    "defaultVariantId": "brushed_brass",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "lamp_floor",
@@ -1438,7 +1486,9 @@
         "tintStrength": 0.56
       }
     ],
-    "defaultVariantId": "brushed_brass"
+    "defaultVariantId": "brushed_brass",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "lamp_pendant",
@@ -1505,7 +1555,9 @@
         "tintStrength": 0.56
       }
     ],
-    "defaultVariantId": "brushed_brass"
+    "defaultVariantId": "brushed_brass",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "lamp_stand",
@@ -1572,7 +1624,9 @@
         "tintStrength": 0.56
       }
     ],
-    "defaultVariantId": "brushed_brass"
+    "defaultVariantId": "brushed_brass",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "lamp_table",
@@ -1637,7 +1691,9 @@
         "tintStrength": 0.56
       }
     ],
-    "defaultVariantId": "brushed_brass"
+    "defaultVariantId": "brushed_brass",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "lamp_wall",
@@ -1704,7 +1760,9 @@
         "tintStrength": 0.56
       }
     ],
-    "defaultVariantId": "brushed_brass"
+    "defaultVariantId": "brushed_brass",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "mirror",
@@ -1725,7 +1783,9 @@
       "bedroom",
       "dining_room"
     ],
-    "mountType": "wall"
+    "mountType": "wall",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "nightstand",
@@ -1790,7 +1850,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "nightstand_alt",
@@ -1855,7 +1917,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "plant_cactus",
@@ -1873,7 +1937,9 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "plant_floor",
@@ -1891,7 +1957,9 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "plant_leafy",
@@ -1909,7 +1977,9 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "plant_palm",
@@ -1927,7 +1997,9 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "plant_round",
@@ -1945,7 +2017,9 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "plant_small",
@@ -1963,7 +2037,9 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "rug",
@@ -2028,7 +2104,9 @@
         "tintStrength": 0.44
       }
     ],
-    "defaultVariantId": "ivory_loop"
+    "defaultVariantId": "ivory_loop",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "rug_round",
@@ -2094,7 +2172,9 @@
         "tintStrength": 0.44
       }
     ],
-    "defaultVariantId": "ivory_loop"
+    "defaultVariantId": "ivory_loop",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "runner_rug",
@@ -2159,7 +2239,9 @@
         "tintStrength": 0.44
       }
     ],
-    "defaultVariantId": "ivory_loop"
+    "defaultVariantId": "ivory_loop",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "shelf_small",
@@ -2225,7 +2307,9 @@
       }
     ],
     "defaultVariantId": "light_oak",
-    "mountType": "wall"
+    "mountType": "wall",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "shelving",
@@ -2290,7 +2374,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "sofa",
@@ -2353,7 +2439,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "sofa_compact",
@@ -2416,7 +2504,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "sofa_grand",
@@ -2479,7 +2569,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "sofa_l",
@@ -2542,7 +2634,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "sofa_large",
@@ -2605,7 +2699,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "sofa_medium",
@@ -2668,7 +2764,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "sofa_modern",
@@ -2734,7 +2832,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "sofa_small",
@@ -2797,7 +2897,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "stool",
@@ -2863,7 +2965,9 @@
         "tintStrength": 0.72
       }
     ],
-    "defaultVariantId": "boucle_ivory"
+    "defaultVariantId": "boucle_ivory",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "table_coffee",
@@ -2928,7 +3032,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "table_round_large",
@@ -2993,7 +3099,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "table_round_small",
@@ -3058,7 +3166,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "tv_console",
@@ -3123,7 +3233,9 @@
         "tintStrength": 0.74
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "wall_art_01",
@@ -3144,7 +3256,9 @@
       "bedroom",
       "dining_room"
     ],
-    "mountType": "wall"
+    "mountType": "wall",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "wall_art_04",
@@ -3165,7 +3279,9 @@
       "bedroom",
       "dining_room"
     ],
-    "mountType": "wall"
+    "mountType": "wall",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "wall_art_06",
@@ -3186,7 +3302,9 @@
       "bedroom",
       "dining_room"
     ],
-    "mountType": "wall"
+    "mountType": "wall",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "window_large",
@@ -3204,7 +3322,9 @@
     ],
     "recommendedRoomTypes": [
       "living_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/kitchen_cabinet_base.png",
@@ -3227,7 +3347,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/kitchen_cabinet_upper.png",
@@ -3250,7 +3372,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/kitchen_island.png",
@@ -3273,7 +3397,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/kitchen_fridge.png",
@@ -3296,7 +3422,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/kitchen_stove.png",
@@ -3319,7 +3447,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/kitchen_hood.png",
@@ -3342,7 +3472,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/kitchen_sink.png",
@@ -3365,7 +3497,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/kitchen_dishwasher.png",
@@ -3388,7 +3522,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/bathroom_vanity_single.png",
@@ -3411,7 +3547,9 @@
     "collections": [
       "Airy Minimal",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/bathroom_vanity_double.png",
@@ -3434,7 +3572,9 @@
     "collections": [
       "Airy Minimal",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/bathroom_toilet.png",
@@ -3457,7 +3597,9 @@
     "collections": [
       "Airy Minimal",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/bathroom_tub.png",
@@ -3480,7 +3622,9 @@
     "collections": [
       "Airy Minimal",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/bathroom_shower.png",
@@ -3503,7 +3647,9 @@
     "collections": [
       "Airy Minimal",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/bathroom_mirror.png",
@@ -3527,7 +3673,9 @@
       "Airy Minimal",
       "Everyday Staples"
     ],
-    "mountType": "wall"
+    "mountType": "wall",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/bathroom_towel_bar.png",
@@ -3551,7 +3699,9 @@
       "Airy Minimal",
       "Everyday Staples"
     ],
-    "mountType": "wall"
+    "mountType": "wall",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/washing_machine.png",
@@ -3573,7 +3723,9 @@
     "subcategory": "appliance",
     "collections": [
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/column_round.png",
@@ -3596,7 +3748,9 @@
     "subcategory": "architectural",
     "collections": [
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/trashcan_small.png",
@@ -3620,7 +3774,9 @@
     "subcategory": "utility",
     "collections": [
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/trashcan_large.png",
@@ -3643,7 +3799,9 @@
     "subcategory": "utility",
     "collections": [
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/square_plate.png",
@@ -3667,7 +3825,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/bed_double.png",
@@ -3689,7 +3849,9 @@
     "subcategory": "bed",
     "collections": [
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/closet_full.png",
@@ -3713,7 +3875,9 @@
     "collections": [
       "Quiet Luxury",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "thumbnailPath": "./assets/thumbnails/table_rect.png",
@@ -3737,7 +3901,9 @@
     "collections": [
       "Warm Modern",
       "Everyday Staples"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_armchair_01",
@@ -3804,7 +3970,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "linen_sand"
+    "defaultVariantId": "linen_sand",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_armchair_modern",
@@ -3872,7 +4040,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "boucle_cream"
+    "defaultVariantId": "boucle_cream",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_bar_chair",
@@ -3939,7 +4109,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "linen_sand"
+    "defaultVariantId": "linen_sand",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chair_chinese",
@@ -4006,7 +4178,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "dark_walnut"
+    "defaultVariantId": "dark_walnut",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chair_gallinera",
@@ -4073,7 +4247,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "linen_sand"
+    "defaultVariantId": "linen_sand",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chair_green",
@@ -4138,7 +4314,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "velvet_blush"
+    "defaultVariantId": "velvet_blush",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chair_midcentury",
@@ -4205,7 +4383,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "tailored_charcoal"
+    "defaultVariantId": "tailored_charcoal",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chair_painted",
@@ -4272,7 +4452,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_ottoman_01",
@@ -4339,7 +4521,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "boucle_cream"
+    "defaultVariantId": "boucle_cream",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_stool_metal",
@@ -4395,7 +4579,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "matte_black"
+    "defaultVariantId": "matte_black",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_sofa_01",
@@ -4459,7 +4645,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "linen_sand"
+    "defaultVariantId": "linen_sand",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_sofa_02",
@@ -4525,7 +4713,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "boucle_cream"
+    "defaultVariantId": "boucle_cream",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_sofa_03",
@@ -4589,7 +4779,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "velvet_blush"
+    "defaultVariantId": "velvet_blush",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_sofa_painted",
@@ -4655,7 +4847,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "velvet_blush"
+    "defaultVariantId": "velvet_blush",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_coffee_gothic",
@@ -4721,7 +4915,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "dark_walnut"
+    "defaultVariantId": "dark_walnut",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_coffee_industrial",
@@ -4787,7 +4983,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "medium_oak"
+    "defaultVariantId": "medium_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_coffee_modern",
@@ -4853,7 +5051,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_coffee_modern_2",
@@ -4919,7 +5119,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_coffee_round",
@@ -4985,7 +5187,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "medium_oak"
+    "defaultVariantId": "medium_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_coffee_table_01",
@@ -5051,7 +5255,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_side_table",
@@ -5118,7 +5324,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_side_table_tall",
@@ -5185,7 +5393,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "medium_oak"
+    "defaultVariantId": "medium_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_table_gallinera",
@@ -5251,7 +5461,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "medium_oak"
+    "defaultVariantId": "medium_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_table_painted",
@@ -5318,7 +5530,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_table_round",
@@ -5382,7 +5596,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_table_wooden",
@@ -5448,7 +5664,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "medium_oak"
+    "defaultVariantId": "medium_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_table_wooden_2",
@@ -5514,7 +5732,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "dark_walnut"
+    "defaultVariantId": "dark_walnut",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_bookshelf",
@@ -5583,7 +5803,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_cabinet_chinese",
@@ -5650,7 +5872,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "dark_walnut"
+    "defaultVariantId": "dark_walnut",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_cabinet_drawer",
@@ -5717,7 +5941,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "white_painted"
+    "defaultVariantId": "white_painted",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_cabinet_modern",
@@ -5784,7 +6010,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "white_painted"
+    "defaultVariantId": "white_painted",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_cabinet_painted",
@@ -5852,7 +6080,9 @@
         "tintStrength": 0.58
       }
     ],
-    "defaultVariantId": "white_painted"
+    "defaultVariantId": "white_painted",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_cabinet_vintage",
@@ -5919,7 +6149,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "dark_walnut"
+    "defaultVariantId": "dark_walnut",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_console_01",
@@ -5986,7 +6218,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_console_chinese",
@@ -6053,7 +6287,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "dark_walnut"
+    "defaultVariantId": "dark_walnut",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_shelf_01",
@@ -6122,7 +6358,9 @@
       }
     ],
     "defaultVariantId": "light_oak",
-    "mountType": "wall"
+    "mountType": "wall",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_nightstand",
@@ -6186,7 +6424,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "light_oak"
+    "defaultVariantId": "light_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_nightstand_classic",
@@ -6252,7 +6492,9 @@
         "tintStrength": 0.75
       }
     ],
-    "defaultVariantId": "medium_oak"
+    "defaultVariantId": "medium_oak",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chandelier_01",
@@ -6309,7 +6551,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "brass_warm"
+    "defaultVariantId": "brass_warm",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chandelier_02",
@@ -6365,7 +6609,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "brass_warm"
+    "defaultVariantId": "brass_warm",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chandelier_03",
@@ -6421,7 +6667,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "matte_black"
+    "defaultVariantId": "matte_black",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chandelier_chinese",
@@ -6477,7 +6725,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "brass_warm"
+    "defaultVariantId": "brass_warm",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_chandelier_lantern",
@@ -6534,7 +6784,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "brass_warm"
+    "defaultVariantId": "brass_warm",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_lamp_ceiling",
@@ -6591,7 +6843,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "brushed_nickel"
+    "defaultVariantId": "brushed_nickel",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_lamp_desk",
@@ -6647,7 +6901,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "matte_black"
+    "defaultVariantId": "matte_black",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_lamp_industrial",
@@ -6703,7 +6959,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "matte_black"
+    "defaultVariantId": "matte_black",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_lamp_pipe",
@@ -6760,7 +7018,9 @@
         "tintStrength": 0.65
       }
     ],
-    "defaultVariantId": "matte_black"
+    "defaultVariantId": "matte_black",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_bed_gothic",
@@ -6826,7 +7086,9 @@
         "tintStrength": 0.54
       }
     ],
-    "defaultVariantId": "velvet_blush"
+    "defaultVariantId": "velvet_blush",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_plant_potted_01",
@@ -6847,7 +7109,9 @@
       "living_room",
       "bedroom",
       "bathroom"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_plant_potted_02",
@@ -6867,7 +7131,9 @@
     "recommendedRoomTypes": [
       "living_room",
       "bedroom"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_plant_potted_04",
@@ -6887,7 +7153,9 @@
     "recommendedRoomTypes": [
       "living_room",
       "office"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_planter_clay",
@@ -6908,7 +7176,9 @@
       "living_room",
       "bedroom",
       "kitchen"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_vase_brass_01",
@@ -6930,7 +7200,9 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_vase_ceramic_01",
@@ -6950,7 +7222,9 @@
       "living_room",
       "bedroom",
       "dining_room"
-    ]
+    ],
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "ph_mirror_ornate",
@@ -6972,7 +7246,9 @@
       "living_room",
       "bathroom"
     ],
-    "mountType": "wall"
+    "mountType": "wall",
+    "source": "Legacy Rose Designs catalog (license review pending)",
+    "sourceId": "rose_legacy_catalog"
   },
   {
     "id": "kn_ceiling_fan",
@@ -6994,7 +7270,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_pillow",
@@ -7016,7 +7293,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_pillow_blue",
@@ -7038,7 +7316,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_pillow_long",
@@ -7059,7 +7338,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_books",
@@ -7081,7 +7361,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_potted_plant",
@@ -7104,7 +7385,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_plant_small_1",
@@ -7126,7 +7408,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_plant_small_2",
@@ -7148,7 +7431,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_plant_small_3",
@@ -7170,7 +7454,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_radio",
@@ -7192,7 +7477,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_speaker",
@@ -7214,7 +7500,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_speaker_small",
@@ -7236,7 +7523,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_laptop",
@@ -7257,7 +7545,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_computer_screen",
@@ -7278,7 +7567,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_computer_keyboard",
@@ -7299,7 +7589,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_tv_modern",
@@ -7321,7 +7612,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_kitchen_microwave",
@@ -7342,7 +7634,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_kitchen_blender",
@@ -7363,7 +7656,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_kitchen_coffee",
@@ -7384,7 +7678,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_toaster",
@@ -7405,7 +7700,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_trashcan",
@@ -7428,7 +7724,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_coat_rack",
@@ -7450,7 +7747,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_bear",
@@ -7473,7 +7771,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_cardboard_box",
@@ -7495,7 +7794,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Kenney furniture-kit (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "ph_barbershopchair_01",
@@ -7518,7 +7818,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_greenchair_01",
@@ -7541,7 +7842,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_rockingchair_01",
@@ -7564,7 +7866,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_chinese_sofa",
@@ -7585,7 +7888,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_painted_wooden_sofa",
@@ -7606,7 +7910,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_coffeetable_01",
@@ -7629,7 +7934,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_woodentable_01",
@@ -7652,7 +7958,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_woodentable_02",
@@ -7675,7 +7982,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_caged_hanging_light",
@@ -7698,7 +8006,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_desk_lamp_arm_01",
@@ -7721,7 +8030,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_hanging_industrial_lamp",
@@ -7744,7 +8054,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_brass_pot_01",
@@ -7766,7 +8077,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_brass_pot_02",
@@ -7788,7 +8100,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_antique_ceramic_vase_01",
@@ -7810,7 +8123,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_brass_vase_01",
@@ -7832,7 +8146,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_schoolchair_01",
@@ -7855,7 +8170,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_woodenchair_01",
@@ -7878,7 +8194,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_bar_chair_round_01",
@@ -7901,7 +8218,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_woodentable_03",
@@ -7924,7 +8242,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_chinese_console_table",
@@ -7947,7 +8266,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_chinese_tea_table",
@@ -7970,7 +8290,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_industrial_pipe_lamp",
@@ -7993,7 +8314,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_industrial_wall_lamp",
@@ -8016,7 +8338,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_lightbulb_01",
@@ -8039,7 +8362,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_crystalline_iceplant",
@@ -8061,7 +8385,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_nettle_plant",
@@ -8083,7 +8408,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_brass_vase_02",
@@ -8105,7 +8431,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_brass_vase_03",
@@ -8127,7 +8454,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_alarm_clock_01",
@@ -8149,7 +8477,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_book_encyclopedia_set_01",
@@ -8171,7 +8500,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_throw_pillows_01",
@@ -8193,7 +8523,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_fancy_picture_frame_01",
@@ -8216,7 +8547,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_fancy_picture_frame_02",
@@ -8239,7 +8571,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_hanging_picture_frame_01",
@@ -8262,7 +8595,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_ornate_mirror_01",
@@ -8285,7 +8619,8 @@
       "entry"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_brass_candleholders",
@@ -8307,7 +8642,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "ph_food_apple_01",
@@ -8328,7 +8664,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Poly Haven (CC0)"
+    "source": "Poly Haven (CC0)",
+    "sourceId": "poly_haven"
   },
   {
     "id": "thi_kitchen_fridge",
@@ -8352,7 +8689,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_kitchen_sink",
@@ -8376,7 +8714,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_kitchen_oven",
@@ -8401,7 +8740,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_bathroom_sink",
@@ -8425,7 +8765,8 @@
       "bathroom"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_bathtub",
@@ -8449,7 +8790,8 @@
       "bathroom"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_toilet",
@@ -8473,7 +8815,8 @@
       "bathroom"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_toilet_paper",
@@ -8496,7 +8839,8 @@
       "bathroom"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_toilet_paper_stack",
@@ -8520,7 +8864,8 @@
       "bathroom"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_towel_rack",
@@ -8544,7 +8889,8 @@
       "bathroom"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_washing_machine",
@@ -8568,7 +8914,8 @@
       "laundry"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_fireplace",
@@ -8591,7 +8938,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_column_round",
@@ -8616,7 +8964,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_bunk_bed",
@@ -8639,7 +8988,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_l_couch",
@@ -8662,7 +9012,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_stool",
@@ -8685,7 +9036,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_trashcan_large",
@@ -8709,7 +9061,8 @@
       "office"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_trashcan",
@@ -8734,7 +9087,8 @@
       "bathroom"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_chandelier",
@@ -8759,7 +9113,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_dead_houseplant",
@@ -8783,7 +9138,8 @@
       "office"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "thi_square_plate",
@@ -8807,7 +9163,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "temp_house_interior"
+    "source": "temp_house_interior (license pending review)",
+    "sourceId": "temp_house_interior"
   },
   {
     "id": "tfp_bed_double",
@@ -8830,7 +9187,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "tfp_bed_twin",
@@ -8853,7 +9211,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "tfp_bookcase_books",
@@ -8879,7 +9238,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "tfp_office_chair",
@@ -8904,7 +9264,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "tfp_closet",
@@ -8928,7 +9289,8 @@
       "entry"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "tfp_closet_short",
@@ -8953,7 +9315,8 @@
       "entry"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "tfp_desk",
@@ -8977,7 +9340,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "tfp_sofa",
@@ -9000,7 +9364,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "tfp_stool",
@@ -9024,7 +9389,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "tfp_night_stand",
@@ -9047,7 +9413,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "temp_furniture_pack"
+    "source": "temp_furniture_pack (license pending review)",
+    "sourceId": "temp_furniture_pack"
   },
   {
     "id": "kn_dryer",
@@ -9070,7 +9437,8 @@
       "laundry"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_kitchen_corner_inner",
@@ -9093,7 +9461,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_kitchen_corner_round",
@@ -9117,7 +9486,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_kitchen_bar",
@@ -9141,7 +9511,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_kitchen_bar_end",
@@ -9164,7 +9535,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_hood_modern",
@@ -9188,7 +9560,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_hood_large",
@@ -9212,7 +9585,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_cabinet_tv",
@@ -9236,7 +9610,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_cabinet_tv_doors",
@@ -9261,7 +9636,8 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_doorway_open",
@@ -9286,7 +9662,8 @@
       "dining_room"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_paneling",
@@ -9311,7 +9688,8 @@
       "entry"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_fridge_small",
@@ -9335,7 +9713,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_fridge_builtin",
@@ -9359,7 +9738,8 @@
       "kitchen"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_lounge_sectional",
@@ -9383,7 +9763,8 @@
       "living_room"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_computer_mouse",
@@ -9406,7 +9787,8 @@
       "office"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_rug_doormat",
@@ -9429,7 +9811,8 @@
       "entry"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   },
   {
     "id": "kn_coat_rack_standing",
@@ -9453,6 +9836,7 @@
       "bedroom"
     ],
     "variants": [],
-    "source": "Kenney (CC0)"
+    "source": "Kenney Furniture Kit (CC0)",
+    "sourceId": "kenney_furniture_kit"
   }
 ]

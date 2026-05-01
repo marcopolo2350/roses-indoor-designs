@@ -70,6 +70,7 @@ npm run lint
 npm run format
 npm run validate:manifest
 npm run validate:asset-sizes
+npm run validate:asset-sources
 npm run validate:inline-handlers
 npm run validate:error-handling
 npm run validate:runtime-modules
@@ -96,6 +97,7 @@ What they do:
 - `format` - checks formatting for docs and the new hardening files
 - `validate:manifest` - verifies asset manifest entries, models, and thumbnails
 - `validate:asset-sizes` - verifies GLB files stay below the per-model size ceiling
+- `validate:asset-sources` - verifies every catalog entry points to a documented source registry entry
 - `validate:inline-handlers` - blocks inline and direct handler regressions
 - `validate:error-handling` - blocks empty catch blocks
 - `validate:runtime-modules` - verifies the transitional runtime module bridge
@@ -140,10 +142,12 @@ What they do:
 - [scripts/export.js](./scripts/export.js) - PNG, SVG, PDF, and presentation export logic
 - [scripts/cloud/supabase.js](./scripts/cloud/supabase.js) - experimental cloud sync boundary
 - [scripts/devtools/validate-manifest.mjs](./scripts/devtools/validate-manifest.mjs) - manifest validator
+- [scripts/devtools/validate-asset-sources.mjs](./scripts/devtools/validate-asset-sources.mjs) - asset provenance validator
 - [scripts/devtools/run-selftest.mjs](./scripts/devtools/run-selftest.mjs) - reproducible self-test runner
 - [scripts/thumbgen.html](./scripts/thumbgen.html) - thumbnail rendering stage
 - [scripts/generate-thumbnails.mjs](./scripts/generate-thumbnails.mjs) - bulk thumbnail generator
 - [data/asset-manifest.json](./data/asset-manifest.json) - asset metadata
+- [data/asset-sources.json](./data/asset-sources.json) - asset source, license, and review-status registry
 - [progress.md](./progress.md) - running implementation and verification log
 - [docs/REFACTOR_ROADMAP.md](./docs/REFACTOR_ROADMAP.md) - structural cleanup plan
 - [CHANGELOG.md](./CHANGELOG.md) - versioned hardening changes
@@ -153,6 +157,7 @@ What they do:
 - [docs/data-model.md](./docs/data-model.md) - current room/project model
 - [docs/testing.md](./docs/testing.md) - test and verification commands
 - [docs/deployment.md](./docs/deployment.md) - deployment notes
+- [docs/asset-sources.md](./docs/asset-sources.md) - catalog source and license posture
 - [docs/hardening-status.md](./docs/hardening-status.md) - current checklist status
 
 ## QA
