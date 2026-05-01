@@ -7,6 +7,7 @@
 - extended HTML safety validation to block cloud modal string rendering and inline style regressions
 - added Playwright coverage for the cloud sync settings dialog accessibility and inline-markup guardrails
 - fixed modal keyboard ownership so trapped Tab/Escape events cannot leak into global editor shortcuts
+- stabilized the mobile smoke close-panel step by dispatching the delegated close action directly
 
 ## 0.5.0-hardening.65 - 2026-05-01
 

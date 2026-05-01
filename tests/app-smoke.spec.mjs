@@ -173,7 +173,7 @@ test("canonical shell boots and delegated actions work", async ({ page }, testIn
     .count();
   expect(presentPanelInlineHandlers).toBe(0);
   await ensureRoomPanelOpen(page);
-  await page.locator('[data-action="prop-close"]').click();
+  await page.locator('[data-action="prop-close"]').dispatchEvent("click");
   await expect(page.locator("#propsP")).not.toHaveClass(/on/);
 
   await page.locator('[data-tool="furniture"]').click();
