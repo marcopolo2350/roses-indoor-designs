@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.59 - 2026-05-01
+
+- added `eslint.config.js` to syntax and formatting checks so the tool config is verified with runtime code
+- extended static accessibility validation to require `rel="noopener noreferrer"` on any future new-tab links
+- updated README and hardening status to document the broader checks
+
 ## 0.5.0-hardening.58 - 2026-05-01
 
 - extracted Project JSON import/export behavior into `scripts/export/project-json.js`

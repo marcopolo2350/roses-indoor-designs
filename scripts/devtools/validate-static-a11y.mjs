@@ -40,6 +40,15 @@ for (const match of html.matchAll(/<svg\b([^>]*)>/gi)) {
   }
 }
 
+for (const match of html.matchAll(/<a\b([^>]*)>/gi)) {
+  const attrs = match[1];
+  if (attr(attrs, "target").toLowerCase() !== "_blank") continue;
+  const rel = attr(attrs, "rel").toLowerCase().split(/\s+/);
+  if (!rel.includes("noopener") || !rel.includes("noreferrer")) {
+    errors.push(`New-tab link must include rel="noopener noreferrer": ${attrs.trim()}`);
+  }
+}
+
 for (const match of html.matchAll(
   /<div\b([^>]*class=["'][^"']*(?:modal-bg|verify-overlay)[^"']*["'][^>]*)>/gi,
 )) {

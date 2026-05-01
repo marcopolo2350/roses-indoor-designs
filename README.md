@@ -109,14 +109,14 @@ What they do:
 
 - `dev` - starts a simple static server on `8123`
 - `dev:alt` - starts a simple static server on `8124`
-- `check` - runs `node --check` across the main runtime files
+- `check` - runs `node --check` across the main runtime and tool-config files
 - `lint` - lints the new hardening boundary files
 - `format` - checks formatting for docs and the new hardening files
 - `validate:version` - checks package, lockfile, app shell, runtime config, changelog, and hardening status versions stay aligned
 - `validate:manifest` - verifies asset manifest entries, models, and thumbnails
 - `validate:asset-sizes` - verifies GLB files stay below the per-model size ceiling
 - `validate:asset-sources` - verifies every catalog entry points to a documented source registry entry
-- `validate:static-a11y` - checks static app-shell button names, button types, dialogs, and decorative SVG hiding
+- `validate:static-a11y` - checks static app-shell button names, button types, dialogs, decorative SVG hiding, and new-tab link safety
 - `validate:dev-mode` - checks debug/model/diagnostic surfaces stay behind `.dev-only`
 - `validate:github-templates` - checks issue/PR templates keep hardening scope and verification prompts current
 - `validate:docs` - checks README, testing docs, hardening status, and PR verification commands for drift
