@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.63 - 2026-05-01
+
+- removed the remaining static inline style attributes from `index.html`
+- moved room-type icons, brief swatches, profile modal copy, and time-of-day preset sizing into CSS classes
+- extended static accessibility validation to block future inline style attributes in the app shell
+
 ## 0.5.0-hardening.62 - 2026-05-01
 
 - replaced static inline `display:none` usage with CSS classes for hidden app-shell elements

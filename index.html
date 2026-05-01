@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
     <title>Rose's Indoor Designs</title>
-<meta name="application-version" content="0.5.0-hardening.62" />
+<meta name="application-version" content="0.5.0-hardening.63" />
     <meta
       name="description"
       content="A professional interior design studio for planning spaces in 2D and 3D, styling rooms, comparing options, and exporting client-ready presentations."
@@ -85,10 +85,10 @@
       aria-modal="true"
       aria-labelledby="profileModTitle"
     >
-      <div class="msh" style="max-width: 460px">
+      <div class="msh profile-modal-sheet">
         <div class="mhn"></div>
         <div class="mt" id="profileModTitle">Welcome to Rose Designs</div>
-        <div style="font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px">
+        <div class="profile-modal-copy">
           This device keeps your rooms, saved work, and preferences ready to pick back up.
         </div>
         <div class="mat-grid tall">
@@ -200,7 +200,7 @@
               data-action="open-create-room"
               data-room-type="living_room"
             >
-              <div class="rtc-icon" style="background: #ede5d8; color: #8b6e50">
+              <div class="rtc-icon rtc-icon-living-room">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -222,7 +222,7 @@
               data-action="open-create-room"
               data-room-type="bedroom"
             >
-              <div class="rtc-icon" style="background: #e2dde8; color: #7a6a90">
+              <div class="rtc-icon rtc-icon-bedroom">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -245,7 +245,7 @@
               data-action="open-create-room"
               data-room-type="kitchen"
             >
-              <div class="rtc-icon" style="background: #d8e6d8; color: #5a7a5a">
+              <div class="rtc-icon rtc-icon-kitchen">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -268,7 +268,7 @@
               data-action="open-create-room"
               data-room-type="bathroom"
             >
-              <div class="rtc-icon" style="background: #d8e4ec; color: #4e7a96">
+              <div class="rtc-icon rtc-icon-bathroom">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -290,7 +290,7 @@
               data-action="open-create-room"
               data-room-type="dining_room"
             >
-              <div class="rtc-icon" style="background: #ede0d4; color: #9a6a48">
+              <div class="rtc-icon rtc-icon-dining">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -313,7 +313,7 @@
               data-action="open-create-room"
               data-room-type="office"
             >
-              <div class="rtc-icon" style="background: #e0ddd8; color: #6a6058">
+              <div class="rtc-icon rtc-icon-office">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -336,7 +336,7 @@
               data-action="open-create-room"
               data-room-type="nursery"
             >
-              <div class="rtc-icon" style="background: #ece0dc; color: #a06060">
+              <div class="rtc-icon rtc-icon-nursery">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -357,7 +357,7 @@
               data-action="open-create-room"
               data-room-type="studio"
             >
-              <div class="rtc-icon" style="background: #e4e8e0; color: #68806a">
+              <div class="rtc-icon rtc-icon-studio">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -385,10 +385,7 @@
               data-room-type="living_room"
               data-brief="warm_modern"
             >
-              <div
-                class="brief-swatch"
-                style="background: linear-gradient(135deg, #c8b89a 0%, #e8d8c4 50%, #a0907a 100%)"
-              ></div>
+              <div class="brief-swatch brief-swatch-warm-modern"></div>
               <div class="brief-body">
                 <div class="brief-title">Warm Modern Living</div>
                 <div class="brief-sub">Linen, walnut, soft light</div>
@@ -401,10 +398,7 @@
               data-room-type="bedroom"
               data-brief="quiet_luxury"
             >
-              <div
-                class="brief-swatch"
-                style="background: linear-gradient(135deg, #d4c5b0 0%, #eae0d4 50%, #9e8e7c 100%)"
-              ></div>
+              <div class="brief-swatch brief-swatch-quiet-luxury"></div>
               <div class="brief-body">
                 <div class="brief-title">Quiet Luxury Bedroom</div>
                 <div class="brief-sub">Stone, cream, muted slate</div>
@@ -417,10 +411,7 @@
               data-room-type="kitchen"
               data-brief="compact_kitchen"
             >
-              <div
-                class="brief-swatch"
-                style="background: linear-gradient(135deg, #bfc5c0 0%, #e2e6e2 50%, #8a9a8a 100%)"
-              ></div>
+              <div class="brief-swatch brief-swatch-compact-kitchen"></div>
               <div class="brief-body">
                 <div class="brief-title">Compact Kitchen</div>
                 <div class="brief-sub">Sage, white oak, matte</div>
@@ -433,10 +424,7 @@
               data-room-type="bathroom"
               data-brief="soft_bathroom"
             >
-              <div
-                class="brief-swatch"
-                style="background: linear-gradient(135deg, #c8c0c8 0%, #eae4ea 50%, #9890a0 100%)"
-              ></div>
+              <div class="brief-swatch brief-swatch-soft-bathroom"></div>
               <div class="brief-body">
                 <div class="brief-title">Soft Bathroom</div>
                 <div class="brief-sub">Plaster, terrazzo, brass</div>
@@ -690,47 +678,42 @@
               />
               <span class="tod-value" id="todLabel">Noon</span>
             </div>
-            <div class="tod-row" style="gap: 4px; flex-wrap: wrap">
+            <div class="tod-row tod-presets">
               <button
-                class="cmb"
+                class="cmb tod-preset"
                 type="button"
-                style="padding: 3px 8px; font-size: 10px"
                 data-action="set-time-of-day"
                 data-time-of-day="14"
               >
                 Dawn
               </button>
               <button
-                class="cmb"
+                class="cmb tod-preset"
                 type="button"
-                style="padding: 3px 8px; font-size: 10px"
                 data-action="set-time-of-day"
                 data-time-of-day="50"
               >
                 Noon
               </button>
               <button
-                class="cmb"
+                class="cmb tod-preset"
                 type="button"
-                style="padding: 3px 8px; font-size: 10px"
                 data-action="set-time-of-day"
                 data-time-of-day="72"
               >
                 Golden
               </button>
               <button
-                class="cmb"
+                class="cmb tod-preset"
                 type="button"
-                style="padding: 3px 8px; font-size: 10px"
                 data-action="set-time-of-day"
                 data-time-of-day="86"
               >
                 Dusk
               </button>
               <button
-                class="cmb"
+                class="cmb tod-preset"
                 type="button"
-                style="padding: 3px 8px; font-size: 10px"
                 data-action="set-time-of-day"
                 data-time-of-day="96"
               >

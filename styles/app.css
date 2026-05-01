@@ -109,6 +109,20 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
 .mini-chip:active{transform:scale(.97)}
 .mini-chip.secondary{background:var(--bg2);color:var(--muted)}
 .profile-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.45}
+.profile-modal-sheet{max-width:460px}
+.profile-modal-copy{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:16px}
+.rtc-icon-living-room{background:#ede5d8;color:#8b6e50}
+.rtc-icon-bedroom{background:#e2dde8;color:#7a6a90}
+.rtc-icon-kitchen{background:#d8e6d8;color:#5a7a5a}
+.rtc-icon-bathroom{background:#d8e4ec;color:#4e7a96}
+.rtc-icon-dining{background:#ede0d4;color:#9a6a48}
+.rtc-icon-office{background:#e0ddd8;color:#6a6058}
+.rtc-icon-nursery{background:#ece0dc;color:#a06060}
+.rtc-icon-studio{background:#e4e8e0;color:#68806a}
+.brief-swatch-warm-modern{background:linear-gradient(135deg,#c8b89a 0%,#e8d8c4 50%,#a0907a 100%)}
+.brief-swatch-quiet-luxury{background:linear-gradient(135deg,#d4c5b0 0%,#eae0d4 50%,#9e8e7c 100%)}
+.brief-swatch-compact-kitchen{background:linear-gradient(135deg,#bfc5c0 0%,#e2e6e2 50%,#8a9a8a 100%)}
+.brief-swatch-soft-bathroom{background:linear-gradient(135deg,#c8c0c8 0%,#eae4ea 50%,#9890a0 100%)}
 
 /* Project cards */
 .pc{background:var(--surface);border-radius:var(--rl);padding:18px;box-shadow:var(--sh);display:flex;align-items:center;gap:16px;margin-bottom:12px;transition:box-shadow var(--duration) var(--ease),transform var(--duration) var(--ease);cursor:pointer;border:1px solid var(--border)}
@@ -404,9 +418,9 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
   .tod-dock{top:calc(60px + env(safe-area-inset-top,0));right:10px;min-width:164px;max-width:172px;padding:8px 10px;gap:6px}
   .tod-value{min-width:46px;font-size:12px}
   .tod-row{gap:6px;font-size:10px}
-  .tod-row:last-child{gap:4px}
-  .tod-row:last-child .cmb{min-width:0;min-height:28px;padding:5px 3px}
-  .tod-row:last-child .cmb-label{font-size:9px}
+  .tod-presets{gap:4px}
+  .tod-preset{min-width:0;min-height:28px;padding:5px 3px}
+  .tod-preset .cmb-label{font-size:9px}
 }
 @media (max-width:760px) and (orientation:landscape){
   .props{top:62px;bottom:auto;right:10px;left:auto;width:min(330px,42vw);max-height:calc(100vh - 148px)}
@@ -618,10 +632,10 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
 .tod-row input[type=range]{flex:1;accent-color:#f0a868;height:4px}
 .tod-label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:rgba(248,245,239,.62)}
 .tod-value{font-family:var(--fd);font-size:13px;min-width:62px;text-align:right}
-.tod-row:last-child{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.tod-row:last-child .cmb{min-width:0;height:auto;min-height:30px;padding:6px 4px;justify-content:center}
-.tod-row:last-child .cmb svg{display:none}
-.tod-row:last-child .cmb-label{font-size:10px;text-align:center}
+.tod-presets{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;flex-wrap:wrap}
+.tod-preset{min-width:0;height:auto;min-height:30px;padding:3px 8px;font-size:10px;justify-content:center}
+.tod-preset svg{display:none}
+.tod-preset .cmb-label{font-size:10px;text-align:center}
 
 /* Phase ✨ — Undo timeline strip */
 .undo-strip{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(14px);display:none;gap:4px;padding:6px 10px;background:rgba(255,255,255,.96);border:1px solid var(--border);border-radius:var(--rxl);box-shadow:var(--shxl);z-index:70;opacity:0;transition:opacity .25s ease,transform .25s ease;pointer-events:auto}
