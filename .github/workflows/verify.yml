@@ -54,6 +54,9 @@ jobs:
       - name: Validate static accessibility
         run: npm run validate:static-a11y
 
+      - name: Validate dev-mode boundaries
+        run: npm run validate:dev-mode
+
       - name: Validate delegated UI handlers
         run: npm run validate:inline-handlers
 

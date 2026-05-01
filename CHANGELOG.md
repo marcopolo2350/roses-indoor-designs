@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.42 - 2026-04-30
+
+- added a dev-mode boundary validator to keep model audit, diagnostics, preflight, and asset verification surfaces hidden from normal UI
+- wired the dev-mode validator into local tests and CI
+
 ## 0.5.0-hardening.41 - 2026-04-30
 
 - stamped every catalog asset with explicit `mountType` metadata so placement rules no longer depend on runtime guessing
