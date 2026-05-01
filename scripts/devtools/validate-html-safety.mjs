@@ -15,9 +15,32 @@ const cloud = read("scripts/cloud/supabase.js");
 const walkthrough = read("scripts/walkthrough.js");
 const errorReporting = read("scripts/core/error-reporting.js");
 const htmlPath = path.join(root, "scripts/core/html.js");
+const htmlSafety = existsSync(htmlPath) ? read("scripts/core/html.js") : "";
 
 if (!existsSync(htmlPath)) {
   errors.push("scripts/core/html.js is missing.");
+}
+
+if (
+  !/function\s+setTrustedHTML/.test(htmlSafety) ||
+  !/function\s+sanitizeFragment/.test(htmlSafety)
+) {
+  errors.push("scripts/core/html.js must expose the sanitized trusted-template bridge.");
+}
+
+for (const [name, source] of [
+  ["storage.js", storage],
+  ["ui.js", ui],
+  ["catalog.js", catalog],
+  ["planner3d.js", planner3d],
+  ["ui/shortcuts.js", shortcuts],
+  ["cloud/supabase.js", cloud],
+  ["walkthrough.js", walkthrough],
+  ["core/error-reporting.js", errorReporting],
+]) {
+  if (/innerHTML\s*=|insertAdjacentHTML|outerHTML\s*=/.test(source)) {
+    errors.push(`${name} must not directly assign innerHTML/outerHTML or call insertAdjacentHTML.`);
+  }
 }
 
 const modulesBlock = main.match(/const\s+RUNTIME_MODULES\s*=\s*\[([\s\S]*?)\];/);

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.83 - 2026-05-01
+
+- added a sanitized `RoseHTML.setTrustedHTML()` bridge for legacy room-panel templates
+- routed room property panel rendering through the trusted-template bridge and blocked direct app-side HTML insertion outside `scripts/core/html.js`
+
 ## 0.5.0-hardening.82 - 2026-05-01
 
 - rebuilt the furniture catalog picker overlay with DOM nodes, `textContent`, and dataset-bound actions

@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-01
 
-Current app version: `0.5.0-hardening.82`
+Current app version: `0.5.0-hardening.83`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -46,6 +46,8 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - The fatal-load screen renders dynamic error text with `textContent` instead of `innerHTML`.
 - The fatal-load screen now uses CSS classes instead of inline style mutation, guarded by `npm run validate:html-safety`.
 - Shared HTML escaping now lives in `scripts/core/html.js`, and high-risk diagnostic/self-test rendering paths are guarded by `npm run validate:html-safety`.
+- Legacy room-panel templates now route through `RoseHTML.setTrustedHTML()`, a sanitized trusted-template bridge that strips event attributes, dangerous URLs, dangerous inline style values, and blocked tags before appending DOM nodes.
+- `npm run validate:html-safety` now blocks direct `innerHTML`, `outerHTML`, and `insertAdjacentHTML` rendering in app runtime files outside the core HTML safety boundary.
 - The project delete confirmation now renders with DOM nodes and `textContent`, and `npm run validate:html-safety` blocks it from regressing to string-built HTML.
 - The project delete confirmation supports Escape close and Tab focus containment, covered by Playwright and guarded by `npm run validate:html-safety`.
 - The keyboard shortcut sheet now renders with DOM nodes instead of `innerHTML`, guarded by `npm run validate:html-safety`.
@@ -107,13 +109,14 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Full ESM conversion: too risky to force without a bundler/build step and broad regression coverage.
 - Full central action dispatcher: needs careful migration from existing globals to avoid breaking editor flows.
 - CSS file split: useful, but less urgent than state, persistence, and test reliability.
-- Full `innerHTML` removal: important, but generated editor panels still need a focused rendering refactor.
+- Full DOM rendering for generated editor panels: important, but the remaining room-panel templates now pass through the sanitized trusted-template bridge instead of direct `innerHTML`.
 - Full dependency bundling: still deferred to preserve GitHub Pages compatibility while hardening behavior.
 
 ## Current Known Debt
 
 - `scripts/ui.js`, `scripts/catalog.js`, `scripts/planner2d.js`, and `scripts/planner3d.js` are still large browser-global files.
 - Some legacy globals and large files remain; the event-handler cleanup is now substantially cleaner, but the browser-global architecture is still transitional.
+- Some room property panel sections still originate as string templates before passing through `RoseHTML.setTrustedHTML()`; a full DOM section-by-section renderer remains the cleaner end state.
 - Some catches remain intentionally soft for rendering/math fallbacks, but empty catches are now blocked by validation.
 - Catalog metadata still has model aliases, now documented through validation overrides.
 - The app still relies on CDN-loaded Three.js, jsPDF, and pdf.js at runtime.
