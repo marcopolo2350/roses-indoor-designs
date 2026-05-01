@@ -237,6 +237,24 @@ if (!verificationCards) {
   }
 }
 
+const walkControlDock = planner3d.match(
+  /function\s+createWalkControlButton[\s\S]*?function\s+addWSeg/,
+);
+if (!walkControlDock) {
+  errors.push("createWalkControlDock()/updateWalkUI() was not found for HTML safety validation.");
+} else {
+  const body = walkControlDock[0];
+  if (/innerHTML\s*=|insertAdjacentHTML|style\s*=/.test(body)) {
+    errors.push("Mobile walk controls must render with DOM nodes and CSS classes.");
+  }
+  if (
+    !/button\.setAttribute\(["']aria-label["'],label\)/.test(body) ||
+    !/hint\.textContent\s*=/.test(body)
+  ) {
+    errors.push("Mobile walk controls must keep button labels and hint text accessible.");
+  }
+}
+
 const deleteConfirmKeys = ui.match(
   /function\s+handleDeleteConfirmKeydown[\s\S]*?function\s+showDeleteConfirm/,
 );

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.78 - 2026-05-01
+
+- rebuilt the mobile 3D walk-control dock with DOM nodes and CSS classes instead of injected inline HTML/styles
+- added accessible labels to walk-control hold buttons and guarded the dock renderer with HTML safety validation
+
 ## 0.5.0-hardening.77 - 2026-05-01
 
 - rebuilt the dev-only 3D asset verification cards and metadata rows with DOM nodes and `textContent`

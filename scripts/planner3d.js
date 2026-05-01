@@ -954,29 +954,59 @@ function build3D(){
 }
 
 // On-screen walk controls for mobile
+function createWalkControlIcon(points){
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 24 24');
+  svg.classList.add('walk-control-icon');
+  svg.setAttribute('aria-hidden','true');
+  const polyline=document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  polyline.setAttribute('points',points);
+  svg.appendChild(polyline);
+  return svg;
+}
+function createWalkControlButton(action,direction,label,points){
+  const button=document.createElement('button');
+  button.className='cmb walk-control-btn';
+  button.type='button';
+  button.dataset.holdAction=action;
+  button.dataset.direction=String(direction);
+  button.setAttribute('aria-label',label);
+  button.appendChild(createWalkControlIcon(points));
+  return button;
+}
+function createWalkControlDock(isWide){
+  const root=document.createElement('div');
+  root.id='walkCtrl';
+  root.className=`walk-control${isWide?' wide':''}`;
+  const grid=document.createElement('div');
+  grid.className='walk-control-grid';
+  grid.append(
+    createWalkControlButton('walk-turn',-1,'Turn left','15 18 9 12 15 6'),
+    createWalkControlButton('walk-move',1,'Move forward','18 15 12 9 6 15'),
+    createWalkControlButton('walk-turn',1,'Turn right','9 18 15 12 9 6'),
+    createWalkControlButton('walk-move',-1,'Move backward','18 9 12 15 6 9')
+  );
+  const actions=document.createElement('div');
+  actions.className='walk-control-actions';
+  const hint=document.createElement('div');
+  hint.className='walk-control-hint';
+  hint.textContent=isWide?'Landscape walkthrough mode':'Use the dock for movement and drag anywhere else to look around';
+  const toggle=document.createElement('button');
+  toggle.className='mini-chip';
+  toggle.type='button';
+  toggle.dataset.action='toggle-walk-control-layout';
+  toggle.textContent=isWide?'Standard Dock':'Sideways Dock';
+  actions.append(hint,toggle);
+  root.append(grid,actions);
+  return root;
+}
 function updateWalkUI(){
   let wc2=document.getElementById('walkCtrl');
   if(camMode==='walk'&&is3D){
     const isWide=walkControlLayout==='wide'||window.innerWidth>window.innerHeight;
-    const className=isWide?'wide':'';
-    const markup=`<div id="walkCtrl" class="${className}" style="position:absolute;left:12px;right:12px;bottom:${isWide?12:18}px;z-index:65;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;pointer-events:none">
-        <div style="display:grid;grid-template-columns:repeat(2,52px);gap:8px;pointer-events:auto">
-          <button class="cmb" style="width:52px;height:52px" data-hold-action="walk-turn" data-direction="-1"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="15 18 9 12 15 6"/></svg></button>
-          <button class="cmb" style="width:52px;height:52px" data-hold-action="walk-move" data-direction="1"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="18 15 12 9 6 15"/></svg></button>
-          <button class="cmb" style="width:52px;height:52px" data-hold-action="walk-turn" data-direction="1"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="9 18 15 12 9 6"/></svg></button>
-          <button class="cmb" style="width:52px;height:52px" data-hold-action="walk-move" data-direction="-1"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2"><polyline points="18 9 12 15 6 9"/></svg></button>
-        </div>
-        <div style="pointer-events:auto;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
-          <div style="padding:10px 12px;border-radius:16px;background:rgba(250,247,242,.92);box-shadow:var(--shl);font-size:10px;font-weight:700;color:var(--rose-d);max-width:${isWide?'220px':'180px'};text-align:right">${isWide?'Landscape walkthrough mode':'Use the dock for movement and drag anywhere else to look around'}</div>
-          <button class="mini-chip" type="button" style="pointer-events:auto" data-action="toggle-walk-control-layout">${isWide?'Standard Dock':'Sideways Dock'}</button>
-        </div>
-      </div>`;
-    if(!wc2)document.getElementById('cWrap').insertAdjacentHTML('beforeend',markup);
-    else{
-      const wrap=document.createElement('div');
-      wrap.innerHTML=markup;
-      wc2.replaceWith(wrap.firstElementChild);
-    }
+    const next=createWalkControlDock(isWide);
+    if(wc2)wc2.replaceWith(next);
+    else document.getElementById('cWrap').appendChild(next);
   }else{if(wc2)wc2.remove();stopWalkMove();stopWalkTurn()}}
 
 function addWSeg(ws,an,s,e,botY,topY,mat){

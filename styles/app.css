@@ -227,6 +227,14 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
 /* Walk hint */
 .walk-hint{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:var(--r);background:rgba(255,255,255,.95);box-shadow:var(--shl);z-index:60;font-size:11px;color:var(--muted);text-align:center;pointer-events:none;opacity:0;transition:var(--duration-slow) var(--ease)}
 .walk-hint.on{opacity:1}
+.walk-control{position:absolute;left:12px;right:12px;bottom:18px;z-index:65;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;pointer-events:none}
+.walk-control.wide{bottom:12px}
+.walk-control-grid{display:grid;grid-template-columns:repeat(2,52px);gap:8px;pointer-events:auto}
+.walk-control-btn{width:52px;height:52px}
+.walk-control-icon{width:18px;height:18px;stroke:var(--esp);fill:none;stroke-width:2}
+.walk-control-actions{pointer-events:auto;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.walk-control-hint{padding:10px 12px;border-radius:16px;background:rgba(250,247,242,.92);box-shadow:var(--shl);font-size:10px;font-weight:700;color:var(--rose-d);max-width:180px;text-align:right}
+.walk-control.wide .walk-control-hint{max-width:220px}
 .runtime-actions{position:absolute;top:8px;left:8px;z-index:68;display:none;gap:6px;flex-wrap:wrap;max-width:min(82vw,420px)}
 .runtime-actions.on{display:flex}
 .runtime-btn{padding:8px 14px;border-radius:var(--r);background:rgba(255,255,255,.96);box-shadow:var(--shl);font-size:10px;font-weight:700;color:var(--accent-d)}
