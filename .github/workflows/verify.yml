@@ -44,6 +44,9 @@ jobs:
       - name: Check formatting
         run: npm run format
 
+      - name: Validate app version
+        run: npm run validate:version
+
       - name: Validate asset manifest
         run: npm run validate:manifest
 

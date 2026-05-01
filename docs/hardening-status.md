@@ -13,6 +13,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - App identity is centralized in `scripts/core/app-config.js`.
 - Runtime boot has an explicit documented bridge in `scripts/main.js`.
 - The transitional runtime bridge is validated by `npm run validate:runtime-modules` so missing or duplicate classic modules fail before browser boot.
+- Package, app shell, runtime config, changelog, and hardening-status versions are guarded by `npm run validate:version`.
 - Remaining CDN dependencies are documented in `docs/dependencies.md` and guarded by `npm run validate:dependencies`.
 - Package scripts exist for dev, syntax checks, lint, format, manifest validation, self-test, smoke, Playwright specs, thumbnails, and cleanup.
 - `npm test` now includes syntax, lint, format, validators, and the built-in self-test so local verification mirrors CI discipline more closely.

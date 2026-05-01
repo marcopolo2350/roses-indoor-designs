@@ -76,6 +76,7 @@ npm run dev:alt
 npm run check
 npm run lint
 npm run format
+npm run validate:version
 npm run validate:manifest
 npm run validate:asset-sizes
 npm run validate:asset-sources
@@ -111,6 +112,7 @@ What they do:
 - `check` - runs `node --check` across the main runtime files
 - `lint` - lints the new hardening boundary files
 - `format` - checks formatting for docs and the new hardening files
+- `validate:version` - checks package, app shell, runtime config, changelog, and hardening status versions stay aligned
 - `validate:manifest` - verifies asset manifest entries, models, and thumbnails
 - `validate:asset-sizes` - verifies GLB files stay below the per-model size ceiling
 - `validate:asset-sources` - verifies every catalog entry points to a documented source registry entry

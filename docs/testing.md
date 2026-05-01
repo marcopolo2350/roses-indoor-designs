@@ -6,6 +6,7 @@
 npm run check
 npm run lint
 npm run format
+npm run validate:version
 npm run validate:manifest
 npm run validate:asset-sizes
 npm run validate:asset-sources
@@ -35,6 +36,7 @@ npm test
 ## What each command does
 
 - `check` - syntax checks the main runtime files
+- `validate:version` - checks package, app shell, runtime config, changelog, and hardening status versions stay aligned
 - `validate:manifest` - verifies asset manifest entries, model files, and thumbnails
 - `validate:asset-sizes` - verifies GLB files stay below the per-model size ceiling
 - `validate:asset-sources` - verifies every catalog entry maps to `data/asset-sources.json`

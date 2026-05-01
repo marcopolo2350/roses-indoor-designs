@@ -2,6 +2,7 @@
 
 ## 0.5.0-hardening.55 - 2026-05-01
 
+- aligned the app shell and runtime config version with package/docs after drift was found
 - added Escape-to-close and Tab focus containment for the project delete confirmation dialog
 - expanded Playwright smoke coverage for delete-dialog focus behavior and Escape close
 - extended `npm run validate:html-safety` to guard delete-dialog keyboard handling

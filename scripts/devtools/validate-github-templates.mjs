@@ -15,6 +15,7 @@ const requiredPrCommands = [
   "npm run check",
   "npm run lint",
   "npm run format",
+  "npm run validate:version",
   "npm run validate:manifest",
   "npm run validate:asset-sizes",
   "npm run validate:asset-sources",
