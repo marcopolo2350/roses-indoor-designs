@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.18 - 2026-04-30
+
+- moved selected-furniture property controls to delegated `data-action` handlers
+- extended desktop/mobile Playwright smoke coverage to seed a deterministic selected furniture item, edit its label, rotate it, lock it, and cycle redesign source/action controls
+
 ## 0.5.0-hardening.17 - 2026-04-30
 
 - moved no-selection Furnish helper controls to delegated `data-action` handlers

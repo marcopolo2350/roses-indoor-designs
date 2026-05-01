@@ -134,6 +134,16 @@ function handleUiAction(action,target,event){
   if(action==='toggle-multi-select')return toggleMultiSelectMode();
   if(action==='toggle-unit-system')return toggleUnitSystem();
   if(action==='paste-furniture')return pasteFurniture();
+  if(action==='copy-selected-furniture')return copySelectedFurniture();
+  if(action==='duplicate-selected-furniture')return duplicateSelectedFurniture();
+  if(action==='rotate-selected-furniture')return rotateSelectedFurniture(Number(target?.dataset?.delta||0));
+  if(action==='turn-around-selected-furniture')return turnAroundSelectedFurniture();
+  if(action==='toggle-selected-furniture-lock')return toggleSelectedFurnitureLock();
+  if(action==='set-selected-redesign-action')return setSelectedRedesignAction(target?.dataset?.redesignAction||'keep');
+  if(action==='pair-selected-replacement')return pairSelectedReplacement();
+  if(action==='clear-selected-replacement-pair')return clearSelectedReplacementPair();
+  if(action==='set-furniture-finish')return setFurnitureFinish(target?.dataset?.color||'');
+  if(action==='delete-selected-furniture')return dF();
   if(action==='export-comparison-sheet')return exportComparisonSheet();
   if(action==='toggle-room-layer')return toggleRoomLayer(target?.dataset?.layer||'furniture');
   if(action==='create-room-option-from-current')return createRoomOptionFromCurrent();
@@ -176,6 +186,7 @@ function bindStaticUiActions(){
     if(target?.dataset?.action==='set-reference-center-axis')setReferenceCenterAxis(target.dataset.axis,target.value);
     if(target?.dataset?.action==='rename-current-option')renameCurrentOption(target.value);
     if(target?.dataset?.action==='set-current-option-notes')setCurrentOptionNotes(target.value);
+    if(target?.dataset?.action==='update-selected-furniture')uF(target.dataset.field,target.value);
   });
   document.addEventListener('input',event=>{
     const target=event.target;

@@ -143,6 +143,51 @@ test("canonical shell boots and delegated actions work", async ({ page }, testIn
     .click();
   await page.locator('[data-action="catalog-close"]').click();
   await expect(page.locator("#furnPickOv")).toHaveCount(0);
+  await page.evaluate(() => {
+    const item = FURN_ITEMS.find((candidate) => /sofa/i.test(candidate.label)) || FURN_ITEMS[0];
+    const registry = MODEL_REGISTRY[item.assetKey] || {};
+    const mountType = resolveFurnitureMountType(item, item, registry);
+    curRoom.furniture.push(
+      normalizeFurnitureRecord({
+        id: uid(),
+        label: item.label,
+        category: item.category,
+        x: 4,
+        z: 4,
+        w: item.w,
+        d: item.d,
+        rotation: 0,
+        mountType,
+        elevation: Number.isFinite(item.elevation)
+          ? item.elevation
+          : defaultElevation(mountType, item.assetKey, resolveLabel(item.label)),
+        assetKey: item.assetKey,
+        yOffset: registry.yOffset || 0,
+        visible: true,
+      }),
+    );
+    panelHidden = false;
+    setFurnitureSelection(curRoom.furniture.length - 1);
+    showP();
+  });
+  await expect(page.locator("#propsP")).toContainText(/Sofa/i);
+  const furniturePanelInlineHandlers = await page
+    .locator("#propsP [onclick], #propsP [oninput], #propsP [onchange]")
+    .count();
+  expect(furniturePanelInlineHandlers).toBe(0);
+  await page
+    .locator('[data-action="update-selected-furniture"][data-field="label"]')
+    .fill("Smoke Sofa");
+  await page
+    .locator('[data-action="update-selected-furniture"][data-field="label"]')
+    .dispatchEvent("change");
+  await page.locator('[data-action="rotate-selected-furniture"][data-delta="15"]').click();
+  await page.locator('[data-action="toggle-selected-furniture-lock"]').click();
+  await page
+    .locator('[data-action="set-selected-furniture-source"][data-source="existing"]')
+    .click();
+  await page.locator('[data-action="set-selected-redesign-action"]').first().click();
+  await page.locator('[data-action="set-selected-furniture-source"][data-source="new"]').click();
 
   expect(runtimeErrors).toEqual([]);
 });
