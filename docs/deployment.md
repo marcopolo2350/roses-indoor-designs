@@ -6,6 +6,7 @@ The app remains GitHub Pages compatible.
 
 - canonical entrypoint: `index.html`
 - no redirect-only HTML entrypoints are kept in the repo
+- published URL: `https://marcopolo2350.github.io/roses-indoor-designs/`
 
 ## Local preview
 

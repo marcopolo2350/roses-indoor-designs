@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.47 - 2026-05-01
+
+- added `npm run validate:docs` to keep README, testing docs, deployment notes, hardening status, and PR verification commands aligned with the actual package scripts
+- wired documentation validation into `npm test` and the GitHub Actions Verify workflow
+
 ## 0.5.0-hardening.46 - 2026-05-01
 
 - rewired 24 Kenney manifest entries from ignored local source-pack paths into tracked `assets/models/kn_*.glb` files so Linux CI and GitHub Pages see the same assets as local Windows
