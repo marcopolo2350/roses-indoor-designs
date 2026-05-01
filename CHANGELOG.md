@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0-hardening.25 - 2026-04-30
+
+- changed the fatal-load screen to build DOM nodes with `textContent` instead of rendering boot error text through `innerHTML`
+
 ## 0.5.0-hardening.24 - 2026-04-30
 
 - added recoverable dev-mode error reporting and replaced the remaining empty catch blocks in app scripts

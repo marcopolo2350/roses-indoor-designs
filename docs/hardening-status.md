@@ -30,6 +30,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Generated 3D reveal, walkthrough, photo, and mobile walk-control trays use delegated `data-action` or hold handlers.
 - Runtime diagnostics, cloud sync modal buttons, canvas pointer events, and reference file input use delegated actions or `addEventListener` instead of handler properties.
 - Empty catch blocks have been replaced with explicit recoverable error reporting and are guarded by `npm run validate:error-handling`.
+- The fatal-load screen renders dynamic error text with `textContent` instead of `innerHTML`.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
 - Standard Playwright config and a shell smoke spec exist for desktop and mobile Chromium viewports.
 - README, changelog, roadmap, architecture, data model, testing, deployment, and limitations docs exist.
