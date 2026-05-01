@@ -11,6 +11,7 @@ const ui = read("scripts/ui.js");
 const shortcuts = read("scripts/ui/shortcuts.js");
 const cloud = read("scripts/cloud/supabase.js");
 const walkthrough = read("scripts/walkthrough.js");
+const errorReporting = read("scripts/core/error-reporting.js");
 const htmlPath = path.join(root, "scripts/core/html.js");
 
 if (!existsSync(htmlPath)) {
@@ -96,6 +97,10 @@ if (!deleteConfirmKeys) {
 
 if (!read("scripts/core/error-reporting.js").includes("RoseHTML.clear")) {
   errors.push("Fatal-load screen should clear the document through RoseHTML.clear().");
+}
+
+if (/style\.cssText|\.style\./.test(errorReporting)) {
+  errors.push("Fatal-load screen must use CSS classes instead of inline style mutation.");
 }
 
 if (errors.length) {

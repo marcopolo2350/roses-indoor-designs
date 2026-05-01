@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.67 - 2026-05-01
+
+- moved fatal-load screen styling from JavaScript `style.cssText` mutations into CSS classes
+- extended HTML safety validation to block fatal-load inline style regressions
+
 ## 0.5.0-hardening.66 - 2026-05-01
 
 - rebuilt the experimental cloud sync settings dialog with DOM nodes and CSS classes instead of inline HTML/styles

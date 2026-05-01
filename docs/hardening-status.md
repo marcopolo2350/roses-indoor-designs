@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-01
 
-Current app version: `0.5.0-hardening.66`
+Current app version: `0.5.0-hardening.67`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -44,6 +44,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Runtime diagnostics, cloud sync modal buttons, canvas pointer events, and reference file input use delegated actions or `addEventListener` instead of handler properties.
 - Empty catch blocks have been replaced with explicit recoverable error reporting and are guarded by `npm run validate:error-handling`.
 - The fatal-load screen renders dynamic error text with `textContent` instead of `innerHTML`.
+- The fatal-load screen now uses CSS classes instead of inline style mutation, guarded by `npm run validate:html-safety`.
 - Shared HTML escaping now lives in `scripts/core/html.js`, and high-risk diagnostic/self-test rendering paths are guarded by `npm run validate:html-safety`.
 - The project delete confirmation now renders with DOM nodes and `textContent`, and `npm run validate:html-safety` blocks it from regressing to string-built HTML.
 - The project delete confirmation supports Escape close and Tab focus containment, covered by Playwright and guarded by `npm run validate:html-safety`.

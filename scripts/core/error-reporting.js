@@ -25,36 +25,23 @@
     const title = window.APP_CONFIG?.appName || "Application";
     const root = document.createElement("div");
     root.setAttribute("role", "alert");
-    root.style.cssText = [
-      "position:fixed",
-      "inset:0",
-      "z-index:99999",
-      "display:flex",
-      "align-items:center",
-      "justify-content:center",
-      "padding:24px",
-      "background:#f7f2eb",
-      "color:#332922",
-      "font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-    ].join(";");
+    root.className = "fatal-load";
     const card = document.createElement("div");
-    card.style.cssText =
-      "max-width:540px;background:#fffdf9;border:1px solid #e6d8cc;border-radius:16px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.16)";
+    card.className = "fatal-load-card";
     const heading = document.createElement("h1");
-    heading.style.cssText = "margin:0 0 8px;font-size:24px;font-family:Georgia,serif";
+    heading.className = "fatal-load-title";
     heading.textContent = title;
     const lead = document.createElement("p");
-    lead.style.cssText = "margin:0 0 10px;font-size:15px;font-weight:700";
+    lead.className = "fatal-load-lead";
     lead.textContent = message;
     const body = document.createElement("p");
-    body.style.cssText = "margin:0 0 12px;font-size:13px;line-height:1.5;color:#6d5b4d";
+    body.className = "fatal-load-copy";
     body.textContent =
       "The app did not finish loading. Refresh once. If it still fails, use dev mode and copy the console error for diagnosis.";
     card.append(heading, lead, body);
     if (detail) {
       const pre = document.createElement("pre");
-      pre.style.cssText =
-        "margin:0;padding:12px;border-radius:10px;background:#f5eee6;color:#5a4a3e;font-size:12px;overflow:auto;white-space:pre-wrap";
+      pre.className = "fatal-load-detail";
       pre.textContent = detail;
       card.appendChild(pre);
     }
