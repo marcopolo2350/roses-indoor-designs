@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.51 - 2026-05-01
+
+- extracted catalog manifest loading and normalization into `scripts/catalog/manifest.js` so the catalog source boundary is real code, not just a checklist folder
+- added `npm run validate:structure` to guard required source boundary directories, boundary files, and runtime module ordering
+
 ## 0.5.0-hardening.50 - 2026-05-01
 
 - added `scripts/core/html.js` as the shared HTML escaping/clearing boundary for legacy browser-global rendering paths

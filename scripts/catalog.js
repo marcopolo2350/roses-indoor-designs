@@ -351,18 +351,12 @@ function buildCatalogOptionCard(item,index,compact=false){
 function catalogItemsForKeys(keys){return keys.map(key=>FURN_ITEM_BY_KEY.get(key)).filter(Boolean)}
 async function loadAssetManifest(){
   try{
-    const res=await fetch('./data/asset-manifest.json',{cache:'no-store'});
-    if(!res.ok)return;
-    const json=await res.json();
-    if(!Array.isArray(json))return;
-    assetManifest=json.map(entry=>({
-      ...entry,
-      category:normalizeCatalogGroup(entry.category),
-      tags:normalizeArrayValue(entry.tags),
-      collections:normalizeArrayValue(entry.collections),
-      recommendedRoomTypes:normalizeArrayValue(entry.recommendedRoomTypes),
-      variants:normalizeVariantsValue(entry.variants),
-    }));
+    assetManifest=await window.RoseCatalogManifest.fetchManifest({
+      normalizeCatalogGroup,
+      normalizeArrayValue,
+      normalizeVariantsValue,
+    });
+    if(!assetManifest.length)return;
     window.assetManifest=assetManifest;
     assetMetaByKey=new Map(assetManifest.map(entry=>[entry.id,entry]));
     assetManifest.forEach(entry=>{

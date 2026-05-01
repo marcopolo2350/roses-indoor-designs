@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-01
 
-Current app version: `0.5.0-hardening.50`
+Current app version: `0.5.0-hardening.51`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -46,6 +46,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Project JSON import validation now rejects dangerous prototype-pollution keys and oversized JSON files before merging rooms into local state.
 - Experimental cloud sync validates room payloads before push/pull and reports config storage failures instead of silently swallowing them.
 - Pure 2D geometry helpers are isolated in `scripts/planner2d/geometry.js` and covered by `npm run validate:geometry`.
+- Catalog manifest loading and normalization is isolated in `scripts/catalog/manifest.js`, and required source boundary directories are guarded by `npm run validate:structure`.
 - 3D material, scene, renderer, listener, and composer disposal helpers are isolated in `scripts/planner3d/lifecycle.js` and covered by `npm run validate:3d-lifecycle`.
 - Export filenames are sanitized through `scripts/export/filenames.js` and covered by `npm run validate:export-filenames`.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
@@ -101,6 +102,7 @@ npm run validate:static-a11y
 npm run validate:dev-mode
 npm run validate:github-templates
 npm run validate:docs
+npm run validate:structure
 npm run validate:html-safety
 npm run validate:storage-keys
 npm run validate:error-handling
