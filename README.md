@@ -73,6 +73,7 @@ npm run validate:inline-handlers
 npm run validate:error-handling
 npm run validate:runtime-modules
 npm run validate:dependencies
+npm run validate:project-schema
 npm run test:playwright
 npm run test:self
 npm run test:smoke
@@ -93,6 +94,7 @@ What they do:
 - `validate:error-handling` - blocks empty catch blocks
 - `validate:runtime-modules` - verifies the transitional runtime module bridge
 - `validate:dependencies` - verifies pinned CDN dependency versions
+- `validate:project-schema` - checks project JSON import/export schema validation
 - `test:playwright` - runs the standard Playwright spec suite
 - `test:self` - runs the built-in `#selftest` flow through Playwright
 - `test:smoke` - starts a temporary local server and runs the Playwright smoke helper against the app

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.31 - 2026-04-30
+
+- tightened project JSON import validation for room text, polygon points, arrays, and furniture geometry
+- added a reproducible project-schema validation command and CI gate
+
 ## 0.5.0-hardening.30 - 2026-04-30
 
 - expanded `npm run clean` to remove ignored smoke, self-test, and debug artifacts with repository-root safety checks
