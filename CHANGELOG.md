@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0-hardening.30 - 2026-04-30
+
+- expanded `npm run clean` to remove ignored smoke, self-test, and debug artifacts with repository-root safety checks
+
 ## 0.5.0-hardening.29 - 2026-04-30
 
 - removed the redirect-only `roses-indoor-designs.html` legacy entrypoint and made runtime validation block redirect shell drift

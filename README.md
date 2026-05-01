@@ -98,7 +98,7 @@ What they do:
 - `test:smoke` - starts a temporary local server and runs the Playwright smoke helper against the app
 - `test` - runs the hardening validation chain
 - `thumbs` - regenerates catalog thumbnails
-- `clean` - clears smoke-test and temporary output folders
+- `clean` - clears ignored smoke-test, self-test, and temporary debug output artifacts
 
 ## Entrypoints
 
