@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.58 - 2026-05-01
+
+- extracted Project JSON import/export behavior into `scripts/export/project-json.js`
+- wired the new export boundary into the runtime bridge, syntax checks, source-structure validation, and export validation
+- kept the existing UI hooks while removing Project JSON functions from the monolithic `scripts/export.js`
+
 ## 0.5.0-hardening.57 - 2026-05-01
 
 - removed the unused `dxf-writer` runtime dependency and lockfile entry after CAD/DXF export removal

@@ -4,9 +4,11 @@ globalThis.window = globalThis;
 
 await import("../export/filenames.js");
 await import("../export/downloads.js");
+await import("../export/project-json.js");
 
 const names = window.ExportFilenames;
 const downloads = window.ExportDownloads;
+const projectJson = window.RoseProjectJsonExports;
 
 if (names.sanitizeBaseName(' Bad <Room>: "One" ') !== "Bad_Room_One") {
   throw new Error("sanitizeBaseName did not remove unsafe filename characters");
@@ -28,7 +30,30 @@ if (downloads.safeDownloadName(' Bad <Room>: "One".svg ') !== "Bad_Room_One.svg"
   throw new Error("safeDownloadName did not sanitize unsafe download names");
 }
 
-for (const file of ["scripts/export.js", "scripts/planner3d.js"]) {
+if (
+  typeof projectJson.exportProjectJSON !== "function" ||
+  typeof projectJson.importProjectJSON !== "function" ||
+  typeof projectJson.handleProjectJSONSelected !== "function"
+) {
+  throw new Error("Project JSON export/import functions were not registered.");
+}
+
+const legacyExportSource = readFileSync("scripts/export.js", "utf8");
+if (
+  /function\s+(?:exportProjectJSON|importProjectJSON|handleProjectJSONSelected)\b/.test(
+    legacyExportSource,
+  )
+) {
+  throw new Error(
+    "Project JSON import/export functions must live in scripts/export/project-json.js.",
+  );
+}
+
+for (const file of [
+  "scripts/export.js",
+  "scripts/export/project-json.js",
+  "scripts/planner3d.js",
+]) {
   const source = readFileSync(file, "utf8");
   if (/document\.createElement\(["']a["']\)/.test(source)) {
     throw new Error(

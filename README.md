@@ -158,6 +158,7 @@ What they do:
 - [scripts/planner2d/geometry.js](./scripts/planner2d/geometry.js) - pure 2D geometry helpers shared by planner logic
 - [scripts/planner3d/lifecycle.js](./scripts/planner3d/lifecycle.js) - 3D disposal and cleanup helpers
 - [scripts/export/filenames.js](./scripts/export/filenames.js) - shared export filename sanitizing
+- [scripts/export/project-json.js](./scripts/export/project-json.js) - project JSON import/export boundary
 - [scripts/state.js](./scripts/state.js) - shared state helpers, geometry, snapping, walk logic
 - [scripts/storage.js](./scripts/storage.js) - persistence, IndexedDB, normalization
 - [scripts/ui.js](./scripts/ui.js) - home/editor shell behavior

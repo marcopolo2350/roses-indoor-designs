@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-01
 
-Current app version: `0.5.0-hardening.57`
+Current app version: `0.5.0-hardening.58`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -55,6 +55,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - 3D material, scene, renderer, listener, and composer disposal helpers are isolated in `scripts/planner3d/lifecycle.js` and covered by `npm run validate:3d-lifecycle`.
 - Export filenames are sanitized through `scripts/export/filenames.js` and covered by `npm run validate:export-filenames`.
 - Export downloads are centralized in `scripts/export/downloads.js`, loaded before export/3D runtime code, and covered by source/export validation.
+- Project JSON import/export is isolated in `scripts/export/project-json.js` and guarded by source/export validation.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
 - Every catalog entry now declares a valid `mountType`, and manifest validation blocks new entries that omit placement metadata.
 - Kenney catalog entries now point to tracked `assets/models/kn_*.glb` files instead of ignored local source-pack paths, so CI and GitHub Pages validate the same assets as the local app.
