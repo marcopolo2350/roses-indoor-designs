@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.36 - 2026-04-30
+
+- extracted export filename sanitizing into `scripts/export/filenames.js` and wired PNG/SVG/PDF/JSON downloads through the shared helper
+- added an export filename validation command and CI gate
+
 ## 0.5.0-hardening.35 - 2026-04-30
 
 - extracted 3D disposal helpers into `scripts/planner3d/lifecycle.js` and added validation for material, scene, renderer, listener, and composer cleanup

@@ -77,6 +77,7 @@ npm run validate:project-schema
 npm run validate:app-state
 npm run validate:geometry
 npm run validate:3d-lifecycle
+npm run validate:export-filenames
 npm run test:playwright
 npm run test:self
 npm run test:smoke
@@ -101,6 +102,7 @@ What they do:
 - `validate:app-state` - checks the central app state dispatcher bridge
 - `validate:geometry` - checks pure 2D geometry helpers
 - `validate:3d-lifecycle` - checks 3D disposal/lifecycle helpers
+- `validate:export-filenames` - checks shared export filename sanitizing
 - `test:playwright` - runs the standard Playwright spec suite
 - `test:self` - runs the built-in `#selftest` flow through Playwright
 - `test:smoke` - starts a temporary local server and runs the Playwright smoke helper against the app
@@ -126,6 +128,7 @@ What they do:
 - [scripts/core/history.js](./scripts/core/history.js) - shared undo/redo and room-history runtime
 - [scripts/planner2d/geometry.js](./scripts/planner2d/geometry.js) - pure 2D geometry helpers shared by planner logic
 - [scripts/planner3d/lifecycle.js](./scripts/planner3d/lifecycle.js) - 3D disposal and cleanup helpers
+- [scripts/export/filenames.js](./scripts/export/filenames.js) - shared export filename sanitizing
 - [scripts/state.js](./scripts/state.js) - shared state helpers, geometry, snapping, walk logic
 - [scripts/storage.js](./scripts/storage.js) - persistence, IndexedDB, normalization
 - [scripts/ui.js](./scripts/ui.js) - home/editor shell behavior

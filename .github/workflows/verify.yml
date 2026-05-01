@@ -69,6 +69,9 @@ jobs:
       - name: Validate 3D lifecycle
         run: npm run validate:3d-lifecycle
 
+      - name: Validate export filenames
+        run: npm run validate:export-filenames
+
       - name: Run built-in self-test
         run: npm run test:self
 

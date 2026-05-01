@@ -7,7 +7,7 @@ function exportPNG(){
   }
   else if(canvas){dataUrl=canvas.toDataURL('image/png')}
   else{toast('Nothing to export');return}
-  const a=document.createElement('a');a.href=dataUrl;a.download=`${(curRoom.name||'room').replace(/[^a-z0-9]/gi,'_')}_${is3D?(photoMode?'photo':'3d'):'plan'}.png`;
+  const a=document.createElement('a');a.href=dataUrl;a.download=window.ExportFilenames.fileName(curRoom,is3D?(photoMode?'photo':'3d'):'plan','png');
   document.body.appendChild(a);a.click();document.body.removeChild(a);toast('PNG exported')
 }
 function renderPlanModeToDataURL(mode,width=1100,height=800){
@@ -81,7 +81,7 @@ function exportComparisonSheet(){
     drawCard(afterImg,'Redesign Direction',1260);
     const a=document.createElement('a');
     a.href=out.toDataURL('image/png');
-    a.download=`${(curRoom.name||'room').replace(/[^a-z0-9]/gi,'_')}_comparison_sheet.png`;
+    a.download=window.ExportFilenames.fileName(curRoom,'comparison_sheet','png');
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -156,7 +156,7 @@ function exportDesignSummary(){
     });
     const a=document.createElement('a');
     a.href=out.toDataURL('image/png');
-    a.download=`${(curRoom.name||'room').replace(/[^a-z0-9]/gi,'_')}_design_summary.png`;
+    a.download=window.ExportFilenames.fileName(curRoom,'design_summary','png');
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -164,14 +164,14 @@ function exportDesignSummary(){
   });
 }
 function exportBaseName(room=curRoom,suffix='plan'){
-  return `${(room?.name||'room').replace(/[^a-z0-9]/gi,'_')}_${suffix}`;
+  return window.ExportFilenames.roomBaseName(room,suffix);
 }
 function downloadTextFile(filename,text,type='text/plain;charset=utf-8'){
   const blob=new Blob([text],{type});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;
-  a.download=filename;
+  a.download=window.ExportFilenames.sanitizeBaseName(String(filename||'export').replace(/\.[^.]+$/,''),'export')+(String(filename||'').match(/\.[^.]+$/)?.[0]||'');
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -384,7 +384,7 @@ async function exportPresentationPDF(){
   const border='#E6D8CC';
   const options=optionSiblings(curRoom).sort((a,b)=>(a.optionName||'').localeCompare(b.optionName||''));
   const roomName=curRoom.name||'Room';
-  const fileBase=(roomName||'room').replace(/[^a-z0-9]/gi,'_');
+  const fileBase=window.ExportFilenames.sanitizeBaseName(roomName||'room');
   const created=new Date().toLocaleDateString();
   const pageFooter=(n,label="Rose's Indoor Designs Presentation")=>{
     doc.setDrawColor(border);
