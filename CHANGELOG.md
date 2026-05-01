@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.17 - 2026-04-30
+
+- moved no-selection Furnish helper controls to delegated `data-action` handlers
+- extended desktop/mobile smoke coverage for snap, multi-select, and unit toggles while restoring their original state
+
 ## 0.5.0-hardening.16 - 2026-04-30
 
 - moved Tracing Reference, Redesign Planning, Plan Layers, Design Options, and Presentation room-panel controls to delegated `data-action` handlers

@@ -99,6 +99,12 @@ test("canonical shell boots and delegated actions work", async ({ page }, testIn
   await page.locator('[data-action="toggle-room-layer"]').first().click();
   await page.locator('[data-action="toggle-room-layer"]').first().click();
   await page.locator('[data-action="room-panel-group"][data-group="furnish"]').click();
+  await page.locator('[data-action="toggle-furniture-snap"]').click();
+  await page.locator('[data-action="toggle-furniture-snap"]').click();
+  await page.locator('[data-action="toggle-multi-select"]').click();
+  await page.locator('[data-action="toggle-multi-select"]').click();
+  await page.locator('[data-action="toggle-unit-system"]').click();
+  await page.locator('[data-action="toggle-unit-system"]').click();
   await page.locator('[data-action="toggle-existing-room-mode"]').click();
   await page.locator('[data-action="toggle-ghost-existing"]').click();
   await page.locator('[data-action="toggle-hide-removed-existing"]').click();

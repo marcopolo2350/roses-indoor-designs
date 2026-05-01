@@ -130,6 +130,10 @@ function handleUiAction(action,target,event){
   if(action==='set-plan-view-mode')return setPlanViewMode(target?.dataset?.mode||'combined');
   if(action==='set-selected-furniture-source')return setSelectedFurnitureSource(target?.dataset?.source||'new');
   if(action==='duplicate-for-redesign')return duplicateForRedesign();
+  if(action==='toggle-furniture-snap')return toggleFurnitureSnap();
+  if(action==='toggle-multi-select')return toggleMultiSelectMode();
+  if(action==='toggle-unit-system')return toggleUnitSystem();
+  if(action==='paste-furniture')return pasteFurniture();
   if(action==='export-comparison-sheet')return exportComparisonSheet();
   if(action==='toggle-room-layer')return toggleRoomLayer(target?.dataset?.layer||'furniture');
   if(action==='create-room-option-from-current')return createRoomOptionFromCurrent();
