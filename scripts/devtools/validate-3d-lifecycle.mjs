@@ -1,6 +1,18 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 globalThis.window = globalThis;
 
 await import("../planner3d/lifecycle.js");
+
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const planner3d = readFileSync(path.join(currentDir, "../planner3d.js"), "utf8");
+if (/innerHTML\s*=\s*(["'])\1/.test(planner3d)) {
+  throw new Error(
+    "planner3d.js must clear 3D containers through RoseHTML.clear(), not innerHTML=''",
+  );
+}
 
 const lifecycle = window.Planner3DLifecycle;
 let textureDisposed = false;

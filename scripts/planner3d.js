@@ -854,7 +854,7 @@ function build3D(){
     ren.physicallyCorrectLights=true;
     ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=lightState.exposure;
     ren.outputEncoding=THREE.sRGBEncoding;
-    cont.innerHTML='';cont.appendChild(ren.domElement);
+    window.RoseHTML.clear(cont);cont.appendChild(ren.domElement);
     ren.shadowMap.enabled=true;
     // Phase ✨ — VSM gives genuinely soft contact-hardening shadows instead of PCFSoft's uniform edges.
     // Fall back to PCFSoft if VSM isn't available in the build. Needs per-light shadow.blurSamples + radius set below.
@@ -1767,7 +1767,7 @@ async function refreshAssetVerification(){
   const cont=document.getElementById('verifyCanvas');const w=cont.clientWidth||cont.offsetWidth,h=cont.clientHeight||cont.offsetHeight;
   verify3D={scene:new THREE.Scene(),cam:new THREE.PerspectiveCamera(42,w/h,.1,250),ren:new THREE.WebGLRenderer({antialias:true}),items:[],cycleIndex:0};
   verify3D.scene.background=new THREE.Color(0xf3efe8);
-  verify3D.ren.setSize(w,h);verify3D.ren.setPixelRatio(Math.min(window.devicePixelRatio,2));cont.innerHTML='';cont.appendChild(verify3D.ren.domElement);
+  verify3D.ren.setSize(w,h);verify3D.ren.setPixelRatio(Math.min(window.devicePixelRatio,2));window.RoseHTML.clear(cont);cont.appendChild(verify3D.ren.domElement);
   verify3D.scene.add(new THREE.HemisphereLight(0xffffff,0xd9d1c6,1.35));
   const keyLight=new THREE.DirectionalLight(0xffffff,1.15);keyLight.position.set(10,14,8);verify3D.scene.add(keyLight);
   const fillLight=new THREE.DirectionalLight(0xfff4e4,.5);fillLight.position.set(-8,10,-6);verify3D.scene.add(fillLight);
@@ -2013,7 +2013,7 @@ const wc2=document.getElementById('walkCtrl');if(wc2)wc2.remove();stopWalkMove()
   document.getElementById('presentTray')?.remove();
   if(scene)disposeSceneGraph(scene);
   if(ren){window.Planner3DLifecycle.disposeRenderer(ren);ren=null}
-  const cont=document.getElementById('threeC');if(cont)cont.innerHTML='';
+  const cont=document.getElementById('threeC');if(cont)window.RoseHTML.clear(cont);
   document.getElementById('scrEd')?.classList.remove('mode-3d');
   if(composer){window.Planner3DLifecycle.disposeComposer(composer,error=>window.reportRoseRecoverableError?.('3D composer disposal failed',error));composer=null}
   scene=null;cam=null}

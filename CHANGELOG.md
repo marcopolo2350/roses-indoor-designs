@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.76 - 2026-05-01
+
+- switched 3D renderer container cleanup from empty `innerHTML` assignments to `RoseHTML.clear()`
+- extended 3D lifecycle validation to block empty `innerHTML` clears from returning
+
 ## 0.5.0-hardening.75 - 2026-05-01
 
 - rebuilt room-panel floor button restyling with DOM nodes and `textContent`
