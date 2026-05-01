@@ -16,7 +16,7 @@ Status: in progress
 Scope:
 
 - make [index.html](../index.html) the primary shell
-- keep the old entry URL only as a compatibility redirect
+- remove redirect-only and wrapper entrypoints now that the root shell is canonical
 - add basic package scripts
 - document stable vs fragile areas in the README
 - document this roadmap in the repo
@@ -33,7 +33,7 @@ Status: next
 
 Scope:
 
-- replace sequential classic script injection in [app.js](../scripts/app.js) with real ES module imports
+- replace the remaining ordered classic-script bridge in [main.js](../scripts/main.js) with real ES module imports
 - identify hard dependencies between `state`, `storage`, `ui`, `planner2d`, `catalog`, `export`, `planner3d`, and `walkthrough`
 - remove accidental load-order dependence where possible
 
@@ -124,6 +124,6 @@ Target outcome:
 
 ## Immediate Next Steps
 
-1. convert `app.js` away from ordered classic-script loading
+1. convert the remaining `main.js` runtime bridge away from ordered classic-script loading
 2. identify the smallest safe history/state extraction slice
 3. add a basic CI workflow once local smoke commands are stable

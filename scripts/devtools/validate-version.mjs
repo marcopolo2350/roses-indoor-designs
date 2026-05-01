@@ -4,6 +4,7 @@ import path from "node:path";
 const root = process.cwd();
 const read = (file) => readFileSync(path.join(root, file), "utf8");
 const pkg = JSON.parse(read("package.json"));
+const lockfile = JSON.parse(read("package-lock.json"));
 const version = pkg.version;
 const errors = [];
 
@@ -28,6 +29,8 @@ expectMatch(
   read("docs/hardening-status.md").match(/Current app version:\s*`([^`]+)`/)?.[1],
 );
 expectMatch("CHANGELOG.md latest heading", read("CHANGELOG.md").match(/^##\s+([^\s]+)/m)?.[1]);
+expectMatch("package-lock.json root", lockfile.version);
+expectMatch("package-lock.json package root", lockfile.packages?.[""]?.version);
 
 if (errors.length) {
   console.error("Version validation failed:");

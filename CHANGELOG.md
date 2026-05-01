@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0-hardening.56 - 2026-05-01
+
+- removed the obsolete `scripts/app.js` compatibility wrapper so `scripts/main.js` is the only app bootstrap path
+- removed the wrapper from syntax checks and README file-structure docs
+- extended runtime-module validation to fail if the deleted wrapper reappears
+- extended version validation to include `package-lock.json`
+- updated the refactor roadmap to point at the remaining `scripts/main.js` bridge instead of the deleted wrapper
+
 ## 0.5.0-hardening.55 - 2026-05-01
 
 - aligned the app shell and runtime config version with package/docs after drift was found

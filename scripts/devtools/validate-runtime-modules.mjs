@@ -4,6 +4,7 @@ import path from "node:path";
 const root = process.cwd();
 const mainPath = path.join(root, "scripts", "main.js");
 const indexPath = path.join(root, "index.html");
+const legacyAppBridgePath = path.join(root, "scripts", "app.js");
 const legacyHtmlPath = path.join(root, "roses-indoor-designs.html");
 const mainSource = readFileSync(mainPath, "utf8");
 const indexSource = readFileSync(indexPath, "utf8");
@@ -58,6 +59,9 @@ if (mainEntrypoints.length !== 1) {
 }
 if (legacyEntrypoints.length) {
   errors.push("index.html must not load the legacy ./scripts/app.js bridge.");
+}
+if (existsSync(legacyAppBridgePath)) {
+  errors.push("scripts/app.js must not exist; scripts/main.js is the only app bootstrap.");
 }
 if (existsSync(legacyHtmlPath)) {
   errors.push("roses-indoor-designs.html must not exist as a redirect-only entrypoint.");
