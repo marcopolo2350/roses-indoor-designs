@@ -51,6 +51,9 @@ jobs:
       - name: Validate asset sources
         run: npm run validate:asset-sources
 
+      - name: Validate static accessibility
+        run: npm run validate:static-a11y
+
       - name: Validate delegated UI handlers
         run: npm run validate:inline-handlers
 

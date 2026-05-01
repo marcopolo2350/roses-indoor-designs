@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.39 - 2026-04-30
+
+- added static app-shell accessibility validation for button types, icon names, dialog metadata, and decorative SVG hiding
+- added dialog roles/labels to static modals and removed remaining phase-label comments from the app shell
+
 ## 0.5.0-hardening.38 - 2026-04-30
 
 - added `data/asset-sources.json` and `sourceId` tracking for every manifest item so catalog provenance is explicit and machine-checkable
