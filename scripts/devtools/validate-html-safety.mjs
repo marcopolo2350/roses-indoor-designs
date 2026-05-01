@@ -8,6 +8,7 @@ const errors = [];
 const main = read("scripts/main.js");
 const storage = read("scripts/storage.js");
 const ui = read("scripts/ui.js");
+const shortcuts = read("scripts/ui/shortcuts.js");
 const walkthrough = read("scripts/walkthrough.js");
 const htmlPath = path.join(root, "scripts/core/html.js");
 
@@ -48,6 +49,10 @@ for (const pattern of [
 
 if (/out\.innerHTML\s*=/.test(walkthrough)) {
   errors.push("walkthrough.js must render self-test output with textContent/DOM nodes.");
+}
+
+if (/shortcutSheetMarkup|sheet\.innerHTML\s*=/.test(shortcuts)) {
+  errors.push("Shortcut sheet must render with DOM nodes, not HTML strings.");
 }
 
 const deleteConfirm = ui.match(/function\s+showDeleteConfirm[\s\S]*?function\s+closeDeleteConfirm/);

@@ -44,20 +44,47 @@ const SHORTCUT_GROUPS = [
   },
 ];
 
-function shortcutSheetMarkup() {
+function createShortcutNode(tagName, className, text) {
+  const node = document.createElement(tagName);
+  if (className) node.className = className;
+  if (text != null) node.textContent = text;
+  return node;
+}
+
+function buildShortcutSheet() {
   const isMac = /Mac|iPhone|iPad/i.test(navigator.platform || "");
   const mod = isMac ? "⌘" : "Ctrl";
-  return `<div class="shortcut-card">
-      <div class="shortcut-head"><div class="shortcut-title">Keyboard Shortcuts</div><button class="shortcut-x" type="button" data-action="close-shortcut-sheet" aria-label="Close">×</button></div>
-      <div class="shortcut-grid">${SHORTCUT_GROUPS.map(
-        (group) => `
-        <div class="shortcut-group">
-          <div class="shortcut-group-label">${group.label}</div>
-          ${group.items.map(([key, label]) => `<div class="shortcut-row"><kbd>${key.replace(/Ctrl/g, mod)}</kbd><span>${label}</span></div>`).join("")}
-        </div>`,
-      ).join("")}</div>
-      <div class="shortcut-hint">Press <kbd>?</kbd> anytime to open this sheet</div>
-    </div>`;
+  const card = createShortcutNode("div", "shortcut-card");
+  const head = createShortcutNode("div", "shortcut-head");
+  head.appendChild(createShortcutNode("div", "shortcut-title", "Keyboard Shortcuts"));
+
+  const close = createShortcutNode("button", "shortcut-x", "×");
+  close.type = "button";
+  close.dataset.action = "close-shortcut-sheet";
+  close.setAttribute("aria-label", "Close");
+  head.appendChild(close);
+  card.appendChild(head);
+
+  const grid = createShortcutNode("div", "shortcut-grid");
+  for (const group of SHORTCUT_GROUPS) {
+    const groupNode = createShortcutNode("div", "shortcut-group");
+    groupNode.appendChild(createShortcutNode("div", "shortcut-group-label", group.label));
+    for (const [key, label] of group.items) {
+      const row = createShortcutNode("div", "shortcut-row");
+      row.appendChild(createShortcutNode("kbd", "", key.replace(/Ctrl/g, mod)));
+      row.appendChild(createShortcutNode("span", "", label));
+      groupNode.appendChild(row);
+    }
+    grid.appendChild(groupNode);
+  }
+  card.appendChild(grid);
+
+  const hint = createShortcutNode("div", "shortcut-hint");
+  hint.append("Press ");
+  hint.appendChild(createShortcutNode("kbd", "", "?"));
+  hint.append(" anytime to open this sheet");
+  card.appendChild(hint);
+  return card;
 }
 
 function getShortcutSheet() {
@@ -66,7 +93,7 @@ function getShortcutSheet() {
   sheet = document.createElement("div");
   sheet.id = "shortcutSheet";
   sheet.className = "shortcut-sheet";
-  sheet.innerHTML = shortcutSheetMarkup();
+  sheet.appendChild(buildShortcutSheet());
   sheet.addEventListener("click", (event) => {
     if (event.target === sheet) sheet.classList.remove("on");
   });

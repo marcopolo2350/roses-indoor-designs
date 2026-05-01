@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.65 - 2026-05-01
+
+- rebuilt the keyboard shortcut sheet with DOM nodes instead of `innerHTML` string templates
+- extended HTML safety validation to block shortcut-sheet HTML string rendering from returning
+
 ## 0.5.0-hardening.64 - 2026-05-01
 
 - removed phase-history comments from the stylesheet so source comments describe current UI areas
