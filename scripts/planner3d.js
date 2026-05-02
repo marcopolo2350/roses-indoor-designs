@@ -82,40 +82,17 @@ function toggle3D(){
 function exit3DView(){stop3D();hideViewChip();is3D=false;camMode='orbit';presentationMode=false;compare3DMode=false;photoMode=false;photoTrayOpen=false;cameraScript=null;walkthroughTrayOpen=false;document.getElementById('scrEd').classList.remove('mode-3d','presentation','photo-mode');document.getElementById('threeC').classList.remove('on');document.getElementById('b3d').classList.remove('on');document.getElementById('vLbl').textContent='2D Plan';document.getElementById('camBtns').classList.remove('on');document.getElementById('walkHint').classList.remove('on');document.getElementById('presentPill').classList.remove('on');document.getElementById('presentPill').textContent='Presentation Mode';document.getElementById('photoPill')?.classList.remove('on');document.getElementById('cmCompare').classList.remove('act');document.getElementById('cmTour')?.classList.remove('act');document.getElementById('cmPhoto')?.classList.remove('act');updateWalkthroughTray();updatePhotoTray();resetRoomDebug();initCan();if(last2DViewState){vScale=last2DViewState.vScale;vOff={...last2DViewState.vOff}}draw();showP()}
 
 function presentationShotLabel(mode){
-  return ({
-    hero:'Hero View',
-    favorite:'Favorite Corner',
-    overview:'Whole Room',
-    intimate:'Intimate View',
-    before_after:'Before / After',
-  })[mode]||'Hero View';
+  return window.Planner3DCamera?.presentationShotLabel(mode)||'Hero View';
 }
 let viewChipTimer=null;
 function walkthroughPresetLabel(id){
-  return ({
-    favorite_corner:'Favorite Corner',
-    dollhouse:'Dollhouse',
-    stroll:'Stroll',
-    corner_reveal:'Corner Reveal',
-    before_after:'Before / After',
-    romantic_reveal:'Romantic Reveal',
-  })[id]||'Walkthrough';
+  return window.Planner3DCamera?.walkthroughPresetLabel(id)||'Walkthrough';
 }
 function photoPresetLabel(mode){
-  return ({
-    hero:'Hero Shot',
-    favorite:'Favorite Corner',
-    intimate:'Intimate',
-    overhead:'Overhead',
-  })[mode]||'Hero Shot';
+  return window.Planner3DCamera?.photoPresetLabel(mode)||'Hero Shot';
 }
 function viewPresetLabel(mode){
-  return ({
-    hero:'Hero View',
-    overview:'Overview',
-    corner:'Favorite Corner',
-    eye:'Room View',
-  })[mode]||'Orbit';
+  return window.Planner3DCamera?.viewPresetLabel(mode)||'Orbit';
 }
 function showViewChip(label,ms=3400){
   const chip=document.getElementById('viewChip');
@@ -140,15 +117,7 @@ function roomStoryLine(room=curRoom){
   return `${label} is framed as ${direction.toLowerCase()} living.`;
 }
 function roomCentroidPose(room=curRoom){
-  const focus=getRoomFocus(room);
-  const centroid=(room?.furniture||[]).length
-    ? room.furniture.reduce((acc,f)=>({x:acc.x+(f.x||0),z:acc.z-(f.z||0)}),{x:0,z:0})
-    : {x:focus.x,z:-focus.y};
-  if((room?.furniture||[]).length){
-    centroid.x/=room.furniture.length;
-    centroid.z/=room.furniture.length;
-  }
-  return centroid;
+  return window.Planner3DCamera?.roomCentroid(room,{getRoomFocus})||{x:0,z:0};
 }
 function currentFloor3DRooms(room=curRoom){
   if(!room||typeof currentFloorRooms!=='function')return [room].filter(Boolean);
@@ -172,10 +141,7 @@ function getRoomsFocus(rooms=[curRoom]){
   return {x:(minX+maxX)/2,y:(minY+maxY)/2,width,height,maxD:Math.max(width,height),height3D:maxH||curRoom?.height||9};
 }
 function overviewRoomPose(room=curRoom){
-  const rooms=currentFloor3DRooms(room);
-  const focus=rooms.length>1?getRoomsFocus(rooms):getRoomFocus(room);
-  const roomHeight=rooms.length>1?(focus.height3D||room.height):room.height;
-  return {yaw:Math.PI*.16,pitch:.8,dist:Math.max(18,Math.min(56,Math.max(focus.width,focus.height,roomHeight)*2.08)),target:{x:focus.x,y:roomHeight*.47,z:-focus.y}};
+  return window.Planner3DCamera.overviewRoomPose(room,{getRoomFocus,currentFloor3DRooms,getRoomsFocus});
 }
 function addGhostRoomShell(room,wallColor,floorColor){
   if(!scene||!room?.polygon?.length)return;
@@ -199,23 +165,10 @@ function addGhostRoomShell(room,wallColor,floorColor){
   });
 }
 function intimateRoomPose(room=curRoom){
-  const focus=getRoomFocus(room);
-  const centroid=roomCentroidPose(room);
-  return {
-    yaw:Math.PI*.3,
-    pitch:.42,
-    dist:Math.max(15,Math.min(28,Math.max(focus.width,focus.height,room.height)*1.15)),
-    target:{x:(focus.x*.72)+(centroid.x*.28),y:room.height*.38,z:(-focus.y*.72)+(centroid.z*.28)}
-  };
+  return window.Planner3DCamera.intimateRoomPose(room,{getRoomFocus});
 }
 function heroRoomPose(room=curRoom){
-  const favorite=favoriteCornerPose(room);
-  return {
-    yaw:favorite.yaw,
-    pitch:Math.max(.34,favorite.pitch||.36),
-    dist:Math.max(14,Math.min(26,favorite.dist*1.08)),
-    target:{...favorite.target}
-  };
+  return window.Planner3DCamera.heroRoomPose(room,{getRoomFocus,getRoomBounds2D});
 }
 function refreshPresentationPill(){
   const pill=document.getElementById('presentPill');
@@ -526,14 +479,7 @@ function setPhotoPreset(mode){
   if(!is3D||!curRoom)return;
   const focus=getRoomFocus(curRoom);
   const current={yaw:cYaw,pitch:cPitch,dist:cDist,target:{...(orbitTarget||{x:focus.x,y:curRoom.height*.42,z:-focus.y})}};
-  const favorite=favoriteCornerPose(curRoom);
-  const poses={
-    hero:favorite,
-    favorite:favorite,
-    intimate:{yaw:Math.PI*.58,pitch:.26,dist:Math.max(8.8,Math.min(18,Math.max(focus.width,focus.height)*.92)),target:{x:focus.x,y:curRoom.height*.34,z:-focus.y}},
-    overhead:{yaw:Math.PI*.12,pitch:.86,dist:Math.max(16,Math.min(30,Math.max(focus.width,focus.height,curRoom.height)*1.32)),target:{x:focus.x,y:curRoom.height*.46,z:-focus.y}}
-  };
-  const next=poses[mode]||poses.hero;
+  const next=window.Planner3DCamera.photoPose(mode,curRoom,{getRoomFocus,getRoomBounds2D,currentFloor3DRooms,getRoomsFocus});
   playCameraSequence([{duration:1100,apply:t=>applyCameraTween(current,next,t)}]);
 }
 function capturePhotoMode(download=true){
@@ -587,37 +533,7 @@ function findTourWalkPoint(index,total){
   return clampWalkPos(candidate.x,candidate.z,floorRooms)?candidate:findWalkStart(floorRooms);
 }
 function favoriteCornerPose(room){
-  const focus=getRoomFocus(room);
-  const centroid=(room.furniture||[]).length
-    ? room.furniture.reduce((acc,f)=>({x:acc.x+(f.x||0),z:acc.z-(f.z||0)}),{x:0,z:0})
-    : {x:focus.x,z:-focus.y};
-  if((room.furniture||[]).length){
-    centroid.x/=(room.furniture||[]).length;
-    centroid.z/=(room.furniture||[]).length;
-  }
-  const b=getRoomBounds2D(room);
-  const inset=Math.max(.9,Math.min(2.4,Math.min(focus.width,focus.height)*.08));
-  const corners=[
-    {x:b.x0+inset,z:-b.y0-inset},
-    {x:b.x1-inset,z:-b.y0-inset},
-    {x:b.x1-inset,z:-b.y1+inset},
-    {x:b.x0+inset,z:-b.y1+inset},
-  ];
-  let best=null;
-  corners.forEach(corner=>{
-    const dx=centroid.x-corner.x,dz=centroid.z-corner.z;
-    const dist=Math.hypot(dx,dz);
-    const score=dist-(Math.abs(dx)+Math.abs(dz))*.08;
-    if(!best||score>best.score)best={corner,score,dist,dx,dz};
-  });
-  const yaw=Math.atan2(best.dx,-best.dz);
-  const target={
-    x:centroid.x+(best.dx*-0.06),
-    y:room.height*.38,
-    z:centroid.z+(best.dz*-0.06)
-  };
-  const dist=Math.max(8.5,Math.min(18,Math.max(focus.width,focus.height)*.82));
-  return {yaw,pitch:.28,dist,target};
+  return window.Planner3DCamera.favoriteCornerPose(room,{getRoomFocus,getRoomBounds2D});
 }
 function startWalkthroughPreset(id){
   if(!is3D||!curRoom)return;
@@ -2265,13 +2181,7 @@ setPhotoPreset=function(mode){
   if(!is3D||!curRoom)return;
   const focus=getRoomFocus(curRoom);
   const current={yaw:cYaw,pitch:cPitch,dist:cDist,target:{...(orbitTarget||{x:focus.x,y:curRoom.height*.42,z:-focus.y})}};
-  const poses={
-    hero:heroRoomPose(curRoom),
-    favorite:favoriteCornerPose(curRoom),
-    intimate:intimateRoomPose(curRoom),
-    overhead:{yaw:Math.PI*.12,pitch:.86,dist:Math.max(16,Math.min(30,Math.max(focus.width,focus.height,curRoom.height)*1.32)),target:{x:focus.x,y:curRoom.height*.46,z:-focus.y}}
-  };
-  const next=poses[mode]||poses.hero;
+  const next=window.Planner3DCamera.photoPose(mode,curRoom,{getRoomFocus,getRoomBounds2D,currentFloor3DRooms,getRoomsFocus});
   showViewChip(`Photo Mode · ${photoPresetLabel(mode)}`);
   playCameraSequence([{duration:1100,apply:t=>applyCameraTween(current,next,t)}]);
 }
@@ -2292,42 +2202,7 @@ function capturePresentationStill(){
   return dataUrl;
 }
 favoriteCornerPose=function(room){
-  const focus=getRoomFocus(room);
-  const centroid=(room.furniture||[]).length
-    ? room.furniture.reduce((acc,f)=>({x:acc.x+(f.x||0),z:acc.z-(f.z||0)}),{x:0,z:0})
-    : {x:focus.x,z:-focus.y};
-  if((room.furniture||[]).length){
-    centroid.x/=(room.furniture||[]).length;
-    centroid.z/=(room.furniture||[]).length;
-  }
-  const b=getRoomBounds2D(room);
-  const insetX=Math.max(1.2,Math.min(focus.width*.18,2.6));
-  const insetY=Math.max(1.2,Math.min(focus.height*.18,2.6));
-  const corners=[
-    {x:b.x0+insetX,z:-b.y0-insetY},
-    {x:b.x1-insetX,z:-b.y0-insetY},
-    {x:b.x1-insetX,z:-b.y1+insetY},
-    {x:b.x0+insetX,z:-b.y1+insetY},
-  ];
-  let best=null;
-  corners.forEach(corner=>{
-    const dx=centroid.x-corner.x,dz=centroid.z-corner.z;
-    const dist=Math.hypot(dx,dz);
-    const score=dist+(Math.abs(dx)+Math.abs(dz))*.2;
-    if(!best||score>best.score)best={corner,score,dist,dx,dz};
-  });
-  const yaw=Math.atan2(best.dx,-best.dz);
-  const dist=Math.max(14,Math.min(28,Math.max(focus.width,focus.height,room.height)*1.16));
-  return {
-    yaw,
-    pitch:.38,
-    dist,
-    target:{
-      x:focus.x*.76+centroid.x*.24,
-      y:room.height*.38,
-      z:(-focus.y)*.76+centroid.z*.24
-    }
-  };
+  return window.Planner3DCamera.favoriteCornerPose(room,{getRoomFocus,getRoomBounds2D});
 }
 function setPresentationShot(mode){
   if(!is3D||!curRoom)return;
@@ -2341,13 +2216,7 @@ function setPresentationShot(mode){
   }
   const focus=getRoomFocus(curRoom);
   const current={yaw:cYaw,pitch:cPitch,dist:cDist,target:{...(orbitTarget||{x:focus.x,y:curRoom.height*.42,z:-focus.y})}};
-  const poses={
-    hero:heroRoomPose(curRoom),
-    favorite:favoriteCornerPose(curRoom),
-    overview:overviewRoomPose(curRoom),
-    intimate:intimateRoomPose(curRoom),
-  };
-  const next=poses[mode]||poses.hero;
+  const next=window.Planner3DCamera.presentationPose(mode,curRoom,{getRoomFocus,getRoomBounds2D,currentFloor3DRooms,getRoomsFocus});
   playCameraSequence([{duration:1350,apply:t=>applyCameraTween(current,next,t)}]);
 }
 startWalkthroughPreset=function(id){

@@ -41,6 +41,7 @@
 - [ ] `npm run validate:geometry`
 - [ ] `npm run validate:3d-lifecycle`
 - [ ] `npm run validate:3d-lighting`
+- [ ] `npm run validate:3d-camera`
 - [ ] `npm run validate:export-filenames`
 - [ ] `npm run test:playwright`
 - [ ] `npm run test:self`

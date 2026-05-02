@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.104 - 2026-05-02
+
+- isolated 3D camera labels and pose math into `scripts/planner3d/camera.js`
+- added `npm run validate:3d-camera` to guard favorite-corner, overhead, and multi-room overview camera framing
+- wired the 3D camera boundary into runtime load order, CI, docs, and bridge validation
+
 ## 0.5.0-hardening.103 - 2026-05-02
 
 - isolated data-driven time-of-day lighting curves into `scripts/planner3d/lighting.js`

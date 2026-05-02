@@ -102,6 +102,7 @@ npm run validate:app-state
 npm run validate:geometry
 npm run validate:3d-lifecycle
 npm run validate:3d-lighting
+npm run validate:3d-camera
 npm run validate:export-filenames
 npm run test:playwright
 npm run test:self
@@ -144,6 +145,7 @@ What they do:
 - `validate:geometry` - checks pure 2D geometry helpers
 - `validate:3d-lifecycle` - checks 3D disposal/lifecycle helpers
 - `validate:3d-lighting` - checks data-driven time-of-day lighting buckets, colors, and exposure bounds
+- `validate:3d-camera` - checks data-driven 3D camera labels and pose math
 - `validate:export-filenames` - checks shared export filename sanitizing and centralized download helpers
 - `test:playwright` - runs the standard Playwright spec suite
 - `test:self` - runs the built-in `#selftest` flow through Playwright
@@ -171,13 +173,14 @@ What they do:
 - [scripts/core/history.js](./scripts/core/history.js) - shared undo/redo and room-history runtime
 - [scripts/planner2d/geometry.js](./scripts/planner2d/geometry.js) - pure 2D geometry helpers shared by planner logic
 - [scripts/planner3d/lifecycle.js](./scripts/planner3d/lifecycle.js) - 3D disposal and cleanup helpers
+- [scripts/planner3d/camera.js](./scripts/planner3d/camera.js) - data-driven 3D camera labels and pose helpers
 - [scripts/export/filenames.js](./scripts/export/filenames.js) - shared export filename sanitizing
 - [scripts/export/project-json.js](./scripts/export/project-json.js) - project JSON import/export boundary
 - [scripts/state.js](./scripts/state.js) - shared state helpers, geometry, snapping, walk logic
 - [scripts/storage.js](./scripts/storage.js) - persistence, normalization, and legacy storage wrappers
 - [scripts/ui.js](./scripts/ui.js) - home/editor shell behavior
 - [scripts/planner2d.js](./scripts/planner2d.js) - 2D plan rendering and editor interactions
-- [scripts/planner3d.js](./scripts/planner3d.js) - 3D scene, camera, lighting, walkthrough logic
+- [scripts/planner3d.js](./scripts/planner3d.js) - 3D scene assembly and walkthrough glue
 - [scripts/catalog.js](./scripts/catalog.js) - catalog UI, variants, placement controls
 - [scripts/export.js](./scripts/export.js) - PNG, SVG, PDF, and presentation export logic
 - [scripts/cloud/supabase.js](./scripts/cloud/supabase.js) - experimental cloud sync boundary

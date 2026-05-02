@@ -123,6 +123,9 @@ jobs:
       - name: Validate 3D lighting
         run: npm run validate:3d-lighting
 
+      - name: Validate 3D camera presets
+        run: npm run validate:3d-camera
+
       - name: Validate export filenames
         run: npm run validate:export-filenames
 
