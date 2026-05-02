@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.85 - 2026-05-02
+
+- moved file-mode model preflight recovery to the canonical local `index.html` preview URL from app config
+- extended runtime module validation so legacy app-shell HTML filenames cannot return inside app modules
+
 ## 0.5.0-hardening.84 - 2026-05-02
 
 - bounded the GitHub Verify workflow Playwright browser install step with a five-minute timeout

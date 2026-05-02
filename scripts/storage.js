@@ -474,6 +474,10 @@ function getAssetBase(){
 function modelUrl(file){
   return new URL(file, getAssetBase()).href;
 }
+function getLocalAppUrl(){
+  const configured=window.APP_CONFIG?.support?.localDevUrl || 'http://127.0.0.1:8123/';
+  return new URL(configured, window.location.href).href;
+}
 function renderAssetPreflightPanel(title,metaText,rows=[]){
   const el=document.getElementById('assetPreflightPanel');
   if(!el)return;
@@ -497,7 +501,7 @@ function renderAssetPreflightPanel(title,metaText,rows=[]){
 }
 async function ensureHttpRuntime(){
   if(location.protocol!=='file:')return true;
-  const target='http://127.0.0.1:8000/roses-indoor-designs.html';
+  const target=getLocalAppUrl();
   try{
     const res=await fetch(target,{mode:'no-cors',cache:'no-store'});
     location.replace(target);
@@ -513,8 +517,8 @@ asset base: ${getAssetBase()}
 Model loading is blocked in file mode.
 
 Open the app at:
-http://127.0.0.1:8000/roses-indoor-designs.html`,
-        [{ok:false,text:'Local server not detected at http://127.0.0.1:8000\nGLB loading will fail from file:/// mode.'}]
+${target}`,
+        [{ok:false,text:`Local server not detected at ${target}\nRun npm run dev, then open the app from that URL.`}]
       );
     }
     return false;
@@ -522,7 +526,7 @@ http://127.0.0.1:8000/roses-indoor-designs.html`,
 }
 async function preflightModelFile(file){
   if(location.protocol==='file:'){
-    return {url:modelUrl(file),status:0,ok:false,error:'File mode blocked. Open via http://127.0.0.1:8000/roses-indoor-designs.html'};
+    return {url:modelUrl(file),status:0,ok:false,error:`File mode blocked. Open via ${getLocalAppUrl()}`};
   }
   const url=modelUrl(file);
   const cached=MODEL_PREFLIGHT.get(url);

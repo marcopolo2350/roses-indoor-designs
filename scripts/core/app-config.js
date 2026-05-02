@@ -2,7 +2,7 @@
   const APP_CONFIG = Object.freeze({
     appName: "Rose's Indoor Designs",
     repoSlug: "roses-indoor-designs",
-    version: "0.5.0-hardening.84",
+    version: "0.5.0-hardening.85",
     publicUrl: "https://marcopolo2350.github.io/roses-indoor-designs/",
     storagePrefix: "rose_indoor_designs",
     database: Object.freeze({
@@ -24,6 +24,7 @@
     support: Object.freeze({
       selfTestHash: "#selftest",
       devHash: "#dev",
+      localDevUrl: "http://127.0.0.1:8123/",
     }),
   });
 

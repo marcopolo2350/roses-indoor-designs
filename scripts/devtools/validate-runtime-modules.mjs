@@ -33,6 +33,13 @@ if (!modulesBlock) {
   if (!modules.length) {
     errors.push("RUNTIME_MODULES must contain at least one module.");
   }
+  for (const modulePath of modules) {
+    const absolutePath = path.join(root, modulePath.replace(/^\.\//, ""));
+    const source = readFileSync(absolutePath, "utf8");
+    if (/rose-designs\.html|roses-indoor-designs\.html/.test(source)) {
+      errors.push(`${modulePath} must not reference legacy app-shell HTML filenames.`);
+    }
+  }
   if (modules[0] !== "./scripts/core/app-config.js") {
     errors.push("app-config must remain the first runtime module.");
   }

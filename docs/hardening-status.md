@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.84`
+Current app version: `0.5.0-hardening.85`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -14,6 +14,8 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Runtime boot has an explicit documented bridge in `scripts/main.js`.
 - The transitional runtime bridge is validated by `npm run validate:runtime-modules` so missing or duplicate classic modules fail before browser boot.
 - The old `scripts/app.js` compatibility wrapper is removed, and runtime validation blocks it from returning.
+- File-mode model preflight recovery now points to the canonical `index.html` local preview URL from app config instead of stale legacy HTML filenames.
+- Runtime module validation now blocks legacy `rose-designs.html` and `roses-indoor-designs.html` references from returning inside app modules.
 - Package, lockfile, app shell, runtime config, changelog, and hardening-status versions are guarded by `npm run validate:version`.
 - Remaining CDN dependencies are documented in `docs/dependencies.md` and guarded by `npm run validate:dependencies`.
 - The unused `dxf-writer` package was removed after CAD/DXF export was intentionally removed, and dependency validation blocks it from returning accidentally.
