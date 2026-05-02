@@ -19,6 +19,7 @@ const allowedAssignments = new Set(
     ["Planner3DCamera", "scripts/planner3d/camera.js"],
     ["RoseCatalogManifest", "scripts/catalog/manifest.js"],
     ["RoseHTML", "scripts/core/html.js"],
+    ["RosePngExports", "scripts/export/png.js"],
     ["RoseProjectJsonExports", "scripts/export/project-json.js"],
     ["RoseProjectSchema", "scripts/core/project-schema.js"],
     ["RoseSvgExports", "scripts/export/svg.js"],

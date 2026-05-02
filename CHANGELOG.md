@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.109 - 2026-05-02
+
+- extracted PNG, comparison-sheet, design-summary, and render-to-image helpers into `scripts/export/png.js`
+- kept existing global export hooks compatible while shrinking the legacy export bridge to PDF/presentation helpers
+- extended export/source/global validation so PNG export behavior cannot drift back into `scripts/export.js`
+
 ## 0.5.0-hardening.108 - 2026-05-02
 
 - extracted SVG export behavior into `scripts/export/svg.js` while keeping the existing `exportSVG()` UI hook

@@ -19,7 +19,7 @@ export default [
       globals: {
         activeProfile: "readonly",
         autoSquareCurrentRoom: "readonly",
-        canvas: "readonly",
+        canvas: "writable",
         clearTimeout: "readonly",
         clearFurnitureSelection: "readonly",
         console: "readonly",

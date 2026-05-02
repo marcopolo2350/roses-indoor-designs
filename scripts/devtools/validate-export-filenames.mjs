@@ -5,10 +5,12 @@ globalThis.window = globalThis;
 await import("../export/filenames.js");
 await import("../export/downloads.js");
 await import("../export/project-json.js");
+await import("../export/png.js");
 await import("../export/svg.js");
 
 const names = window.ExportFilenames;
 const downloads = window.ExportDownloads;
+const pngExports = window.RosePngExports;
 const projectJson = window.RoseProjectJsonExports;
 const svgExports = window.RoseSvgExports;
 
@@ -42,6 +44,12 @@ if (
 if (typeof svgExports.exportSVG !== "function") {
   throw new Error("SVG export function was not registered.");
 }
+if (
+  typeof pngExports.exportPNG !== "function" ||
+  typeof pngExports.renderRoomModeToDataURL !== "function"
+) {
+  throw new Error("PNG export functions were not registered.");
+}
 
 const legacyExportSource = readFileSync("scripts/export.js", "utf8");
 if (
@@ -55,6 +63,13 @@ if (
 }
 if (/function\s+exportSVG\b/.test(legacyExportSource)) {
   throw new Error("SVG export must live in scripts/export/svg.js.");
+}
+if (
+  /function\s+(?:exportPNG|exportComparisonSheet|exportDesignSummary)\b/.test(legacyExportSource)
+) {
+  throw new Error(
+    "PNG, comparison, and design-summary exports must live in scripts/export/png.js.",
+  );
 }
 
 for (const file of [
