@@ -157,6 +157,7 @@ What they do:
 - [scripts/core/app-config.js](./scripts/core/app-config.js) - canonical app identity and version metadata
 - [scripts/core/project-schema.js](./scripts/core/project-schema.js) - JSON import/export schema helpers
 - [scripts/core/error-reporting.js](./scripts/core/error-reporting.js) - fatal load and runtime error helpers
+- [scripts/core/storage-service.js](./scripts/core/storage-service.js) - IndexedDB open/read/write boundary
 - [scripts/core/app-state.js](./scripts/core/app-state.js) - first central runtime state surface for high-risk globals
 - [scripts/core/history.js](./scripts/core/history.js) - shared undo/redo and room-history runtime
 - [scripts/planner2d/geometry.js](./scripts/planner2d/geometry.js) - pure 2D geometry helpers shared by planner logic
@@ -164,7 +165,7 @@ What they do:
 - [scripts/export/filenames.js](./scripts/export/filenames.js) - shared export filename sanitizing
 - [scripts/export/project-json.js](./scripts/export/project-json.js) - project JSON import/export boundary
 - [scripts/state.js](./scripts/state.js) - shared state helpers, geometry, snapping, walk logic
-- [scripts/storage.js](./scripts/storage.js) - persistence, IndexedDB, normalization
+- [scripts/storage.js](./scripts/storage.js) - persistence, normalization, and legacy storage wrappers
 - [scripts/ui.js](./scripts/ui.js) - home/editor shell behavior
 - [scripts/planner2d.js](./scripts/planner2d.js) - 2D plan rendering and editor interactions
 - [scripts/planner3d.js](./scripts/planner3d.js) - 3D scene, camera, lighting, walkthrough logic

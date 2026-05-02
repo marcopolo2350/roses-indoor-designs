@@ -11,6 +11,14 @@ const indexSource = readFileSync(indexPath, "utf8");
 const errors = [];
 
 const modulesBlock = mainSource.match(/const\s+RUNTIME_MODULES\s*=\s*\[([\s\S]*?)\];/);
+if (
+  !/const\s+RUNTIME_VERSION\s*=/.test(mainSource) ||
+  !/meta\[name="application-version"\]/.test(mainSource)
+) {
+  errors.push(
+    "scripts/main.js must use the application-version meta tag for runtime cache busting.",
+  );
+}
 if (!modulesBlock) {
   errors.push("scripts/main.js is missing the RUNTIME_MODULES list.");
 } else {

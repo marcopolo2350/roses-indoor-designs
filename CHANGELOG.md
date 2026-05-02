@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.94 - 2026-05-02
+
+- extracted IndexedDB open/read/write behavior into `scripts/core/storage-service.js`
+- kept legacy storage globals as compatibility wrappers and guarded direct IndexedDB opens with source-structure validation
+- switched runtime script cache-busting to the canonical `application-version` meta tag
+
 ## 0.5.0-hardening.93 - 2026-05-02
 
 - moved active profile persistence behind the storage-key boundary while preserving the legacy profile key

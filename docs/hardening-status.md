@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.93`
+Current app version: `0.5.0-hardening.94`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -13,6 +13,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - App identity is centralized in `scripts/core/app-config.js`.
 - Runtime boot has an explicit documented bridge in `scripts/main.js`.
 - The transitional runtime bridge is validated by `npm run validate:runtime-modules` so missing or duplicate classic modules fail before browser boot.
+- Runtime script cache-busting now uses the canonical `application-version` meta tag instead of a stale fixed bridge value.
 - The old `scripts/app.js` compatibility wrapper is removed, and runtime validation blocks it from returning.
 - File-mode model preflight recovery now points to the canonical `index.html` local preview URL from app config instead of stale legacy HTML filenames.
 - Runtime module validation now blocks legacy `rose-designs.html` and `roses-indoor-designs.html` references from returning inside app modules.
@@ -32,6 +33,8 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - `npm run validate:storage-keys` blocks raw localStorage key literals outside the storage-key boundary.
 - Active profile persistence now uses the storage-key boundary while preserving the legacy profile key during migration.
 - `npm run validate:storage-keys` now blocks direct `localStorage` access from general app files.
+- IndexedDB open/read/write behavior now lives in `scripts/core/storage-service.js`, with legacy wrappers kept in `scripts/storage.js`.
+- `npm run validate:structure` blocks direct `indexedDB.open` usage outside the storage-service boundary.
 - IndexedDB access now exposes readable storage-service bridge names (`openDatabase`, `getRecord`, `setRecord`) while legacy callers migrate.
 - `scripts/cloud/supabase.js` isolates experimental cloud sync behavior.
 - `scripts/ui/shortcuts.js` owns keyboard shortcuts and shortcut-sheet rendering.

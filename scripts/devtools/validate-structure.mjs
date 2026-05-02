@@ -36,6 +36,7 @@ const requiredFiles = [
   "scripts/core/history.js",
   "scripts/core/html.js",
   "scripts/core/project-schema.js",
+  "scripts/core/storage-service.js",
   "scripts/core/storage-keys.js",
   "scripts/ui/shortcuts.js",
   "scripts/planner2d/geometry.js",
@@ -91,6 +92,8 @@ function assertModuleBefore(before, after) {
 }
 
 assertModuleBefore("./scripts/core/html.js", "./scripts/core/error-reporting.js");
+assertModuleBefore("./scripts/core/storage-keys.js", "./scripts/core/storage-service.js");
+assertModuleBefore("./scripts/core/storage-service.js", "./scripts/storage.js");
 assertModuleBefore("./scripts/catalog/manifest.js", "./scripts/catalog.js");
 assertModuleBefore("./scripts/export/filenames.js", "./scripts/export.js");
 assertModuleBefore("./scripts/export/filenames.js", "./scripts/export/downloads.js");
@@ -103,7 +106,11 @@ assertModuleBefore("./scripts/planner3d/lifecycle.js", "./scripts/planner3d.js")
 
 for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
   const modulePath = path.relative(root, absolute).replace(/\\/g, "/");
-  const lines = readFileSync(absolute, "utf8").split(/\r?\n/);
+  const source = readFileSync(absolute, "utf8");
+  if (modulePath !== "scripts/core/storage-service.js" && /indexedDB\.open/.test(source)) {
+    errors.push(`${modulePath} opens IndexedDB outside scripts/core/storage-service.js.`);
+  }
+  const lines = source.split(/\r?\n/);
   lines.forEach((line, index) => {
     if (/^\s*(?:\/\/|\/\*|\*)\s*phase\b/i.test(line)) {
       errors.push(`${modulePath}:${index + 1} contains a phase-history comment.`);

@@ -4,14 +4,17 @@
 
 The app boots through [scripts/main.js](../scripts/main.js), which is an ES module entrypoint that loads the existing browser-global runtime files in a fixed order. This is a compatibility bridge, not the final architecture.
 
+The bridge appends the canonical `application-version` meta value to runtime script URLs so pushed hardening builds do not accidentally reuse stale browser-cached modules.
+
 ## Major runtime layers
 
 - `scripts/core/` - shared configuration, validation, error boundaries
 - `scripts/core/storage-keys.js` - localStorage and IndexedDB key registry
+- `scripts/core/storage-service.js` - IndexedDB open/read/write boundary
 - `scripts/core/app-state.js` - first central state surface for room/editor/runtime metadata
 - `scripts/core/history.js` - shared room history and undo/redo behavior
 - `scripts/state.js` - geometry helpers, storage keys, and app preferences
-- `scripts/storage.js` - IndexedDB access, normalization, runtime persistence glue
+- `scripts/storage.js` - normalization, runtime persistence glue, and compatibility wrappers
 - `scripts/ui.js` - home/editor shell behavior
 - `scripts/ui/shortcuts.js` - keyboard bindings and shortcut-sheet rendering
 - `scripts/planner2d.js` - 2D room editing and drawing

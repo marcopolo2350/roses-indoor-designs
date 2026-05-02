@@ -3,6 +3,7 @@ const RUNTIME_MODULES = [
   "./scripts/core/html.js",
   "./scripts/core/error-reporting.js",
   "./scripts/core/storage-keys.js",
+  "./scripts/core/storage-service.js",
   "./scripts/core/project-schema.js",
   "./scripts/planner2d/geometry.js",
   "./scripts/state.js",
@@ -24,7 +25,8 @@ const RUNTIME_MODULES = [
   "./scripts/walkthrough.js",
 ];
 
-const RUNTIME_VERSION = "20260426";
+const RUNTIME_VERSION =
+  document.querySelector('meta[name="application-version"]')?.getAttribute("content") || "local";
 
 async function loadClassicScript(src) {
   await new Promise((resolve, reject) => {
