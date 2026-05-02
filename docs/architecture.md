@@ -28,6 +28,8 @@ The bridge appends the canonical `application-version` meta value to runtime scr
 
 The repo is only partly modular. The next structural step is moving runtime ownership from browser-global files toward explicit imports, controllers, and app-state boundaries. `app-state.js` and `history.js` are the first extraction step, not the end state.
 
+The existing browser-global compatibility surface is now guarded by `npm run validate:global-bridge`. New `window.*` assignments should be treated as an architectural decision, not a convenience.
+
 ## UI event wiring status
 
 The shell is in migration from inline HTML handlers to delegated `data-action` bindings. `scripts/ui.js` now owns a central `handleUiAction()` dispatcher plus `bindStaticUiActions()`, and boot calls that binding once up front. This reduces direct HTML-to-global coupling for the home shell, editor header, setup modal, time-of-day controls, and major 3D buttons, but it is still a transitional layer rather than a finished component system.

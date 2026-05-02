@@ -25,6 +25,7 @@
 - [ ] `npm run validate:workflow`
 - [ ] `npm run validate:docs`
 - [ ] `npm run validate:structure`
+- [ ] `npm run validate:global-bridge`
 - [ ] `npm run validate:css`
 - [ ] `npm run validate:html-safety`
 - [ ] `npm run validate:storage-keys`

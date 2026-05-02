@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.96 - 2026-05-02
+
+- added `npm run validate:global-bridge` to freeze the current browser-global compatibility surface
+- wired global-bridge validation into local verification, CI, docs, and the PR checklist
+
 ## 0.5.0-hardening.95 - 2026-05-02
 
 - expanded dependency validation to include lazy-loaded CDN scripts inside runtime modules

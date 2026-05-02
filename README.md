@@ -86,6 +86,7 @@ npm run validate:github-templates
 npm run validate:workflow
 npm run validate:docs
 npm run validate:structure
+npm run validate:global-bridge
 npm run validate:css
 npm run validate:html-safety
 npm run validate:storage-keys
@@ -124,6 +125,7 @@ What they do:
 - `validate:workflow` - checks the GitHub Verify workflow keeps the same local guardrails and current action majors
 - `validate:docs` - checks README, testing docs, hardening status, and PR verification commands for drift
 - `validate:structure` - checks required source boundary directories, boundary files, and runtime ordering
+- `validate:global-bridge` - freezes the current browser-global compatibility surface so new globals are intentional
 - `validate:css` - checks focus styling, z-index tokens, reduced motion, safe-area handling, and blocked CSS patterns
 - `validate:html-safety` - checks shared HTML escaping and high-risk diagnostic/self-test rendering paths
 - `validate:storage-keys` - checks app storage calls use the storage-key registry instead of raw key literals

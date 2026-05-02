@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.95`
+Current app version: `0.5.0-hardening.96`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -13,6 +13,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - App identity is centralized in `scripts/core/app-config.js`.
 - Runtime boot has an explicit documented bridge in `scripts/main.js`.
 - The transitional runtime bridge is validated by `npm run validate:runtime-modules` so missing or duplicate classic modules fail before browser boot.
+- The current browser-global compatibility surface is frozen by `npm run validate:global-bridge` so new `window.*` assignments are intentional.
 - Runtime script cache-busting now uses the canonical `application-version` meta tag instead of a stale fixed bridge value.
 - The old `scripts/app.js` compatibility wrapper is removed, and runtime validation blocks it from returning.
 - File-mode model preflight recovery now points to the canonical `index.html` local preview URL from app config instead of stale legacy HTML filenames.
@@ -153,6 +154,7 @@ npm run validate:github-templates
 npm run validate:workflow
 npm run validate:docs
 npm run validate:structure
+npm run validate:global-bridge
 npm run validate:css
 npm run validate:html-safety
 npm run validate:storage-keys
