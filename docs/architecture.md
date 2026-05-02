@@ -23,6 +23,8 @@ The bridge appends the canonical `application-version` meta value to runtime scr
 - `scripts/export.js` - PNG, SVG, PDF, and project JSON export
 - `scripts/cloud/` - cloud sync boundary
 - `scripts/devtools/` - validation and verification scripts
+- `styles/app.css` - ordered stylesheet manifest
+- `styles/*.css` - split styling surfaces for base tokens, home, editor, planner, panels, devtools, mobile, modals, catalog, and overlays
 
 ## Honest status
 

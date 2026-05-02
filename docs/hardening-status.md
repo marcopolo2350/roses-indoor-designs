@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.101`
+Current app version: `0.5.0-hardening.102`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -102,6 +102,8 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Static inline styles are blocked in the app shell; formerly inline hidden states, profile modal copy, room-type icons, brief swatches, and time-of-day preset sizing now use CSS classes instead.
 - CSS accessibility and mobile guardrails are covered by `npm run validate:css`, including focus-visible styling, reduced motion, safe-area handling, and banned negative letter spacing.
 - CSS phase-history comments were removed, and `npm run validate:css` blocks phase-archaeology comments from returning.
+- `styles/app.css` is now an ordered stylesheet manifest, while base, home, editor, planner, panel, modal, catalog, devtools, mobile, and overlay styling live in separate CSS files guarded by `npm run validate:css`.
+- `npm run validate:version` now also keeps the app stylesheet cache-busting query aligned with the canonical app version.
 - Dev/debug surfaces are guarded by `npm run validate:dev-mode` so model audits, diagnostics, and asset verification stay behind dev mode.
 - GitHub PR and issue templates are guarded by `npm run validate:github-templates` so future work keeps hardening scope and verification prompts.
 - The Verify workflow is guarded by `npm run validate:workflow` so CI keeps mirroring local hardening commands, current action majors, bounded Playwright install, and artifact uploads.

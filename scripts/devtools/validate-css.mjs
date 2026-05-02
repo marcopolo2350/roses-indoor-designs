@@ -2,8 +2,52 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
-const css = readFileSync(path.join(root, "styles/app.css"), "utf8");
+const requiredStyleFiles = [
+  "app.css",
+  "base.css",
+  "home.css",
+  "editor.css",
+  "planner3d.css",
+  "planner2d.css",
+  "panels.css",
+  "devtools.css",
+  "mobile.css",
+  "modals.css",
+  "catalog.css",
+  "overlays.css",
+];
+
+const cssByFile = new Map(
+  requiredStyleFiles.map((file) => [file, readFileSync(path.join(root, "styles", file), "utf8")]),
+);
+const appCss = cssByFile.get("app.css");
+const css = requiredStyleFiles
+  .filter((file) => file !== "app.css")
+  .map((file) => cssByFile.get(file))
+  .join("\n");
 const errors = [];
+
+let lastImportIndex = -1;
+for (const file of requiredStyleFiles.slice(1)) {
+  const importRule = `@import url("./${file}");`;
+  const index = appCss.indexOf(importRule);
+  if (index < 0) {
+    errors.push(`styles/app.css is missing ordered import: ${importRule}`);
+    continue;
+  }
+  if (index < lastImportIndex) {
+    errors.push(`styles/app.css imports ${file} out of cascade order.`);
+  }
+  lastImportIndex = index;
+}
+
+const nonManifestLines = appCss
+  .split(/\r?\n/)
+  .filter(Boolean)
+  .filter((line) => !line.startsWith("/*") && !line.startsWith("@import "));
+if (nonManifestLines.length) {
+  errors.push("styles/app.css must remain an import manifest, not a style junk drawer.");
+}
 
 for (const token of [
   "--z-3d",

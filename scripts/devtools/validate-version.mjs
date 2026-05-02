@@ -21,6 +21,12 @@ expectMatch(
   )?.[1],
 );
 expectMatch(
+  "index.html stylesheet version",
+  read("index.html").match(
+    /<link\s+rel=["']stylesheet["']\s+href=["']\.\/styles\/app\.css\?v=([^"']+)["']/i,
+  )?.[1],
+);
+expectMatch(
   "scripts/core/app-config.js",
   read("scripts/core/app-config.js").match(/version:\s*["']([^"']+)["']/)?.[1],
 );

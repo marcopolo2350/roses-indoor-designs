@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.102 - 2026-05-02
+
+- split the monolithic stylesheet into ordered CSS surface files while keeping `styles/app.css` as the cascade manifest
+- expanded CSS validation so required style files, manifest order, accessibility guards, mobile guards, and banned CSS patterns are checked across the split stylesheet set
+- added version validation for the app stylesheet URL so CSS cache-busting stays aligned with the app release
+
 ## 0.5.0-hardening.101 - 2026-05-02
 
 - removed duplicate undo/redo handlers from `scripts/planner3d.js` so room history stays owned by `scripts/core/history.js`

@@ -1,9 +1,12 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
 const indexHtml = readFileSync(path.join(root, "index.html"), "utf8");
-const css = readFileSync(path.join(root, "styles", "app.css"), "utf8");
+const css = readdirSync(path.join(root, "styles"))
+  .filter((file) => file.endsWith(".css"))
+  .map((file) => readFileSync(path.join(root, "styles", file), "utf8"))
+  .join("\n");
 const storageJs = readFileSync(path.join(root, "scripts", "storage.js"), "utf8");
 const walkthroughJs = readFileSync(path.join(root, "scripts", "walkthrough.js"), "utf8");
 const errors = [];

@@ -158,7 +158,8 @@ What they do:
 ## Repo Layout
 
 - [index.html](./index.html) - primary app shell
-- [styles/app.css](./styles/app.css) - visual system and layout styling
+- [styles/app.css](./styles/app.css) - ordered stylesheet manifest
+- [styles/](./styles) - split visual system files for base, home, editor, planner, panels, modals, catalog, mobile, and devtools styling
 - [scripts/main.js](./scripts/main.js) - canonical runtime bootstrap entry
 - [scripts/core/app-config.js](./scripts/core/app-config.js) - canonical app identity and version metadata
 - [scripts/core/project-schema.js](./scripts/core/project-schema.js) - JSON import/export schema helpers
