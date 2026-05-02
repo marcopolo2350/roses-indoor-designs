@@ -14,6 +14,7 @@ const allowedAssignments = new Set(
     ["ExportFilenames", "scripts/export/filenames.js"],
     ["PROFILE_LOCAL_KEY", "scripts/core/storage-keys.js"],
     ["Planner2DGeometry", "scripts/planner2d/geometry.js"],
+    ["Planner2DReferenceOverlay", "scripts/planner2d/reference-overlay.js"],
     ["Planner3DLifecycle", "scripts/planner3d/lifecycle.js"],
     ["Planner3DLighting", "scripts/planner3d/lighting.js"],
     ["Planner3DCamera", "scripts/planner3d/camera.js"],

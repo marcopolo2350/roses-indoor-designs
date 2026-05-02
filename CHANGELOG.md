@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.116 - 2026-05-02
+
+- extracted 2D reference overlay geometry and label helpers into `scripts/planner2d/reference-overlay.js`
+- registered the reference overlay boundary in runtime order and global-bridge validation
+- added `validate:reference-overlay` to keep reference overlay helpers out of the main 2D planner
+
 ## 0.5.0-hardening.115 - 2026-05-02
 
 - extracted furniture finish/material helpers into `scripts/planner3d/materials.js`

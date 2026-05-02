@@ -120,6 +120,9 @@ jobs:
       - name: Validate planner geometry
         run: npm run validate:geometry
 
+      - name: Validate reference overlay
+        run: npm run validate:reference-overlay
+
       - name: Validate catalog placement rules
         run: npm run validate:placement-rules
 

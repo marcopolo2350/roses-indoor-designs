@@ -35,6 +35,7 @@ const requiredPrCommands = [
   "npm run validate:project-schema",
   "npm run validate:app-state",
   "npm run validate:geometry",
+  "npm run validate:reference-overlay",
   "npm run validate:3d-lifecycle",
   "npm run validate:3d-materials",
   "npm run validate:3d-model-loader",

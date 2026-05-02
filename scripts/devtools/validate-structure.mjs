@@ -41,6 +41,7 @@ const requiredFiles = [
   "scripts/ui/shortcuts.js",
   "scripts/catalog/placement-rules.js",
   "scripts/planner2d/geometry.js",
+  "scripts/planner2d/reference-overlay.js",
   "scripts/planner3d/lifecycle.js",
   "scripts/planner3d/lighting.js",
   "scripts/planner3d/camera.js",
@@ -104,6 +105,7 @@ assertModuleBefore("./scripts/core/html.js", "./scripts/core/error-reporting.js"
 assertModuleBefore("./scripts/core/storage-keys.js", "./scripts/core/storage-service.js");
 assertModuleBefore("./scripts/core/storage-service.js", "./scripts/storage.js");
 assertModuleBefore("./scripts/catalog/placement-rules.js", "./scripts/state.js");
+assertModuleBefore("./scripts/planner2d/reference-overlay.js", "./scripts/planner2d.js");
 assertModuleBefore("./scripts/catalog/manifest.js", "./scripts/catalog.js");
 assertModuleBefore("./scripts/export/filenames.js", "./scripts/export/downloads.js");
 assertModuleBefore("./scripts/export/filenames.js", "./scripts/export/project-json.js");
@@ -134,6 +136,16 @@ for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
   if (modulePath === "scripts/planner3d.js" && /\b(?:hdriForTOD|_lerpHex)\b/.test(source)) {
     errors.push(
       `${modulePath} defines time-of-day lighting helpers outside scripts/planner3d/lighting.js.`,
+    );
+  }
+  if (
+    modulePath === "scripts/planner2d.js" &&
+    /\bfunction\s+(?:roomReference|roomReferenceVisible|roomReferenceWorldSize|roomReferenceBounds|referencePointToWorld|referenceWorldToLocal|referenceDisplayLabel)\s*\(/.test(
+      source,
+    )
+  ) {
+    errors.push(
+      `${modulePath} defines reference overlay geometry/label helpers outside scripts/planner2d/reference-overlay.js.`,
     );
   }
   if (
