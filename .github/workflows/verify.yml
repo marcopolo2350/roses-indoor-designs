@@ -117,6 +117,9 @@ jobs:
       - name: Validate planner geometry
         run: npm run validate:geometry
 
+      - name: Validate catalog placement rules
+        run: npm run validate:placement-rules
+
       - name: Validate 3D lifecycle
         run: npm run validate:3d-lifecycle
 

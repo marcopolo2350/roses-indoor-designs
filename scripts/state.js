@@ -105,14 +105,11 @@ function inferAssetKey(label,mountType){
   }[type]||null;
 }
 function defaultElevation(mountType, assetKey, type){
-  if(assetKey==='wall_art_01'||assetKey==='wall_art_04'||assetKey==='wall_art_06')return 5.2;
-  if(assetKey==='mirror')return 5;
-  if(assetKey==='lamp_wall')return 5.8;
-  if(assetKey==='lamp_table')return 2.8;
-  if(assetKey==='lamp_chandelier')return curRoom?.height?Math.max(7.2,curRoom.height-.6):8.4;
-  if(assetKey==='curtains')return 7.2;
-  if(assetKey==='shelving')return 5.5;
-  if(assetKey==='plant_small')return 2.9;
+  if(window.CatalogPlacementRules?.defaultElevation){
+    return window.CatalogPlacementRules.defaultElevation({mountType,assetKey,type,roomHeight:curRoom?.height});
+  }
+  if(mountType==='ceiling')return curRoom?.height?Math.max(7.2,curRoom.height-.6):8.4;
+  if(mountType==='surface')return 2.8;
   if(mountType==='wall')return 5;
   if(type==='lamp')return 0;
   return 0;

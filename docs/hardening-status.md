@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.105`
+Current app version: `0.5.0-hardening.106`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -79,6 +79,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Experimental cloud sync settings now render with DOM nodes and CSS classes, with Escape close and Tab focus containment guarded by `npm run validate:html-safety`.
 - Experimental cloud sync warnings, RLS docs, compatibility globals, validation hooks, and no-direct-global-mutation rules are guarded by `npm run validate:cloud-boundary`.
 - Pure 2D geometry helpers are isolated in `scripts/planner2d/geometry.js` and covered by `npm run validate:geometry`.
+- Catalog default placement and elevation rules are isolated in `scripts/catalog/placement-rules.js` and covered by `npm run validate:placement-rules`, so wall/ceiling defaults do not return to label-specific state logic.
 - Catalog manifest loading and normalization is isolated in `scripts/catalog/manifest.js`, and required source boundary directories are guarded by `npm run validate:structure`.
 - 3D material, scene, renderer, listener, and composer disposal helpers are isolated in `scripts/planner3d/lifecycle.js` and covered by `npm run validate:3d-lifecycle`.
 - 3D time-of-day lighting curves are isolated in `scripts/planner3d/lighting.js` and covered by `npm run validate:3d-lighting`, including bounded noon exposure so the room does not wash out.
@@ -176,6 +177,7 @@ npm run validate:clean-ignore
 npm run validate:project-schema
 npm run validate:app-state
 npm run validate:geometry
+npm run validate:placement-rules
 npm run validate:3d-lifecycle
 npm run validate:3d-lighting
 npm run validate:3d-camera

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.106 - 2026-05-02
+
+- isolated catalog default placement and elevation rules into `scripts/catalog/placement-rules.js`
+- added `npm run validate:placement-rules` to guard wall, ceiling, surface, and floor placement defaults
+- routed `state.js` default elevation through the catalog-owned rules boundary
+
 ## 0.5.0-hardening.105 - 2026-05-02
 
 - removed duplicate late override patterns from 3D view, walkthrough, photo, camera, and rebuild handlers

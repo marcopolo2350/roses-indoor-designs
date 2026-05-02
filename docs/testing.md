@@ -30,6 +30,7 @@ npm run validate:clean-ignore
 npm run validate:project-schema
 npm run validate:app-state
 npm run validate:geometry
+npm run validate:placement-rules
 npm run validate:3d-lifecycle
 npm run validate:3d-lighting
 npm run validate:3d-camera
@@ -67,6 +68,7 @@ npm test
 - `validate:project-schema` - exercises project JSON import/export schema validation
 - `validate:app-state` - exercises the central app state dispatcher bridge
 - `validate:geometry` - exercises pure 2D polygon, segment, and intersection helpers
+- `validate:placement-rules` - exercises catalog-owned wall, ceiling, surface, and floor placement defaults
 - `validate:3d-lifecycle` - exercises 3D disposal helpers for scene, renderer, listeners, and composer cleanup
 - `validate:3d-lighting` - exercises time-of-day HDRI buckets, sky colors, exposure limits, and light intensity curves
 - `validate:3d-camera` - exercises 3D camera labels, favorite-corner framing, overhead, and multi-room overview poses

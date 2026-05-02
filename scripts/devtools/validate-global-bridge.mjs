@@ -9,6 +9,7 @@ const allowedAssignments = new Set(
   [
     ["APP_CONFIG", "scripts/core/app-config.js"],
     ["APP_VERSION", "scripts/core/app-config.js"],
+    ["CatalogPlacementRules", "scripts/catalog/placement-rules.js"],
     ["ExportDownloads", "scripts/export/downloads.js"],
     ["ExportFilenames", "scripts/export/filenames.js"],
     ["PROFILE_LOCAL_KEY", "scripts/core/storage-keys.js"],

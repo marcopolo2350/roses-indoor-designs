@@ -100,6 +100,7 @@ npm run validate:clean-ignore
 npm run validate:project-schema
 npm run validate:app-state
 npm run validate:geometry
+npm run validate:placement-rules
 npm run validate:3d-lifecycle
 npm run validate:3d-lighting
 npm run validate:3d-camera
@@ -143,6 +144,7 @@ What they do:
 - `validate:project-schema` - checks project JSON import/export schema validation
 - `validate:app-state` - checks the central app state dispatcher bridge
 - `validate:geometry` - checks pure 2D geometry helpers
+- `validate:placement-rules` - checks catalog-owned default placement/elevation rules
 - `validate:3d-lifecycle` - checks 3D disposal/lifecycle helpers
 - `validate:3d-lighting` - checks data-driven time-of-day lighting buckets, colors, and exposure bounds
 - `validate:3d-camera` - checks data-driven 3D camera labels and pose math
@@ -171,6 +173,7 @@ What they do:
 - [scripts/core/storage-service.js](./scripts/core/storage-service.js) - IndexedDB open/read/write boundary
 - [scripts/core/app-state.js](./scripts/core/app-state.js) - first central runtime state surface for high-risk globals
 - [scripts/core/history.js](./scripts/core/history.js) - shared undo/redo and room-history runtime
+- [scripts/catalog/placement-rules.js](./scripts/catalog/placement-rules.js) - catalog-owned placement/elevation defaults
 - [scripts/planner2d/geometry.js](./scripts/planner2d/geometry.js) - pure 2D geometry helpers shared by planner logic
 - [scripts/planner3d/lifecycle.js](./scripts/planner3d/lifecycle.js) - 3D disposal and cleanup helpers
 - [scripts/planner3d/camera.js](./scripts/planner3d/camera.js) - data-driven 3D camera labels and pose helpers

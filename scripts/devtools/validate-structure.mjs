@@ -39,6 +39,7 @@ const requiredFiles = [
   "scripts/core/storage-service.js",
   "scripts/core/storage-keys.js",
   "scripts/ui/shortcuts.js",
+  "scripts/catalog/placement-rules.js",
   "scripts/planner2d/geometry.js",
   "scripts/planner3d/lifecycle.js",
   "scripts/planner3d/lighting.js",
@@ -96,6 +97,7 @@ function assertModuleBefore(before, after) {
 assertModuleBefore("./scripts/core/html.js", "./scripts/core/error-reporting.js");
 assertModuleBefore("./scripts/core/storage-keys.js", "./scripts/core/storage-service.js");
 assertModuleBefore("./scripts/core/storage-service.js", "./scripts/storage.js");
+assertModuleBefore("./scripts/catalog/placement-rules.js", "./scripts/state.js");
 assertModuleBefore("./scripts/catalog/manifest.js", "./scripts/catalog.js");
 assertModuleBefore("./scripts/export/filenames.js", "./scripts/export.js");
 assertModuleBefore("./scripts/export/filenames.js", "./scripts/export/downloads.js");
@@ -156,6 +158,19 @@ for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
       if (new RegExp(`^\\s*${name}\\s*=\\s*function\\b`, "m").test(source)) {
         errors.push(`${modulePath} must not override ${name} with a later function assignment.`);
       }
+    }
+  }
+  if (modulePath === "scripts/state.js") {
+    const defaultElevationBlock =
+      source.match(/function\s+defaultElevation\s*\([\s\S]*?\n}\nfunction\s+axisYawOffset/)?.[0] ||
+      "";
+    if (!/CatalogPlacementRules\.defaultElevation/.test(defaultElevationBlock)) {
+      errors.push(
+        `${modulePath} must delegate defaultElevation to scripts/catalog/placement-rules.js.`,
+      );
+    }
+    if (/assetKey\s*={0,3}\s*["']/.test(defaultElevationBlock)) {
+      errors.push(`${modulePath} must not hard-code asset-specific default elevation rules.`);
     }
   }
   const lines = source.split(/\r?\n/);
