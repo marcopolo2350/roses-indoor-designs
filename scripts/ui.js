@@ -262,7 +262,7 @@ function bindStaticUiActions(){
 async function chooseProfile(profileId,{skipReload=false}={}){
   activeProfile=PROFILE_LABELS[profileId]?profileId:'rose';
   try{
-    localStorage.setItem(PROFILE_LOCAL_KEY,activeProfile);
+    window.setActiveProfileId?.(activeProfile);
   }catch(e){
     window.reportRoseError?.('profile-select-save',e,{profileId:activeProfile});
   }

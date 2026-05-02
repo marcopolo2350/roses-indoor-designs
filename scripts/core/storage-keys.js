@@ -37,10 +37,35 @@
     }
   }
 
+  function getActiveProfileId() {
+    try {
+      return (
+        localStorage.getItem(storageKey("active_profile", { global: true })) ||
+        localStorage.getItem(profileLocalKey)
+      );
+    } catch (error) {
+      window.reportRoseError?.("profile-storage-read", error);
+      return null;
+    }
+  }
+
+  function setActiveProfileId(profileId) {
+    try {
+      localStorage.setItem(storageKey("active_profile", { global: true }), profileId);
+      localStorage.setItem(profileLocalKey, profileId);
+      return true;
+    } catch (error) {
+      window.reportRoseError?.("profile-storage-write", error, { profileId });
+      return false;
+    }
+  }
+
   window.PROFILE_LOCAL_KEY = profileLocalKey;
   window.storageKey = storageKey;
   window.scopedDbKey = scopedDbKey;
   window.profileSeenKey = profileSeenKey;
   window.getLocal = getLocal;
   window.setLocal = setLocal;
+  window.getActiveProfileId = getActiveProfileId;
+  window.setActiveProfileId = setActiveProfileId;
 })();

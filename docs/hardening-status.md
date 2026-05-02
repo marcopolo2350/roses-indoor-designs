@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.92`
+Current app version: `0.5.0-hardening.93`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -30,6 +30,8 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - `scripts/core/history.js` owns shared room history and undo/redo behavior.
 - `scripts/core/storage-keys.js` owns localStorage and IndexedDB key naming.
 - `npm run validate:storage-keys` blocks raw localStorage key literals outside the storage-key boundary.
+- Active profile persistence now uses the storage-key boundary while preserving the legacy profile key during migration.
+- `npm run validate:storage-keys` now blocks direct `localStorage` access from general app files.
 - IndexedDB access now exposes readable storage-service bridge names (`openDatabase`, `getRecord`, `setRecord`) while legacy callers migrate.
 - `scripts/cloud/supabase.js` isolates experimental cloud sync behavior.
 - `scripts/ui/shortcuts.js` owns keyboard shortcuts and shortcut-sheet rendering.

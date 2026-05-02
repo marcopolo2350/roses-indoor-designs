@@ -2,7 +2,7 @@
   const APP_CONFIG = Object.freeze({
     appName: "Rose's Indoor Designs",
     repoSlug: "roses-indoor-designs",
-    version: "0.5.0-hardening.92",
+    version: "0.5.0-hardening.93",
     publicUrl: "https://marcopolo2350.github.io/roses-indoor-designs/",
     storagePrefix: "rose_indoor_designs",
     database: Object.freeze({

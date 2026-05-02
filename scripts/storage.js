@@ -47,9 +47,9 @@ async function migrateLegacyProjectsIntoProfile(){
 }
 function loadActiveProfile(){
   try{
-    const raw=localStorage.getItem(PROFILE_LOCAL_KEY);
+    const raw=window.getActiveProfileId?.();
     activeProfile=(raw&&PROFILE_LABELS[raw])?raw:'rose';
-    localStorage.setItem(PROFILE_LOCAL_KEY,activeProfile);
+    window.setActiveProfileId?.(activeProfile);
   }catch(e){
     window.reportRoseError?.('profile-load',e);
   }

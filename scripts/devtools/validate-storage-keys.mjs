@@ -6,6 +6,11 @@ const scriptsDir = path.join(root, "scripts");
 const errors = [];
 const literalLocalStoragePattern =
   /localStorage\.(?:getItem|setItem|removeItem)\(\s*["'`](.+?)["'`]/g;
+const directLocalStoragePattern = /localStorage\.(?:getItem|setItem|removeItem)\(/;
+const directStorageAllowlist = new Set([
+  "scripts/core/storage-keys.js",
+  "scripts/cloud/supabase.js",
+]);
 
 function collectFiles(dir) {
   const files = [];
@@ -22,6 +27,9 @@ for (const filePath of collectFiles(scriptsDir)) {
   const relative = path.relative(root, filePath).replace(/\\/g, "/");
   if (relative === "scripts/core/storage-keys.js") continue;
   const source = readFileSync(filePath, "utf8");
+  if (!directStorageAllowlist.has(relative) && directLocalStoragePattern.test(source)) {
+    errors.push(`${relative} uses direct localStorage access outside the storage-key boundary.`);
+  }
   for (const match of source.matchAll(literalLocalStoragePattern)) {
     errors.push(`${relative} uses a raw localStorage key literal: ${match[1]}`);
   }

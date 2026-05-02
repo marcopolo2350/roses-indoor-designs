@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.93 - 2026-05-02
+
+- moved active profile persistence behind the storage-key boundary while preserving the legacy profile key
+- tightened storage-key validation so general app files cannot access `localStorage` directly
+
 ## 0.5.0-hardening.92 - 2026-05-02
 
 - added `npm run validate:workflow` to keep the GitHub Verify workflow aligned with local hardening checks
