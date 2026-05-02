@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.114 - 2026-05-02
+
+- extracted GLTF loader/cache/error-status behavior into `scripts/planner3d/model-loader.js`
+- registered the 3D model-loader boundary in runtime order and global-bridge validation
+- added `validate:3d-model-loader` to keep model-loading behavior out of the main 3D renderer
+
 ## 0.5.0-hardening.113 - 2026-05-02
 
 - added `validate:package` to enforce required npm scripts, package metadata, Node version guidance, and workflow alignment

@@ -44,6 +44,7 @@ const requiredFiles = [
   "scripts/planner3d/lifecycle.js",
   "scripts/planner3d/lighting.js",
   "scripts/planner3d/camera.js",
+  "scripts/planner3d/model-loader.js",
   "scripts/catalog/manifest.js",
   "scripts/export/filenames.js",
   "scripts/export/downloads.js",
@@ -114,6 +115,7 @@ assertModuleBefore("./scripts/core/history.js", "./scripts/planner3d.js");
 assertModuleBefore("./scripts/planner3d/lifecycle.js", "./scripts/planner3d.js");
 assertModuleBefore("./scripts/planner3d/lighting.js", "./scripts/planner3d.js");
 assertModuleBefore("./scripts/planner3d/camera.js", "./scripts/planner3d.js");
+assertModuleBefore("./scripts/planner3d/model-loader.js", "./scripts/planner3d.js");
 
 for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
   const modulePath = path.relative(root, absolute).replace(/\\/g, "/");
@@ -138,6 +140,16 @@ for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
   ) {
     errors.push(
       `${modulePath} defines favorite-corner camera scoring outside scripts/planner3d/camera.js.`,
+    );
+  }
+  if (
+    modulePath === "scripts/planner3d.js" &&
+    /\bfunction\s+(?:ensureGLTFLoader|warnAssetFallback|cloneAssetScene|loadModelAsset)\s*\(/.test(
+      source,
+    )
+  ) {
+    errors.push(
+      `${modulePath} defines model loading behavior outside scripts/planner3d/model-loader.js.`,
     );
   }
   if (modulePath === "scripts/planner3d.js") {
