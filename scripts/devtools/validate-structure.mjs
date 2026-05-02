@@ -42,6 +42,7 @@ const requiredFiles = [
   "scripts/catalog/placement-rules.js",
   "scripts/planner2d/geometry.js",
   "scripts/planner2d/reference-overlay.js",
+  "scripts/planner2d/snapping.js",
   "scripts/planner3d/lifecycle.js",
   "scripts/planner3d/lighting.js",
   "scripts/planner3d/camera.js",
@@ -106,6 +107,7 @@ assertModuleBefore("./scripts/core/storage-keys.js", "./scripts/core/storage-ser
 assertModuleBefore("./scripts/core/storage-service.js", "./scripts/storage.js");
 assertModuleBefore("./scripts/catalog/placement-rules.js", "./scripts/state.js");
 assertModuleBefore("./scripts/planner2d/reference-overlay.js", "./scripts/planner2d.js");
+assertModuleBefore("./scripts/planner2d/snapping.js", "./scripts/planner2d.js");
 assertModuleBefore("./scripts/catalog/manifest.js", "./scripts/catalog.js");
 assertModuleBefore("./scripts/export/filenames.js", "./scripts/export/downloads.js");
 assertModuleBefore("./scripts/export/filenames.js", "./scripts/export/project-json.js");
@@ -146,6 +148,16 @@ for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
   ) {
     errors.push(
       `${modulePath} defines reference overlay geometry/label helpers outside scripts/planner2d/reference-overlay.js.`,
+    );
+  }
+  if (
+    modulePath === "scripts/planner2d.js" &&
+    /\bfunction\s+(?:isWallMountedFurnitureItem|wallSnapForFurniture|snapFurnitureForItem)\s*\(/.test(
+      source,
+    )
+  ) {
+    errors.push(
+      `${modulePath} defines furniture snapping helpers outside scripts/planner2d/snapping.js.`,
     );
   }
   if (

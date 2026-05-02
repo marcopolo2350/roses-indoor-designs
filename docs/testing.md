@@ -32,6 +32,7 @@ npm run validate:project-schema
 npm run validate:app-state
 npm run validate:geometry
 npm run validate:reference-overlay
+npm run validate:snapping
 npm run validate:placement-rules
 npm run validate:3d-lifecycle
 npm run validate:3d-lighting
@@ -74,6 +75,7 @@ npm test
 - `validate:app-state` - exercises the central app state dispatcher bridge
 - `validate:geometry` - exercises pure 2D polygon, segment, and intersection helpers
 - `validate:reference-overlay` - exercises 2D reference overlay geometry, hit conversion, visibility, and labels
+- `validate:snapping` - exercises wall-mounted furniture snapping, opening snapping, and floor-item fallback
 - `validate:placement-rules` - exercises manifest-backed wall, ceiling, surface, and floor placement defaults
 - `validate:3d-lifecycle` - exercises 3D disposal helpers for scene, renderer, listeners, and composer cleanup
 - `validate:3d-lighting` - exercises time-of-day HDRI buckets, sky colors, exposure limits, and light intensity curves

@@ -123,6 +123,9 @@ jobs:
       - name: Validate reference overlay
         run: npm run validate:reference-overlay
 
+      - name: Validate planner snapping
+        run: npm run validate:snapping
+
       - name: Validate catalog placement rules
         run: npm run validate:placement-rules
 

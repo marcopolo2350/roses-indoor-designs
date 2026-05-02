@@ -99,6 +99,7 @@ for (const name of [
   "validate:app-state",
   "validate:geometry",
   "validate:reference-overlay",
+  "validate:snapping",
   "validate:placement-rules",
   "validate:3d-lifecycle",
   "validate:3d-lighting",

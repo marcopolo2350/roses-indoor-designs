@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.117 - 2026-05-02
+
+- extracted wall-mounted furniture snapping helpers into `scripts/planner2d/snapping.js`
+- registered the snapping boundary in runtime order and global-bridge validation
+- added `validate:snapping` to guard wall, opening, and floor-item snap behavior
+
 ## 0.5.0-hardening.116 - 2026-05-02
 
 - extracted 2D reference overlay geometry and label helpers into `scripts/planner2d/reference-overlay.js`

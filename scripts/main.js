@@ -10,6 +10,7 @@ const RUNTIME_MODULES = [
   "./scripts/catalog/placement-rules.js",
   "./scripts/state.js",
   "./scripts/storage.js",
+  "./scripts/planner2d/snapping.js",
   "./scripts/core/app-state.js",
   "./scripts/core/history.js",
   "./scripts/ui/shortcuts.js",

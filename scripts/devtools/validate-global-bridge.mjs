@@ -15,6 +15,7 @@ const allowedAssignments = new Set(
     ["PROFILE_LOCAL_KEY", "scripts/core/storage-keys.js"],
     ["Planner2DGeometry", "scripts/planner2d/geometry.js"],
     ["Planner2DReferenceOverlay", "scripts/planner2d/reference-overlay.js"],
+    ["Planner2DSnapping", "scripts/planner2d/snapping.js"],
     ["Planner3DLifecycle", "scripts/planner3d/lifecycle.js"],
     ["Planner3DLighting", "scripts/planner3d/lighting.js"],
     ["Planner3DCamera", "scripts/planner3d/camera.js"],
