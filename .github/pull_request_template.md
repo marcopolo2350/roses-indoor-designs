@@ -22,6 +22,7 @@
 - [ ] `npm run validate:static-a11y`
 - [ ] `npm run validate:dev-mode`
 - [ ] `npm run validate:github-templates`
+- [ ] `npm run validate:workflow`
 - [ ] `npm run validate:docs`
 - [ ] `npm run validate:structure`
 - [ ] `npm run validate:css`

@@ -13,6 +13,7 @@ npm run validate:asset-sources
 npm run validate:static-a11y
 npm run validate:dev-mode
 npm run validate:github-templates
+npm run validate:workflow
 npm run validate:docs
 npm run validate:structure
 npm run validate:css
@@ -44,6 +45,7 @@ npm test
 - `validate:static-a11y` - checks static app-shell button names, button types, dialogs, and decorative SVG hiding
 - `validate:dev-mode` - checks debug/model/diagnostic surfaces stay behind `.dev-only`
 - `validate:github-templates` - checks issue/PR templates keep hardening scope and verification prompts current
+- `validate:workflow` - checks the GitHub Verify workflow mirrors local guardrails and current action majors
 - `validate:docs` - checks README, testing docs, hardening status, and PR verification commands for drift
 - `validate:structure` - checks required source boundary directories, boundary files, and runtime ordering
 - `validate:css` - checks focus styling, z-index tokens, reduced motion, safe-area handling, and blocked CSS patterns

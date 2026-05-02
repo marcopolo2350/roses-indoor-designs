@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.92 - 2026-05-02
+
+- added `npm run validate:workflow` to keep the GitHub Verify workflow aligned with local hardening checks
+- guarded current action majors, bounded Playwright browser install, and CI artifact uploads from drifting silently
+
 ## 0.5.0-hardening.91 - 2026-05-02
 
 - added clean/ignore contract validation for generated local artifacts

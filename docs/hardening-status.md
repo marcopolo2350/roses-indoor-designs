@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.91`
+Current app version: `0.5.0-hardening.92`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -93,6 +93,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - CSS phase-history comments were removed, and `npm run validate:css` blocks phase-archaeology comments from returning.
 - Dev/debug surfaces are guarded by `npm run validate:dev-mode` so model audits, diagnostics, and asset verification stay behind dev mode.
 - GitHub PR and issue templates are guarded by `npm run validate:github-templates` so future work keeps hardening scope and verification prompts.
+- The Verify workflow is guarded by `npm run validate:workflow` so CI keeps mirroring local hardening commands, current action majors, bounded Playwright install, and artifact uploads.
 - README, testing docs, deployment notes, hardening status, and PR verification commands are guarded by `npm run validate:docs`.
 - `npm run validate:docs` now also guards the hardening-status verification command list.
 - `npm run validate:docs` now blocks stale legacy app-shell HTML filenames from returning in canonical docs and the progress log.
@@ -143,6 +144,7 @@ npm run validate:asset-sources
 npm run validate:static-a11y
 npm run validate:dev-mode
 npm run validate:github-templates
+npm run validate:workflow
 npm run validate:docs
 npm run validate:structure
 npm run validate:css

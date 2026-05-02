@@ -66,6 +66,9 @@ jobs:
       - name: Validate GitHub templates
         run: npm run validate:github-templates
 
+      - name: Validate workflow contract
+        run: npm run validate:workflow
+
       - name: Validate documentation
         run: npm run validate:docs
 

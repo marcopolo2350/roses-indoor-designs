@@ -108,4 +108,6 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Documentation validation passed for ${requiredDocs.length} files.`);
+console.log(
+  `Documentation validation passed for ${requiredDocs.length} required docs plus progress log.`,
+);
