@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.105 - 2026-05-02
+
+- removed duplicate late override patterns from 3D view, walkthrough, photo, camera, and rebuild handlers
+- kept the existing final behavior as single function declarations so future edits touch one owner per handler
+- expanded source-structure validation to block those 3D handler overrides from returning
+
 ## 0.5.0-hardening.104 - 2026-05-02
 
 - isolated 3D camera labels and pose math into `scripts/planner3d/camera.js`

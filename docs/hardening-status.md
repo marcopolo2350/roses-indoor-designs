@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.104`
+Current app version: `0.5.0-hardening.105`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -83,6 +83,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - 3D material, scene, renderer, listener, and composer disposal helpers are isolated in `scripts/planner3d/lifecycle.js` and covered by `npm run validate:3d-lifecycle`.
 - 3D time-of-day lighting curves are isolated in `scripts/planner3d/lighting.js` and covered by `npm run validate:3d-lighting`, including bounded noon exposure so the room does not wash out.
 - 3D camera labels and pose math are isolated in `scripts/planner3d/camera.js` and covered by `npm run validate:3d-camera`, including favorite-corner, overhead, and multi-room overview framing.
+- Duplicate 3D view, walkthrough, photo, camera, and rebuild handler overrides were collapsed into single function declarations, and `npm run validate:structure` blocks those late overrides from returning.
 - Export filenames are sanitized through `scripts/export/filenames.js` and covered by `npm run validate:export-filenames`.
 - Export downloads are centralized in `scripts/export/downloads.js`, loaded before export/3D runtime code, and covered by source/export validation.
 - Project JSON import/export is isolated in `scripts/export/project-json.js` and guarded by source/export validation.

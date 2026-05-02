@@ -134,6 +134,30 @@ for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
       `${modulePath} defines favorite-corner camera scoring outside scripts/planner3d/camera.js.`,
     );
   }
+  if (modulePath === "scripts/planner3d.js") {
+    const singleDefinition3DHandlers = [
+      "exit3DView",
+      "toggleWalkthroughTray",
+      "updateWalkthroughTray",
+      "togglePhotoMode",
+      "updatePhotoTray",
+      "setPhotoPreset",
+      "favoriteCornerPose",
+      "startWalkthroughPreset",
+      "rebuild3D",
+    ];
+    for (const name of singleDefinition3DHandlers) {
+      const declarations = [...source.matchAll(new RegExp(`\\bfunction\\s+${name}\\s*\\(`, "g"))];
+      if (declarations.length !== 1) {
+        errors.push(
+          `${modulePath} must define ${name} exactly once, found ${declarations.length}.`,
+        );
+      }
+      if (new RegExp(`^\\s*${name}\\s*=\\s*function\\b`, "m").test(source)) {
+        errors.push(`${modulePath} must not override ${name} with a later function assignment.`);
+      }
+    }
+  }
   const lines = source.split(/\r?\n/);
   lines.forEach((line, index) => {
     if (/^\s*(?:\/\/|\/\*|\*)\s*phase\b/i.test(line)) {

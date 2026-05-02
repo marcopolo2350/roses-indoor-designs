@@ -79,7 +79,6 @@ function toggle3D(){
   document.getElementById('scrEd').classList.add('mode-3d');
   hideP();build3D();setTimeout(()=>{if(is3D){setViewPreset('eye');showViewChip('3D View - Room');}},80);updateWalkthroughTray();updatePhotoTray();}
 
-function exit3DView(){stop3D();hideViewChip();is3D=false;camMode='orbit';presentationMode=false;compare3DMode=false;photoMode=false;photoTrayOpen=false;cameraScript=null;walkthroughTrayOpen=false;document.getElementById('scrEd').classList.remove('mode-3d','presentation','photo-mode');document.getElementById('threeC').classList.remove('on');document.getElementById('b3d').classList.remove('on');document.getElementById('vLbl').textContent='2D Plan';document.getElementById('camBtns').classList.remove('on');document.getElementById('walkHint').classList.remove('on');document.getElementById('presentPill').classList.remove('on');document.getElementById('presentPill').textContent='Presentation Mode';document.getElementById('photoPill')?.classList.remove('on');document.getElementById('cmCompare').classList.remove('act');document.getElementById('cmTour')?.classList.remove('act');document.getElementById('cmPhoto')?.classList.remove('act');updateWalkthroughTray();updatePhotoTray();resetRoomDebug();initCan();if(last2DViewState){vScale=last2DViewState.vScale;vOff={...last2DViewState.vOff}}draw();showP()}
 
 function presentationShotLabel(mode){
   return window.Planner3DCamera?.presentationShotLabel(mode)||'Hero View';
@@ -409,79 +408,6 @@ function focusFurniture3D(itemOrId){
   cPitch=.34;
   cYaw=Math.PI*.14;
 }
-function toggleWalkthroughTray(){
-  if(!is3D)return;
-  if(photoMode)togglePhotoMode(false);
-  if(presentationMode)togglePresentationMode();
-  walkthroughTrayOpen=!walkthroughTrayOpen;
-  document.getElementById('cmTour')?.classList.toggle('act',walkthroughTrayOpen);
-  updateWalkthroughTray();
-}
-function updateWalkthroughTray(){
-  const existing=document.getElementById('tourTray');
-  if(!is3D||!walkthroughTrayOpen||photoMode||presentationMode){if(existing)existing.remove();return;}
-  const isTouch=(navigator.maxTouchPoints||0)>0||window.innerWidth<=760;
-  const presets=[
-    ['favorite_corner','Favorite Corner','Finds the room’s best-composed angle.'],
-    ['dollhouse','Dollhouse','Pulls back for the full room form.'],
-    ['stroll','Stroll','Walks the room at eye level.'],
-    ['corner_reveal','Corner Reveal','Settles into a cinematic corner angle.'],
-    ['before_after','Before / After','Cycles existing, redesign, and combined.'],
-    ['romantic_reveal','Romantic Reveal','Soft presentation sweep for the final feel.'],
-  ];
-  replaceOrAppend3DTray(existing,createWalkthroughTrayNode({
-    title:'Walkthrough Presets',
-    copy:isTouch?'Pick a move and keep your thumb near the bottom edge.':'Choose a camera move for the room.',
-    presets,
-    isTouch
-  }));
-}
-function togglePhotoMode(force){
-  if(!is3D)return;
-  const next=typeof force==='boolean'?force:!photoMode;
-  photoMode=next;
-  if(photoMode){
-    presentationMode=false;
-    walkthroughTrayOpen=false;
-    photoTrayOpen=true;
-    document.getElementById('scrEd').classList.remove('presentation');
-    document.getElementById('presentPill').classList.remove('on');
-    document.getElementById('cmPresent')?.classList.remove('act');
-    document.getElementById('cmTour')?.classList.remove('act');
-    setPhotoPreset('hero');
-  }else{
-    photoTrayOpen=false;
-  }
-  document.getElementById('scrEd').classList.toggle('photo-mode',photoMode);
-  document.getElementById('photoPill')?.classList.toggle('on',photoMode);
-  document.getElementById('cmPhoto')?.classList.toggle('act',photoMode);
-  updateWalkthroughTray();
-  updatePhotoTray();
-  applyRoomStyleToScene?.();
-}
-function updatePhotoTray(){
-  const existing=document.getElementById('photoTray');
-  if(!is3D||!photoMode||!photoTrayOpen){if(existing)existing.remove();return;}
-  const presets=[
-    ['hero','Hero Shot','Balanced hero angle for clean presentation images.'],
-    ['favorite','Favorite Corner','Frames the room from its best-composed corner.'],
-    ['intimate','Intimate','Moves in closer for softer, warmer storytelling.'],
-    ['overhead','Overhead','Pulls up for a styled layout overview.']
-  ];
-  replaceOrAppend3DTray(existing,createPhotoTrayNode({
-    copy:'Clean capture UI, styled camera presets, and higher-quality PNG export.',
-    presets,
-    resetLabel:'Reset View',
-    resetPreset:'corner'
-  }));
-}
-function setPhotoPreset(mode){
-  if(!is3D||!curRoom)return;
-  const focus=getRoomFocus(curRoom);
-  const current={yaw:cYaw,pitch:cPitch,dist:cDist,target:{...(orbitTarget||{x:focus.x,y:curRoom.height*.42,z:-focus.y})}};
-  const next=window.Planner3DCamera.photoPose(mode,curRoom,{getRoomFocus,getRoomBounds2D,currentFloor3DRooms,getRoomsFocus});
-  playCameraSequence([{duration:1100,apply:t=>applyCameraTween(current,next,t)}]);
-}
 function capturePhotoMode(download=true){
   if(!is3D||!ren||!cam)return null;
   const size=ren.getSize(new THREE.Vector2());
@@ -531,30 +457,6 @@ function findTourWalkPoint(index,total){
   const focus=floorRooms.length>1?getRoomsFocus(floorRooms):getRoomFocus(curRoom),radius=Math.max(1.4,Math.min(focus.maxD*.35,4.8)),angle=-Math.PI*.25+(index/Math.max(1,total-1))*Math.PI*.5;
   const candidate={x:focus.x+Math.cos(angle)*radius,z:-focus.y+Math.sin(angle)*radius};
   return clampWalkPos(candidate.x,candidate.z,floorRooms)?candidate:findWalkStart(floorRooms);
-}
-function favoriteCornerPose(room){
-  return window.Planner3DCamera.favoriteCornerPose(room,{getRoomFocus,getRoomBounds2D});
-}
-function startWalkthroughPreset(id){
-  if(!is3D||!curRoom)return;
-  walkthroughTrayOpen=false;updateWalkthroughTray();
-  const floorRooms=currentFloor3DRooms(curRoom);
-  const floorFocus=floorRooms.length>1?getRoomsFocus(floorRooms):getRoomFocus(curRoom);
-  const focus=getRoomFocus(curRoom);
-  const current={yaw:cYaw,pitch:cPitch,dist:cDist,target:{...(orbitTarget||{x:floorFocus.x,y:(floorFocus.height3D||curRoom.height)*.42,z:-floorFocus.y})}};
-  const overview={yaw:Math.PI*.18,pitch:.78,dist:Math.max(18,Math.min(52,Math.max(floorFocus.width,floorFocus.height,floorFocus.height3D||curRoom.height)*2.2)),target:{x:floorFocus.x,y:(floorFocus.height3D||curRoom.height)*.5,z:-floorFocus.y}};
-  const corner={yaw:Math.PI*.62,pitch:.36,dist:Math.max(12,Math.min(30,Math.max(focus.width,focus.height)*1.35)),target:{x:focus.x,y:curRoom.height*.4,z:-focus.y}};
-  const romantic={yaw:Math.PI*.52,pitch:.28,dist:Math.max(10,Math.min(24,Math.max(focus.width,focus.height)*1.1)),target:{x:focus.x,y:curRoom.height*.36,z:-focus.y}};
-  const favorite=favoriteCornerPose(curRoom);
-  if(id==='favorite_corner')playCameraSequence([{duration:1800,apply:t=>applyCameraTween(current,favorite,t)}]);
-  else if(id==='dollhouse')playCameraSequence([{duration:2200,apply:t=>applyCameraTween(current,overview,t)}]);
-  else if(id==='corner_reveal')playCameraSequence([{duration:1500,apply:t=>applyCameraTween(current,overview,t)},{duration:2200,apply:t=>applyCameraTween(overview,corner,t)}]);
-  else if(id==='romantic_reveal'){presentationMode=true;document.getElementById('scrEd').classList.add('presentation');document.getElementById('presentPill').classList.add('on');playCameraSequence([{duration:1600,apply:t=>applyCameraTween(current,corner,t)},{duration:2400,apply:t=>applyCameraTween(corner,romantic,t)}]);}
-  else if(id==='before_after')playCameraSequence([{duration:900,onStart:()=>setCompareModeForTour('existing'),apply:t=>applyCameraTween(current,corner,t)},{duration:1200,onStart:()=>setCompareModeForTour('redesign'),apply:t=>applyCameraTween(corner,{...corner,yaw:corner.yaw+.24},t)},{duration:1200,onStart:()=>setCompareModeForTour('combined'),apply:t=>applyCameraTween({...corner,yaw:corner.yaw+.24},overview,t)}]);
-  else if(id==='stroll'){
-    const pts=[findTourWalkPoint(0,3),findTourWalkPoint(1,3),findTourWalkPoint(2,3)];
-    playCameraSequence([{duration:400,onStart:()=>setCamMode('walk'),apply:()=>{}},{duration:1800,apply:t=>applyWalkTween(fpPos,pts[0],t)},{duration:1800,apply:t=>applyWalkTween(pts[0],pts[1],t)},{duration:1800,apply:t=>applyWalkTween(pts[1],pts[2],t)},{duration:900,onStart:()=>setCamMode('orbit'),apply:()=>{}}]);
-  }
 }
 // Easing curves for walkthrough. Previously progress was linear, so every
 // camera move felt robotic. easeInOutCubic on the default, easeOutQuint on reveals.
@@ -2058,13 +1960,6 @@ function buildFurniture3D(f, rH) {
 function box3(w,h,d,m){return new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m)}
 function cy3(r,h,m){return new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,12),m)}
 
-function rebuild3D(){
-  stop3D();
-  build3D();
-  if(typeof applyRoomStyleToScene==='function')applyRoomStyleToScene();
-  updateWalkthroughTray();
-  updatePhotoTray();
-}
 function disposeMaterial(mat){
   window.Planner3DLifecycle.disposeMaterial(mat);
 }
@@ -2085,8 +1980,8 @@ const wc2=document.getElementById('walkCtrl');if(wc2)wc2.remove();stopWalkMove()
   if(composer){window.Planner3DLifecycle.disposeComposer(composer,error=>window.reportRoseRecoverableError?.('3D composer disposal failed',error));composer=null}
   scene=null;cam=null}
 
-// Presentation / reveal polish overrides
-exit3DView=function(){
+// Presentation / reveal handlers
+function exit3DView(){
   stop3D();
   hideViewChip();
   is3D=false;camMode='orbit';presentationMode=false;compare3DMode=false;photoMode=false;photoTrayOpen=false;cameraScript=null;walkthroughTrayOpen=false;
@@ -2110,7 +2005,7 @@ exit3DView=function(){
   draw();
   showP();
 }
-toggleWalkthroughTray=function(){
+function toggleWalkthroughTray(){
   if(!is3D)return;
   if(photoMode)togglePhotoMode(false);
   if(presentationMode)togglePresentationMode();
@@ -2118,7 +2013,7 @@ toggleWalkthroughTray=function(){
   document.getElementById('cmTour')?.classList.toggle('act',walkthroughTrayOpen);
   updateWalkthroughTray();
 }
-updateWalkthroughTray=function(){
+function updateWalkthroughTray(){
   const existing=document.getElementById('tourTray');
   if(!is3D||!walkthroughTrayOpen||photoMode||presentationMode){if(existing)existing.remove();return;}
   const isTouch=(navigator.maxTouchPoints||0)>0||window.innerWidth<=760;
@@ -2137,7 +2032,7 @@ updateWalkthroughTray=function(){
     isTouch
   }));
 }
-togglePhotoMode=function(force){
+function togglePhotoMode(force){
   if(!is3D)return;
   const next=typeof force==='boolean'?force:!photoMode;
   photoMode=next;
@@ -2161,7 +2056,7 @@ togglePhotoMode=function(force){
   refreshPresentationPill();
   applyRoomStyleToScene?.();
 }
-updatePhotoTray=function(){
+function updatePhotoTray(){
   const existing=document.getElementById('photoTray');
   if(!is3D||!photoMode||!photoTrayOpen){if(existing)existing.remove();return;}
   const presets=[
@@ -2177,7 +2072,7 @@ updatePhotoTray=function(){
     resetPreset:'hero'
   }));
 }
-setPhotoPreset=function(mode){
+function setPhotoPreset(mode){
   if(!is3D||!curRoom)return;
   const focus=getRoomFocus(curRoom);
   const current={yaw:cYaw,pitch:cPitch,dist:cDist,target:{...(orbitTarget||{x:focus.x,y:curRoom.height*.42,z:-focus.y})}};
@@ -2201,7 +2096,7 @@ function capturePresentationStill(){
   toast('Reveal cover exported');
   return dataUrl;
 }
-favoriteCornerPose=function(room){
+function favoriteCornerPose(room){
   return window.Planner3DCamera.favoriteCornerPose(room,{getRoomFocus,getRoomBounds2D});
 }
 function setPresentationShot(mode){
@@ -2219,7 +2114,7 @@ function setPresentationShot(mode){
   const next=window.Planner3DCamera.presentationPose(mode,curRoom,{getRoomFocus,getRoomBounds2D,currentFloor3DRooms,getRoomsFocus});
   playCameraSequence([{duration:1350,apply:t=>applyCameraTween(current,next,t)}]);
 }
-startWalkthroughPreset=function(id){
+function startWalkthroughPreset(id){
   if(!is3D||!curRoom)return;
   walkthroughTrayOpen=false;updateWalkthroughTray();
   showViewChip(`Walkthrough · ${walkthroughPresetLabel(id)}`);
@@ -2241,7 +2136,7 @@ startWalkthroughPreset=function(id){
   refreshPresentationPill();
   updatePresentationTray();
 }
-rebuild3D=function(){
+function rebuild3D(){
   stop3D();
   build3D();
   if(typeof applyRoomStyleToScene==='function')applyRoomStyleToScene();
