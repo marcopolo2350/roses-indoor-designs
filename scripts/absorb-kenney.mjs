@@ -1,5 +1,5 @@
 /**
- * Phase 1C — Selective Kenney furniture kit import.
+ * Selective Kenney furniture kit import.
  * Picks ~15 items not already represented by existing kn_* entries or real-GLB
  * alternatives (Poly Haven / temp pack). Kenney is CC0 low-poly — used here for
  * structural + niche gaps (dryer, corner cabinets, TV cabinet, rug doormat, etc.).

@@ -1,5 +1,5 @@
 /**
- * Phase 1E — Download selected Poly Haven models and register in asset-manifest.json.
+ * Download selected Poly Haven models and register in asset-manifest.json.
  * Auto-discovers real slugs from https://api.polyhaven.com/assets?type=models
  * and downloads the textured gltf (with embedded buffers + textures) into assets/models/.
  * All assets are CC0. Usage: node scripts/fetch-polyhaven.mjs
@@ -25,7 +25,7 @@ const PICKS_CONFIG = [
   { match:/vase|bowl|jar/i,      max:2, category:'Decor',    subcat:'vessel',   rooms:['living_room','dining_room'] },
   { match:/book|frame|clock/i,   max:2, category:'Decor',    subcat:'prop',     rooms:['living_room','office'] },
   { match:/rug|carpet/i,         max:1, category:'Rugs',     subcat:'rug',      rooms:['living_room','bedroom'] },
-  // Phase ✨ — Soft goods & decor density
+  // Soft goods and decor density
   { match:/curtain|drape/i,      max:2, category:'Decor',    subcat:'curtain',  rooms:['living_room','bedroom'] },
   { match:/pillow|cushion/i,     max:2, category:'Decor',    subcat:'pillow',   rooms:['living_room','bedroom'] },
   { match:/blanket|throw/i,      max:1, category:'Decor',    subcat:'throw',    rooms:['living_room','bedroom'] },

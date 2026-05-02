@@ -4,6 +4,20 @@ import path from "node:path";
 const root = process.cwd();
 const errors = [];
 
+function listSourceFiles(dir) {
+  const entries = readdirSync(dir, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const absolute = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...listSourceFiles(absolute));
+      continue;
+    }
+    if (/\.(?:js|mjs)$/i.test(entry.name)) files.push(absolute);
+  }
+  return files;
+}
+
 const requiredDirs = [
   "scripts/core",
   "scripts/ui",
@@ -78,12 +92,11 @@ assertModuleBefore("./scripts/export/downloads.js", "./scripts/export/project-js
 assertModuleBefore("./scripts/export/project-json.js", "./scripts/export.js");
 assertModuleBefore("./scripts/planner3d/lifecycle.js", "./scripts/planner3d.js");
 
-for (const modulePath of modules.map((src) => src.replace(/^\.\//, ""))) {
-  const absolute = path.join(root, modulePath);
-  if (!existsSync(absolute)) continue;
+for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
+  const modulePath = path.relative(root, absolute).replace(/\\/g, "/");
   const lines = readFileSync(absolute, "utf8").split(/\r?\n/);
   lines.forEach((line, index) => {
-    if (/^\s*\/\/.*phase/i.test(line) || /^\s*\/\*.*phase/i.test(line)) {
+    if (/^\s*(?:\/\/|\/\*|\*)\s*phase\b/i.test(line)) {
       errors.push(`${modulePath}:${index + 1} contains a phase-history comment.`);
     }
   });

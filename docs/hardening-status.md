@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.85`
+Current app version: `0.5.0-hardening.86`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -77,7 +77,7 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Mobile 3D walk controls render with DOM nodes, CSS classes, and accessible hold-button labels instead of injected inline HTML/styles, guarded by `npm run validate:html-safety`.
 - The 3D Reveal Mode presentation tray now renders room story copy, shot controls, and actions with DOM nodes and `textContent`, guarded by `npm run validate:html-safety`.
 - The 3D Walkthrough and Photo Mode trays now render preset labels, copy, and action buttons with DOM nodes and `textContent`, guarded by `npm run validate:html-safety`.
-- Runtime module comments no longer carry phase-history labels, and `npm run validate:structure` blocks them from returning.
+- Maintained source comments no longer carry phase-history labels, and `npm run validate:structure` blocks them from returning across `scripts/**/*.js` and `scripts/**/*.mjs`.
 - `data/asset-validation-overrides.json` documents intentional shared GLB aliases.
 - Every catalog entry now declares a valid `mountType`, and manifest validation blocks new entries that omit placement metadata.
 - Kenney catalog entries now point to tracked `assets/models/kn_*.glb` files instead of ignored local source-pack paths, so CI and GitHub Pages validate the same assets as the local app.

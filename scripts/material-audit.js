@@ -1,4 +1,4 @@
-// Phase ✨ — Runtime material audit. Walks every mesh in a loaded GLB and upgrades
+// Runtime material audit. Walks every mesh in a loaded GLB and upgrades
 // PBR properties in place so the whole catalog reads as "considered" instead of
 // "flat GLB default". Called automatically in placeFurnitureInScene → patchGLBMaterials(root).
 //

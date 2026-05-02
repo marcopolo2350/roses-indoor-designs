@@ -1,5 +1,5 @@
 /**
- * Phase 1B — Cherry-pick from temp_furniture_pack/ into the main catalog.
+ * Cherry-pick from temp_furniture_pack/ into the main catalog.
  * Same shape/flow as absorb-temp-house.mjs.
  * Run with: node scripts/absorb-temp-furniture.mjs
  */

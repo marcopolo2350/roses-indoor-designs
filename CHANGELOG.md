@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.86 - 2026-05-02
+
+- removed remaining phase-history comments from maintained asset and material utility scripts
+- expanded source-structure validation so phase-history comments are blocked across all maintained script files
+
 ## 0.5.0-hardening.85 - 2026-05-02
 
 - moved file-mode model preflight recovery to the canonical local `index.html` preview URL from app config

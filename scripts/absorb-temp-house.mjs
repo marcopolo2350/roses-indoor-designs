@@ -1,5 +1,5 @@
 /**
- * Phase 1A — Cherry-pick assets from temp_house_interior/ into the main catalog.
+ * Cherry-pick assets from temp_house_interior/ into the main catalog.
  * Copies selected GLB files to assets/models/ with snake_case IDs and appends
  * matching entries to data/asset-manifest.json (skips any IDs already registered).
  * Run with: node scripts/absorb-temp-house.mjs
