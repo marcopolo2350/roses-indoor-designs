@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.95 - 2026-05-02
+
+- expanded dependency validation to include lazy-loaded CDN scripts inside runtime modules
+- documented the experimental cloud sync Supabase CDN dependency in the dependency policy
+
 ## 0.5.0-hardening.94 - 2026-05-02
 
 - extracted IndexedDB open/read/write behavior into `scripts/core/storage-service.js`

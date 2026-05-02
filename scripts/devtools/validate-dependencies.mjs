@@ -3,11 +3,16 @@ import path from "node:path";
 
 const root = process.cwd();
 const indexSource = readFileSync(path.join(root, "index.html"), "utf8");
+const cloudSource = readFileSync(path.join(root, "scripts", "cloud", "supabase.js"), "utf8");
+const dependencyDocs = readFileSync(path.join(root, "docs", "dependencies.md"), "utf8");
 const packageJson = JSON.parse(readFileSync(path.join(root, "package.json"), "utf8"));
 const scriptSources = [...indexSource.matchAll(/<script[^>]+src=["']([^"']+)["'][^>]*>/g)].map(
   (match) => match[1],
 );
-const cdnSources = scriptSources.filter((src) => /^https?:\/\//.test(src));
+const lazyCdnSources = [...cloudSource.matchAll(/["'](https?:\/\/[^"']+)["']/g)]
+  .map((match) => match[1])
+  .filter((src) => /cdn/.test(src));
+const cdnSources = [...scriptSources.filter((src) => /^https?:\/\//.test(src)), ...lazyCdnSources];
 const errors = [];
 const threeVersions = new Set();
 const npmDependencies = {
@@ -16,7 +21,7 @@ const npmDependencies = {
 };
 
 for (const src of cdnSources) {
-  const npmMatch = src.match(/\/npm\/([^/@]+)@([^/]+)\//);
+  const npmMatch = src.match(/\/npm\/((?:@[^/]+\/)?[^/@]+)@([^/]+)\//);
   const cdnjsMatch = src.match(/\/ajax\/libs\/([^/]+)\/([^/]+)\//);
   if (!npmMatch && !cdnjsMatch) {
     errors.push(`CDN script is not pinned with an obvious version: ${src}`);
@@ -38,6 +43,14 @@ for (const required of ["jspdf", "pdf.js"]) {
   if (!cdnSources.some((src) => src.includes(`/ajax/libs/${required}/`))) {
     errors.push(`Missing documented CDN dependency: ${required}`);
   }
+}
+
+if (!lazyCdnSources.some((src) => src.includes("@supabase/supabase-js@2/"))) {
+  errors.push("Cloud sync must lazy-load a pinned Supabase v2 UMD build.");
+}
+
+if (!dependencyDocs.includes("@supabase/supabase-js") || !dependencyDocs.includes("lazy")) {
+  errors.push("docs/dependencies.md must document the lazy-loaded Supabase CDN dependency.");
 }
 
 if (npmDependencies["dxf-writer"]) {

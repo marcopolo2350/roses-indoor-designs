@@ -12,10 +12,12 @@ The app is still GitHub Pages compatible and currently loads several browser run
 - Three.js `0.147.0` plus matching example loaders, shaders, postprocessing passes, and `Reflector`
 - jsPDF `2.5.1`
 - pdf.js `3.11.174`
+- `@supabase/supabase-js` v2 UMD build, lazy-loaded only from the experimental cloud sync boundary
 
 ## Rules
 
 - CDN URLs must stay version pinned.
+- Lazy-loaded CDN URLs in runtime modules must also stay version pinned and documented here.
 - Three.js core and example paths must use the same version.
 - New CDN dependencies require a short note in this file and must pass `npm run validate:dependencies`.
 - Removed feature packages such as `dxf-writer` must not return unless that feature is intentionally restored and documented.
