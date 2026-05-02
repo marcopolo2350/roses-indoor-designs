@@ -33,6 +33,26 @@ for (const match of html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi)) {
   }
 }
 
+for (const match of html.matchAll(/<(input|select|textarea)\b([^>]*)>/gi)) {
+  const tag = match[1].toLowerCase();
+  const attrs = match[2];
+  const id = attr(attrs, "id");
+  const type = attr(attrs, "type").toLowerCase();
+  if (type === "hidden") continue;
+  const hasAccessibleName =
+    Boolean(attr(attrs, "aria-label").trim()) ||
+    Boolean(attr(attrs, "aria-labelledby").trim()) ||
+    Boolean(attr(attrs, "title").trim()) ||
+    (id &&
+      new RegExp(
+        `<label\\b[^>]+for=["']${id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`,
+        "i",
+      ).test(html));
+  if (!hasAccessibleName) {
+    errors.push(`${tag}${id ? `#${id}` : ""} missing an accessible name.`);
+  }
+}
+
 for (const match of html.matchAll(/<svg\b([^>]*)>/gi)) {
   const attrs = match[1];
   if (attr(attrs, "aria-hidden") !== "true") {

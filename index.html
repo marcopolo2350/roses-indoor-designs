@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
     <title>Rose's Indoor Designs</title>
-    <meta name="application-version" content="0.5.0-hardening.96" />
+    <meta name="application-version" content="0.5.0-hardening.97" />
     <meta
       name="description"
       content="A professional interior design studio for planning spaces in 2D and 3D, styling rooms, comparing options, and exporting client-ready presentations."
@@ -629,6 +629,7 @@
           type="file"
           id="projectJsonInput"
           accept=".json,application/json"
+          aria-label="Import project JSON"
           data-action="handle-project-json-selected"
         />
 
@@ -674,6 +675,7 @@
                 max="100"
                 value="50"
                 step="1"
+                aria-label="Time of day"
                 data-action="time-of-day-input"
               />
               <span class="tod-value" id="todLabel">Noon</span>
@@ -982,7 +984,8 @@
         <div class="mhn"></div>
         <div class="mt" id="crModTitle">Create a Room</div>
         <div class="mf">
-          <label>ROOM NAME</label><input id="crN" value="Living Room" placeholder="Room name" />
+          <label>ROOM NAME</label
+          ><input id="crN" value="Living Room" placeholder="Room name" aria-label="Room name" />
         </div>
         <div class="mf">
           <label>ROOM SHAPE</label>
@@ -1017,13 +1020,37 @@
           <label>DIMENSIONS</label>
           <div class="mr">
             <div>
-              <label>WIDTH</label><input type="number" id="crW" value="14" min="4" max="60" />
+              <label>WIDTH</label
+              ><input
+                type="number"
+                id="crW"
+                value="14"
+                min="4"
+                max="60"
+                aria-label="Room width in feet"
+              />
             </div>
             <div>
-              <label>LENGTH</label><input type="number" id="crL" value="12" min="4" max="60" />
+              <label>LENGTH</label
+              ><input
+                type="number"
+                id="crL"
+                value="12"
+                min="4"
+                max="60"
+                aria-label="Room length in feet"
+              />
             </div>
             <div>
-              <label>HEIGHT</label><input type="number" id="crH" value="9" min="7" max="20" />
+              <label>HEIGHT</label
+              ><input
+                type="number"
+                id="crH"
+                value="9"
+                min="7"
+                max="20"
+                aria-label="Room height in feet"
+              />
             </div>
           </div>
         </div>
@@ -1047,7 +1074,13 @@
         </div>
         <div class="mf">
           <label>MEASURED DISTANCE</label>
-          <input id="refCalInput" type="text" inputmode="decimal" placeholder="12 ft or 3.6 m" />
+          <input
+            id="refCalInput"
+            type="text"
+            inputmode="decimal"
+            placeholder="12 ft or 3.6 m"
+            aria-label="Measured reference distance"
+          />
         </div>
         <div class="prop-state ref-cal-state" id="refCalState"></div>
         <div class="quick-rotate-row ref-cal-actions">

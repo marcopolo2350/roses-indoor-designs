@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.97 - 2026-05-02
+
+- added explicit accessible names to static app-shell file, range, room setup, and reference calibration inputs
+- expanded static accessibility validation so future static form controls need accessible names
+
 ## 0.5.0-hardening.96 - 2026-05-02
 
 - added `npm run validate:global-bridge` to freeze the current browser-global compatibility surface
