@@ -92,6 +92,7 @@ npm run validate:inline-handlers
 npm run validate:error-handling
 npm run validate:runtime-modules
 npm run validate:dependencies
+npm run validate:clean-ignore
 npm run validate:project-schema
 npm run validate:app-state
 npm run validate:geometry
@@ -128,6 +129,7 @@ What they do:
 - `validate:error-handling` - blocks empty catch blocks
 - `validate:runtime-modules` - verifies the transitional runtime module bridge
 - `validate:dependencies` - verifies pinned CDN dependency versions and blocks removed CAD/DXF packages
+- `validate:clean-ignore` - checks generated artifacts cleaned by `npm run clean` stay ignored
 - `validate:project-schema` - checks project JSON import/export schema validation
 - `validate:app-state` - checks the central app state dispatcher bridge
 - `validate:geometry` - checks pure 2D geometry helpers

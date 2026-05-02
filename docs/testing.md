@@ -22,6 +22,7 @@ npm run validate:inline-handlers
 npm run validate:error-handling
 npm run validate:runtime-modules
 npm run validate:dependencies
+npm run validate:clean-ignore
 npm run validate:project-schema
 npm run validate:app-state
 npm run validate:geometry
@@ -52,6 +53,7 @@ npm test
 - `validate:error-handling` - blocks empty catch blocks
 - `validate:runtime-modules` - validates the transitional runtime bridge and canonical entrypoint
 - `validate:dependencies` - verifies pinned CDN runtime dependencies
+- `validate:clean-ignore` - checks generated local artifacts cleaned by `npm run clean` stay ignored
 - `validate:project-schema` - exercises project JSON import/export schema validation
 - `validate:app-state` - exercises the central app state dispatcher bridge
 - `validate:geometry` - exercises pure 2D polygon, segment, and intersection helpers

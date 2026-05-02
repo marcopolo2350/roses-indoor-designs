@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0-hardening.91 - 2026-05-02
+
+- added clean/ignore contract validation for generated local artifacts
+- wired `validate:clean-ignore` into `npm test`, CI, docs, and the PR verification checklist
+
 ## 0.5.0-hardening.90 - 2026-05-02
 
 - removed the unused `scripts/cloud-sync.js` compatibility wrapper

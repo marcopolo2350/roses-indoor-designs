@@ -93,6 +93,9 @@ jobs:
       - name: Validate dependency pins
         run: npm run validate:dependencies
 
+      - name: Validate clean ignore contract
+        run: npm run validate:clean-ignore
+
       - name: Validate project schema
         run: npm run validate:project-schema
 
