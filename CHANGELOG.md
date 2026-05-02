@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.111 - 2026-05-02
+
+- extracted PDF and presentation export behavior into `scripts/export/pdf.js` while preserving the existing `exportPDF()` UI hook
+- registered the PDF export boundary in runtime order, global-bridge validation, and export/source validation
+- shrank the legacy `scripts/export.js` bridge to shared compatibility helpers only
+
 ## 0.5.0-hardening.110 - 2026-05-02
 
 - extracted print-floor-plan behavior into `scripts/export/print.js` while preserving the existing `printFloorPlan()` UI hook

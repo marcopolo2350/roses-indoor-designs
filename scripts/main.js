@@ -22,6 +22,7 @@ const RUNTIME_MODULES = [
   "./scripts/export/png.js",
   "./scripts/export/print.js",
   "./scripts/export/svg.js",
+  "./scripts/export/pdf.js",
   "./scripts/export.js",
   "./scripts/planner3d/lifecycle.js",
   "./scripts/planner3d/lighting.js",

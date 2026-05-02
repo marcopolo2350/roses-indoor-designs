@@ -5,12 +5,14 @@ globalThis.window = globalThis;
 await import("../export/filenames.js");
 await import("../export/downloads.js");
 await import("../export/project-json.js");
+await import("../export/pdf.js");
 await import("../export/png.js");
 await import("../export/print.js");
 await import("../export/svg.js");
 
 const names = window.ExportFilenames;
 const downloads = window.ExportDownloads;
+const pdfExports = window.RosePdfExports;
 const pngExports = window.RosePngExports;
 const printExports = window.RosePrintExports;
 const projectJson = window.RoseProjectJsonExports;
@@ -55,6 +57,12 @@ if (
 if (typeof printExports.printFloorPlan !== "function") {
   throw new Error("Print export function was not registered.");
 }
+if (
+  typeof pdfExports.exportPDF !== "function" ||
+  typeof pdfExports.exportPresentationPDF !== "function"
+) {
+  throw new Error("PDF export functions were not registered.");
+}
 
 const legacyExportSource = readFileSync("scripts/export.js", "utf8");
 if (
@@ -78,6 +86,9 @@ if (
 }
 if (/function\s+printFloorPlan\b/.test(legacyExportSource)) {
   throw new Error("Print export must live in scripts/export/print.js.");
+}
+if (/function\s+(?:exportPDF|exportPresentationPDF)\b/.test(legacyExportSource)) {
+  throw new Error("PDF export must live in scripts/export/pdf.js.");
 }
 
 for (const file of [

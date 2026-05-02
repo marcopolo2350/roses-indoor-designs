@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-02
 
-Current app version: `0.5.0-hardening.110`
+Current app version: `0.5.0-hardening.111`
 
 This document tracks the ruthless cleanup work honestly. It is not a claim that the full checklist is complete.
 
@@ -89,9 +89,11 @@ This document tracks the ruthless cleanup work honestly. It is not a claim that 
 - Export filenames are sanitized through `scripts/export/filenames.js` and covered by `npm run validate:export-filenames`.
 - Export downloads are centralized in `scripts/export/downloads.js`, loaded before export/3D runtime code, and covered by source/export validation.
 - Project JSON import/export is isolated in `scripts/export/project-json.js` and guarded by source/export validation.
+- PDF and presentation export behavior is isolated in `scripts/export/pdf.js`, loaded before the legacy export bridge, and guarded by source/export validation.
 - PNG export, comparison sheets, design summaries, and render-to-image helpers are isolated in `scripts/export/png.js`, loaded before the legacy export bridge, and guarded by source/export validation.
 - Print floor-plan export is isolated in `scripts/export/print.js`, loaded before the legacy export bridge, and guarded by source/export validation.
 - SVG export is isolated in `scripts/export/svg.js`, loaded before the legacy export bridge, and guarded by source/export validation.
+- The legacy `scripts/export.js` bridge now keeps only shared compatibility helpers for older call sites.
 - 3D renderer and verification-canvas containers are cleared through `RoseHTML.clear()` instead of empty `innerHTML` assignments, guarded by `npm run validate:3d-lifecycle`.
 - Dev-only 3D asset verification cards and metadata rows render with DOM nodes and `textContent`, guarded by `npm run validate:html-safety`.
 - Mobile 3D walk controls render with DOM nodes, CSS classes, and accessible hold-button labels instead of injected inline HTML/styles, guarded by `npm run validate:html-safety`.

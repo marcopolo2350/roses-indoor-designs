@@ -48,6 +48,7 @@ const requiredFiles = [
   "scripts/export/filenames.js",
   "scripts/export/downloads.js",
   "scripts/export/project-json.js",
+  "scripts/export/pdf.js",
   "scripts/export/png.js",
   "scripts/export/print.js",
   "scripts/export/svg.js",
@@ -109,6 +110,7 @@ assertModuleBefore("./scripts/export/downloads.js", "./scripts/export.js");
 assertModuleBefore("./scripts/export/downloads.js", "./scripts/planner3d.js");
 assertModuleBefore("./scripts/export/downloads.js", "./scripts/export/project-json.js");
 assertModuleBefore("./scripts/export/project-json.js", "./scripts/export.js");
+assertModuleBefore("./scripts/export/pdf.js", "./scripts/export.js");
 assertModuleBefore("./scripts/export/png.js", "./scripts/export.js");
 assertModuleBefore("./scripts/export/print.js", "./scripts/export.js");
 assertModuleBefore("./scripts/export/svg.js", "./scripts/export.js");
@@ -198,6 +200,12 @@ for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
   }
   if (modulePath === "scripts/export.js" && /\bfunction\s+printFloorPlan\s*\(/.test(source)) {
     errors.push(`${modulePath} must not define print behavior outside scripts/export/print.js.`);
+  }
+  if (
+    modulePath === "scripts/export.js" &&
+    /\bfunction\s+(?:exportPDF|exportPresentationPDF)\s*\(/.test(source)
+  ) {
+    errors.push(`${modulePath} must not define PDF export behavior outside scripts/export/pdf.js.`);
   }
   const lines = source.split(/\r?\n/);
   lines.forEach((line, index) => {
