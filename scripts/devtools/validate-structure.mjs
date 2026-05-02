@@ -49,6 +49,7 @@ const requiredFiles = [
   "scripts/export/downloads.js",
   "scripts/export/project-json.js",
   "scripts/export/png.js",
+  "scripts/export/print.js",
   "scripts/export/svg.js",
   "scripts/cloud/supabase.js",
 ];
@@ -109,6 +110,7 @@ assertModuleBefore("./scripts/export/downloads.js", "./scripts/planner3d.js");
 assertModuleBefore("./scripts/export/downloads.js", "./scripts/export/project-json.js");
 assertModuleBefore("./scripts/export/project-json.js", "./scripts/export.js");
 assertModuleBefore("./scripts/export/png.js", "./scripts/export.js");
+assertModuleBefore("./scripts/export/print.js", "./scripts/export.js");
 assertModuleBefore("./scripts/export/svg.js", "./scripts/export.js");
 assertModuleBefore("./scripts/core/history.js", "./scripts/planner3d.js");
 assertModuleBefore("./scripts/planner3d/lifecycle.js", "./scripts/planner3d.js");
@@ -193,6 +195,9 @@ for (const absolute of listSourceFiles(path.join(root, "scripts"))) {
     )
   ) {
     errors.push(`${modulePath} must not define PNG export behavior outside scripts/export/png.js.`);
+  }
+  if (modulePath === "scripts/export.js" && /\bfunction\s+printFloorPlan\s*\(/.test(source)) {
+    errors.push(`${modulePath} must not define print behavior outside scripts/export/print.js.`);
   }
   const lines = source.split(/\r?\n/);
   lines.forEach((line, index) => {

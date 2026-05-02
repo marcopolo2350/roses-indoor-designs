@@ -6,11 +6,13 @@ await import("../export/filenames.js");
 await import("../export/downloads.js");
 await import("../export/project-json.js");
 await import("../export/png.js");
+await import("../export/print.js");
 await import("../export/svg.js");
 
 const names = window.ExportFilenames;
 const downloads = window.ExportDownloads;
 const pngExports = window.RosePngExports;
+const printExports = window.RosePrintExports;
 const projectJson = window.RoseProjectJsonExports;
 const svgExports = window.RoseSvgExports;
 
@@ -50,6 +52,9 @@ if (
 ) {
   throw new Error("PNG export functions were not registered.");
 }
+if (typeof printExports.printFloorPlan !== "function") {
+  throw new Error("Print export function was not registered.");
+}
 
 const legacyExportSource = readFileSync("scripts/export.js", "utf8");
 if (
@@ -70,6 +75,9 @@ if (
   throw new Error(
     "PNG, comparison, and design-summary exports must live in scripts/export/png.js.",
   );
+}
+if (/function\s+printFloorPlan\b/.test(legacyExportSource)) {
+  throw new Error("Print export must live in scripts/export/print.js.");
 }
 
 for (const file of [

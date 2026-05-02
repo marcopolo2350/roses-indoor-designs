@@ -148,7 +148,7 @@ What they do:
 - `validate:3d-lifecycle` - checks 3D disposal/lifecycle helpers
 - `validate:3d-lighting` - checks data-driven time-of-day lighting buckets, colors, and exposure bounds
 - `validate:3d-camera` - checks data-driven 3D camera labels and pose math
-- `validate:export-filenames` - checks shared export filename sanitizing, centralized download helpers, and extracted PNG/SVG/JSON export boundaries
+- `validate:export-filenames` - checks shared export filename sanitizing, centralized download helpers, and extracted PNG/SVG/print/JSON export boundaries
 - `test:playwright` - runs the standard Playwright spec suite
 - `test:self` - runs the built-in `#selftest` flow through Playwright
 - `test:smoke` - starts a temporary local server and runs the Playwright smoke helper against the app
@@ -179,6 +179,7 @@ What they do:
 - [scripts/planner3d/camera.js](./scripts/planner3d/camera.js) - data-driven 3D camera labels and pose helpers
 - [scripts/export/filenames.js](./scripts/export/filenames.js) - shared export filename sanitizing
 - [scripts/export/png.js](./scripts/export/png.js) - PNG, comparison-sheet, and design-summary export boundary
+- [scripts/export/print.js](./scripts/export/print.js) - print floor-plan export boundary
 - [scripts/export/svg.js](./scripts/export/svg.js) - SVG floor-plan export boundary
 - [scripts/export/project-json.js](./scripts/export/project-json.js) - project JSON import/export boundary
 - [scripts/state.js](./scripts/state.js) - shared state helpers, geometry, snapping, walk logic

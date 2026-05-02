@@ -20,6 +20,7 @@ const allowedAssignments = new Set(
     ["RoseCatalogManifest", "scripts/catalog/manifest.js"],
     ["RoseHTML", "scripts/core/html.js"],
     ["RosePngExports", "scripts/export/png.js"],
+    ["RosePrintExports", "scripts/export/print.js"],
     ["RoseProjectJsonExports", "scripts/export/project-json.js"],
     ["RoseProjectSchema", "scripts/core/project-schema.js"],
     ["RoseSvgExports", "scripts/export/svg.js"],

@@ -25,6 +25,7 @@ The bridge appends the canonical `application-version` meta value to runtime scr
 - `scripts/catalog.js` - catalog UI and furniture controls
 - `scripts/export.js` - remaining PDF and presentation export bridge
 - `scripts/export/png.js` - PNG, comparison-sheet, and design-summary export boundary
+- `scripts/export/print.js` - print floor-plan export boundary
 - `scripts/export/svg.js` - SVG floor-plan export boundary
 - `scripts/cloud/` - cloud sync boundary
 - `scripts/devtools/` - validation and verification scripts

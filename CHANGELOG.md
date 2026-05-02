@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0-hardening.110 - 2026-05-02
+
+- extracted print-floor-plan behavior into `scripts/export/print.js` while preserving the existing `printFloorPlan()` UI hook
+- added print export registration to the runtime bridge, global-bridge validator, and export boundary validator
+- kept the legacy export bridge focused on shared helpers plus PDF/presentation generation
+
 ## 0.5.0-hardening.109 - 2026-05-02
 
 - extracted PNG, comparison-sheet, design-summary, and render-to-image helpers into `scripts/export/png.js`
