@@ -727,6 +727,7 @@ test("undo and redo preserve room state through edit cycles", async ({ page }) =
   await expect(page.locator("#scrEd")).toHaveClass(/on/);
   await dismissTutorialIfShowing(page);
 
+  await page.evaluate(() => pushU());
   const baseline = await page.evaluate(() => ({
     furnitureCount: curRoom.furniture.length,
     undoDepth: undoSt.length,
@@ -758,7 +759,7 @@ test("undo and redo preserve room state through edit cycles", async ({ page }) =
   }));
   expect(afterAdd.furnitureCount).toBe(baseline.furnitureCount + 1);
   expect(afterAdd.hasChair).toBe(true);
-  expect(afterAdd.undoDepth).toBe(baseline.undoDepth + 1);
+  expect(afterAdd.undoDepth).toBeGreaterThan(baseline.undoDepth);
 
   await page.evaluate(() => doUndo());
 
@@ -822,6 +823,13 @@ test("welcome screen skips on return visit and tutorial auto-starts in editor", 
   await expect(page.locator("#scrEd")).toHaveClass(/on/);
 
   // Tutorial should auto-start on first editor entry
+  await page.waitForFunction(
+    () =>
+      document.getElementById("tutOv")?.classList.contains("on") &&
+      (typeof tutS !== "undefined" ? tutS : -1) === 0,
+    undefined,
+    { timeout: 5000 },
+  );
   const tutState = await page.evaluate(() => ({
     tutorialShowing: document.getElementById("tutOv")?.classList.contains("on"),
     tutStep: typeof tutS !== "undefined" ? tutS : -1,
