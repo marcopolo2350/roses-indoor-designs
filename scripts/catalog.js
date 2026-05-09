@@ -1104,6 +1104,15 @@ const FURN_ITEMS = [
     group: "Bathroom",
   },
   {
+    label: "Toilet (Realistic)",
+    w: 1.2,
+    d: 2.0,
+    icon: "TO",
+    symbol: "TO",
+    assetKey: "thi_toilet",
+    group: "Bathroom",
+  },
+  {
     label: "Bathtub",
     w: 2.5,
     d: 5.5,
