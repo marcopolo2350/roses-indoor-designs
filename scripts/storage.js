@@ -1898,7 +1898,7 @@ const MODEL_REGISTRY = {
     fit: "surface",
   },
   kitchen_cabinet_base: {
-    file: "cabinet.glb",
+    file: "ph_cabinet_painted.glb",
     category: "kitchen",
     mountType: "floor",
     defaultScale: 1,
@@ -1911,7 +1911,7 @@ const MODEL_REGISTRY = {
     defaultFacing: "forward",
   },
   kitchen_cabinet_upper: {
-    file: "shelf_small.glb",
+    file: "ph_shelf_01.glb",
     category: "kitchen",
     mountType: "wall",
     defaultScale: 1,
@@ -1925,7 +1925,7 @@ const MODEL_REGISTRY = {
     defaultFacing: "interior",
   },
   kitchen_island: {
-    file: "dining_table.glb",
+    file: "ph_table_wooden.glb",
     category: "kitchen",
     mountType: "floor",
     defaultScale: 1,
@@ -1964,7 +1964,7 @@ const MODEL_REGISTRY = {
     defaultFacing: "forward",
   },
   kitchen_hood: {
-    file: "shelf_small.glb",
+    file: "kn_hood_modern.glb",
     category: "kitchen",
     mountType: "wall",
     defaultScale: 1,
