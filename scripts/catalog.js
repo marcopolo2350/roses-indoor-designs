@@ -1361,8 +1361,14 @@ function toggleFavoriteCatalogItem(assetKey) {
     ? catalogFavorites.filter((key) => key !== assetKey)
     : [assetKey, ...catalogFavorites].slice(0, 24);
   saveCatalogPrefs();
-  const search = document.getElementById("furnSearch");
-  if (search) filterFurnPicker(search.value || "");
+  // Update only the star's active class so the user sees the toggle.
+  // Don't call filterFurnPicker here — it would reset the active preview to
+  // the first visible card, which made tapping a favorite silently switch the
+  // selected item.
+  const isActive = catalogFavorites.includes(assetKey);
+  document
+    .querySelectorAll(`.catalog-fav[data-asset-key="${CSS.escape(assetKey)}"]`)
+    .forEach((star) => star.classList.toggle("active", isActive));
 }
 function isFavoriteCatalogItem(assetKey) {
   return catalogFavorites.includes(assetKey);
