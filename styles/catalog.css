@@ -543,6 +543,26 @@
   .catalog-placement-bar {
     align-items: flex-start;
   }
+  /* Stick the "Place Here" container to the bottom of the sheet on phone so
+     the user doesn't have to scroll back up after every catalog tap.
+     #catalogPlacementBar is the outer wrapper that holds the rendered bar. */
+  #catalogPlacementBar {
+    position: sticky;
+    bottom: 0;
+    z-index: 4;
+    background: var(--bg);
+    padding-top: 6px;
+    margin-top: 4px;
+  }
+  .catalog-fav {
+    /* Smaller hit target on phone so fingertip taps near the top-right of a
+       card don't accidentally toggle favorite instead of selecting the item. */
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
   .variant-row {
     gap: 6px;
   }
