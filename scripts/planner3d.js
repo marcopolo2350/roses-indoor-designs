@@ -62,6 +62,13 @@ function loadHDRIEnvironment(presetId, renderer, sceneRef) {
     console.warn("HDRI setup failed:", e);
   }
 }
+// Re-apply the user's last slider position after a scene rebuild. Called from
+// toggle3D (initial entry) and rebuild3D (edits) so a brightened bedroom stays
+// brightened across re-entries instead of snapping back to the design preset.
+function applyPersistedTimeOfDay() {
+  const t = curRoom?.materials?.timeOfDay;
+  if (typeof t === "number" && t >= 0 && t <= 1) applyTimeOfDay(t);
+}
 // Time-of-day lighting is data-driven by Planner3DLighting and cheap enough for slider drag.
 function applyTimeOfDay(t) {
   if (!scene || !curRoom) return;
@@ -172,6 +179,7 @@ function toggle3D() {
       setViewPreset("eye");
       showViewChip("3D View - Room");
       hide3DLoading();
+      applyPersistedTimeOfDay();
     }
   }, 80);
   updateWalkthroughTray();
@@ -3546,6 +3554,7 @@ function rebuild3D() {
   stop3D();
   build3D();
   if (typeof applyRoomStyleToScene === "function") applyRoomStyleToScene();
+  applyPersistedTimeOfDay();
   refreshPresentationPill();
   updatePresentationTray();
   updateWalkthroughTray();

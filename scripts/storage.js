@@ -501,9 +501,9 @@ const DESIGN_PRESETS = [
     wallFinish: "charcoal_accent",
     floorType: "dark_walnut",
     trim: "#B79E84",
-    lightingPreset: "moody",
+    lightingPreset: "warm_evening",
     ceilingBrightness: 0.94,
-    mood: "moody",
+    mood: "grounded",
     note: "Richer contrast with darker, more grounded materials.",
   },
   {
