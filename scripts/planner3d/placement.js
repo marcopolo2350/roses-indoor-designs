@@ -1,15 +1,52 @@
 (function initPlanner3DPlacement() {
   const SURFACE_HOST_KEYS = [
     "nightstand",
+    "nightstand_alt",
     "dresser",
+    "dresser_tall",
     "desk",
     "tv_console",
+    "console_low",
     "table_coffee",
+    "table_round_small",
+    "table_round_large",
+    "table_rect",
     "dining_table",
     "bookshelf",
+    "bookcase_books",
     "cabinet",
     "shelving",
+    "ph_side_table",
+    "ph_side_table_tall",
+    "ph_table_wooden",
+    "ph_table_round",
+    "ph_table_painted",
+    "ph_table_gallinera",
+    "ph_console_01",
+    "ph_console_chinese",
+    "ph_coffee_table_01",
+    "ph_coffee_round",
+    "ph_coffee_modern",
+    "ph_coffee_modern_2",
+    "ph_coffee_industrial",
+    "ph_coffee_gothic",
+    "ph_cabinet_painted",
+    "ph_cabinet_modern",
+    "ph_cabinet_drawer",
+    "ph_cabinet_vintage",
+    "ph_cabinet_chinese",
+    "ph_nightstand",
+    "ph_nightstand_classic",
+    "ph_bookshelf",
+    "kitchen_cabinet_base",
+    "kitchen_island",
+    "kn_kitchen_bar",
   ];
+  // Maximum distance (in feet) from a surface-mount item's drop point to a
+  // host before we consider the host "not really what the user aimed at".
+  // Prevents a lamp dropped in the middle of an empty room from snapping to
+  // whatever table happens to be closest across the room.
+  const SURFACE_HOST_MAX_DISTANCE = 3;
 
   function findNearestWallForPoint(point, room, helpers) {
     const walls = room?.walls || [];
@@ -78,13 +115,45 @@
   function estimatedSurfaceHeight(furniture) {
     const map = {
       bookshelf: 2.9,
+      bookcase_books: 2.9,
       cabinet: 2.6,
+      console_low: 2.0,
       desk: 2.45,
       dining_table: 2.45,
       dresser: 3.05,
+      dresser_tall: 3.6,
+      kitchen_cabinet_base: 3.0,
+      kitchen_island: 3.0,
+      kn_kitchen_bar: 3.0,
       nightstand: 2.1,
+      nightstand_alt: 2.1,
+      ph_bookshelf: 2.9,
+      ph_cabinet_chinese: 2.6,
+      ph_cabinet_drawer: 2.6,
+      ph_cabinet_modern: 2.6,
+      ph_cabinet_painted: 2.6,
+      ph_cabinet_vintage: 2.6,
+      ph_coffee_gothic: 1.55,
+      ph_coffee_industrial: 1.55,
+      ph_coffee_modern: 1.55,
+      ph_coffee_modern_2: 1.55,
+      ph_coffee_round: 1.55,
+      ph_coffee_table_01: 1.55,
+      ph_console_01: 2.4,
+      ph_console_chinese: 2.6,
+      ph_nightstand: 2.1,
+      ph_nightstand_classic: 2.1,
+      ph_side_table: 2.0,
+      ph_side_table_tall: 2.4,
+      ph_table_gallinera: 2.4,
+      ph_table_painted: 2.45,
+      ph_table_round: 2.45,
+      ph_table_wooden: 2.45,
       shelving: 3.4,
       table_coffee: 1.55,
+      table_rect: 2.4,
+      table_round_large: 2.3,
+      table_round_small: 2.0,
       tv_console: 2.1,
     };
     return map[furniture.assetKey] || Math.max(1.8, furniture.d || 1.5);
@@ -101,7 +170,10 @@
         best = furniture;
       }
     });
-    return best;
+    // Only return a host if the user's drop point is plausibly on top of it.
+    // Otherwise a lamp placed in empty space teleports across the room to
+    // whatever surface happens to be closest.
+    return best && bestDistance <= SURFACE_HOST_MAX_DISTANCE ? best : null;
   }
 
   function effectiveWallFacingMode(furniture, registryEntry) {
