@@ -1230,7 +1230,11 @@ function draw() {
     const labelInk = furniture2DLabelInk(f, item);
     ctx.save();
     ctx.translate(sc.x, sc.y);
-    ctx.rotate(((f.rotation || 0) * Math.PI) / 180);
+    // Match the rotation direction used by the catalog drop preview (line ~870)
+    // and the 3D renderer (planner3d/placement.js's appRotation = -deg*PI/180).
+    // The unnegated version mirrored placed items so a clockwise rotation in 2D
+    // showed counter-clockwise in 3D.
+    ctx.rotate(-((f.rotation || 0) * Math.PI) / 180);
     if (f.assetKey === "sofa_l") {
       const rr = Math.min(hw, hd) * 0.18,
         seatDepth = hd * 1.08,
