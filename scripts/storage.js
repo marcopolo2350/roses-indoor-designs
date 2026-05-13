@@ -825,6 +825,10 @@ const MODEL_REGISTRY = {
     snapToWall: false,
     snapToFloor: true,
     fit: "footprint",
+    // GLB natural aspect is portrait (Z>X). Catalog default footprint is
+    // landscape (W>D), so without this the 3D model looks rotated 90° from
+    // the 2D placement. Pre-rotate the model to match the user's footprint.
+    autoOrientToFootprint: true,
   },
   cabinet: {
     file: "cabinet.glb",
@@ -1161,6 +1165,9 @@ const MODEL_REGISTRY = {
     snapToWall: false,
     snapToFloor: true,
     fit: "footprint",
+    // GLB is portrait (Z>X) but the runner is meant to run along W in the
+    // catalog (6.5 × 2 ft). Without this the 3D rug appears rotated 90°.
+    autoOrientToFootprint: true,
   },
   bed_king: {
     file: "bed_king.glb",
@@ -1584,6 +1591,8 @@ const MODEL_REGISTRY = {
     defaultScale: 1,
     yOffset: 0,
     fit: "footprint",
+    // GLB is portrait (Z>X) but catalog default footprint is landscape.
+    autoOrientToFootprint: true,
   },
   ph_coffee_modern_2: {
     file: "ph_coffee_modern_2.glb",
@@ -2198,6 +2207,9 @@ const MODEL_REGISTRY = {
     yOffset: 0,
     snapToFloor: true,
     fit: "footprint",
+    // GLB is portrait (Z>X). Without auto-orient the 3D model lies on its
+    // side relative to the 2D footprint.
+    autoOrientToFootprint: true,
     yawOffset: 0,
     forwardAxis: "+z",
     wallFacingMode: "free",
