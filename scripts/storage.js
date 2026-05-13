@@ -1003,6 +1003,21 @@ const MODEL_REGISTRY = {
     snapToFloor: true,
     fit: "footprint",
   },
+  kn_tv_modern: {
+    // Flat-screen TV — sits on top of a TV console (surface mount, like a table lamp).
+    file: "kn_tv_modern.glb",
+    category: "tv",
+    mountType: "surface",
+    defaultScale: 1,
+    yOffset: 0,
+    snapToWall: false,
+    snapToFloor: false,
+    fit: "surface",
+    yawOffset: 0,
+    forwardAxis: "+z",
+    wallFacingMode: "free",
+    defaultFacing: "forward",
+  },
   dining_table: {
     file: "dining_table.glb",
     category: "dining_table",

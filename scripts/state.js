@@ -712,7 +712,8 @@ function getRoomBounds2D(room) {
   (room?.furniture || []).forEach((f) => {
     const hw = (f.w || 2) / 2,
       hd = (f.d || 1.5) / 2,
-      an = ((f.rotation || 0) * Math.PI) / 180;
+      // Match the visual rotation sign so framing reflects what the user sees.
+      an = (-(f.rotation || 0) * Math.PI) / 180;
     [
       [-hw, -hd],
       [hw, -hd],
