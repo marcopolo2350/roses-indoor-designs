@@ -665,9 +665,11 @@ const FURN_ITEMS = [
     group: "Tables",
   },
   {
-    label: "Coffee Table Low",
-    w: 3.2,
-    d: 1.6,
+    // GLB is a square cocktail table (1.2 × 1.2). The previous landscape
+    // default rendered at ~1.6 × 1.6 (half the catalog width). Square it up.
+    label: "Cocktail Table Low",
+    w: 2.4,
+    d: 2.4,
     icon: "CL",
     symbol: "CL",
     assetKey: "ph_coffee_modern_2",
@@ -683,9 +685,10 @@ const FURN_ITEMS = [
     group: "Tables",
   },
   {
-    label: "Coffee Table Industrial",
-    w: 3.4,
-    d: 1.8,
+    // GLB is roughly square (0.78 × 0.76). Match the catalog to it.
+    label: "Cocktail Table Industrial",
+    w: 2.5,
+    d: 2.5,
     icon: "CI",
     symbol: "CI",
     assetKey: "ph_coffee_industrial",
@@ -701,11 +704,14 @@ const FURN_ITEMS = [
     group: "Tables",
   },
   {
-    label: "Dining Table Rustic",
-    w: 5.5,
-    d: 2.8,
-    icon: "DR",
-    symbol: "DR",
+    // GLB is a small cube (~1 × 1.4 × 1 ft natural); the previous 5.5 × 2.8
+    // dining-table footprint rendered as a tall, narrow column. This is
+    // realistically a rustic side/end table.
+    label: "Rustic Side Table",
+    w: 1.5,
+    d: 1.5,
+    icon: "RS",
+    symbol: "RS",
     assetKey: "ph_table_wooden_2",
     group: "Tables",
   },
@@ -1140,9 +1146,11 @@ const FURN_ITEMS = [
   },
   // Bathroom
   {
+    // Real residential vanity depth is ~21" (1.75 ft). The previous 0.6 ft
+    // caused the GLB to scale by d=0.74× and render at ~1 ft wide.
     label: "Single Vanity",
     w: 2.5,
-    d: 0.6,
+    d: 1.7,
     icon: "SV",
     symbol: "SV",
     assetKey: "bathroom_vanity_single",
@@ -1151,7 +1159,7 @@ const FURN_ITEMS = [
   {
     label: "Double Vanity",
     w: 4.5,
-    d: 0.6,
+    d: 1.7,
     icon: "DV",
     symbol: "DV",
     assetKey: "bathroom_vanity_double",
@@ -1185,9 +1193,11 @@ const FURN_ITEMS = [
     group: "Bathroom",
   },
   {
-    label: "Shower",
-    w: 3.0,
-    d: 3.0,
+    // GLB is a long walk-in shower (model aspect 1.6 × 3.9 ft). The previous
+    // 3×3 square default rendered at ~1.6 × 3 (half-width). Match the model.
+    label: "Walk-In Shower",
+    w: 3.5,
+    d: 5.0,
     icon: "SH",
     symbol: "SH",
     assetKey: "bathroom_shower",
