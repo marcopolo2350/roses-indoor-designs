@@ -7910,13 +7910,13 @@
   },
   {
     "id": "kn_tv_modern",
-    "name": "Television Modern",
+    "name": "Flat-Screen TV",
     "category": "Decor",
     "subcategory": "tv",
     "modelPath": "./assets/models/kn_tv_modern.glb",
     "thumbnailPath": "./assets/thumbnails/kn_tv_modern.png",
     "defaultScale": 1,
-    "mountType": "floor",
+    "mountType": "surface",
     "tags": [
       "tech"
     ],
@@ -7929,7 +7929,12 @@
     ],
     "variants": [],
     "source": "Kenney Furniture Kit (CC0)",
-    "sourceId": "kenney_furniture_kit"
+    "sourceId": "kenney_furniture_kit",
+    "placement": {
+      "snapTo": "surface",
+      "forwardAxis": "+z",
+      "defaultElevation": 2.1
+    }
   },
   {
     "id": "kn_kitchen_microwave",

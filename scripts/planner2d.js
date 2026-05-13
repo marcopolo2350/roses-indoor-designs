@@ -710,7 +710,9 @@ function floorRoomForPlacementPoint(wp, room = curRoom) {
 function rotatedPlacementCorners(centerX, centerZ, width, depth, rotationDeg = 0, inset = 1) {
   const hw = Math.max(0.08, (width || 2) * 0.5 * inset);
   const hd = Math.max(0.08, (depth || 1.5) * 0.5 * inset);
-  const an = ((rotationDeg || 0) * Math.PI) / 180;
+  // Match the sign used by the visual draw (ctx.rotate(-deg*π/180)) so collision/inside
+  // checks line up with what the user sees at non-cardinal rotations.
+  const an = (-(rotationDeg || 0) * Math.PI) / 180;
   return [
     [-hw, -hd],
     [hw, -hd],

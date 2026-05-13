@@ -2,7 +2,8 @@
 function rotatedFurnitureCorners(item) {
   const hw = (item.w || 2) / 2,
     hd = (item.d || 1.5) / 2,
-    an = ((item.rotation || 0) * Math.PI) / 180;
+    // Match the visual draw sign (ctx.rotate(-deg*π/180)) so exports align with the canvas.
+    an = (-(item.rotation || 0) * Math.PI) / 180;
   const pts = [
     [-hw, -hd],
     [hw, -hd],

@@ -2424,6 +2424,7 @@ function verificationTargetSize(key) {
     dresser_tall: { w: 3.3, d: 1.7, h: 4.1 },
     console_low: { w: 4.6, d: 1.35, h: 2.4 },
     tv_console: { w: 4.8, d: 1.5, h: 2.8 },
+    kn_tv_modern: { w: 4.5, d: 0.4, h: 2.6 },
     dining_table: { w: 5.2, d: 3, h: 2.8 },
     table_round_large: { w: 4.2, d: 4.2, h: 2.8 },
     table_round_small: { w: 2.4, d: 2.4, h: 2.2 },

@@ -282,6 +282,15 @@ const FURN_ITEMS = [
     group: "Storage",
   },
   {
+    label: "Flat-Screen TV",
+    w: 4.5,
+    d: 0.4,
+    icon: "TV",
+    symbol: "TV",
+    assetKey: "kn_tv_modern",
+    group: "Decor",
+  },
+  {
     label: "Low Console",
     w: 4.6,
     d: 1.35,
