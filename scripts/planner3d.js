@@ -1762,11 +1762,33 @@ function buildCloset3D(st, r) {
   }
   return g;
 }
-function fitObjectToFootprint(obj, targetW, targetD, targetH, fitMode = "footprint") {
+function fitObjectToFootprint(obj, targetW, targetD, targetH, fitMode = "footprint", autoOrient = false) {
   const box = new THREE.Box3().setFromObject(obj),
     size = new THREE.Vector3();
   box.getSize(size);
   if (size.x <= 0 || size.y <= 0 || size.z <= 0) return obj;
+  // Auto-orient: if the GLB's natural X/Z aspect is rotated 90° from what the
+  // user typed into W/D, pre-rotate the model so its long side lines up with
+  // the long side of the 2D footprint. Off by default — only safe for
+  // symmetric tables/rugs without a strong "front" (otherwise we'd flip the
+  // sofa's back into the room).
+  if (
+    autoOrient &&
+    (fitMode === "footprint" || fitMode === "surface") &&
+    Number.isFinite(targetW) &&
+    Number.isFinite(targetD) &&
+    Math.abs(targetW - targetD) > 0.15
+  ) {
+    const modelLandscape = size.x > size.z * 1.05;
+    const modelPortrait = size.z > size.x * 1.05;
+    const targetLandscape = targetW > targetD;
+    if ((modelLandscape && !targetLandscape) || (modelPortrait && targetLandscape)) {
+      obj.rotateY(Math.PI / 2);
+      obj.updateMatrixWorld(true);
+      box.setFromObject(obj);
+      box.getSize(size);
+    }
+  }
   const scales = [targetW / size.x];
   if (targetH) scales.push(targetH / size.y);
   if (fitMode === "footprint" || fitMode === "surface") scales.push(targetD / size.z);
@@ -2187,6 +2209,7 @@ function placeFurnitureInScene(f, r) {
         targetD,
         targetH,
         placement.windowTarget ? "opening" : reg.fit || "footprint",
+        !!reg.autoOrientToFootprint,
       );
       if (reg.defaultScale && reg.defaultScale !== 1) model.scale.multiplyScalar(reg.defaultScale);
       // Material audit upgrades PBR props on all meshes.
