@@ -237,13 +237,21 @@
       const host = findNearestSurfaceFurniture({ x: furniture.x, y: furniture.z }, room);
       const baseX = host ? host.x : furniture.x;
       const baseZ = host ? host.z : furniture.z;
-      const baseY = host
-        ? estimatedSurfaceHeight(host)
-        : helpers.defaultElevation(
-            "surface",
-            furniture.assetKey,
-            helpers.resolveLabel(furniture.label),
-          );
+      // Assets like the flat-screen TV ship with their own base, so when the
+      // user drops them away from a host we stand them on the floor instead of
+      // leaving them suspended at the generic 2.8 ft "surface" default.
+      let baseY;
+      if (host) {
+        baseY = estimatedSurfaceHeight(host);
+      } else if (registryEntry?.standaloneFallback) {
+        baseY = 0;
+      } else {
+        baseY = helpers.defaultElevation(
+          "surface",
+          furniture.assetKey,
+          helpers.resolveLabel(furniture.label),
+        );
+      }
       const placement = {
         position: new THREERef.Vector3(baseX, baseY, -baseZ),
         host,

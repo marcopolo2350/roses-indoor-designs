@@ -284,7 +284,7 @@ const FURN_ITEMS = [
   {
     label: "Flat-Screen TV",
     w: 4.5,
-    d: 0.4,
+    d: 0.85,
     icon: "TV",
     symbol: "TV",
     assetKey: "kn_tv_modern",
