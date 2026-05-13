@@ -1008,7 +1008,10 @@ const MODEL_REGISTRY = {
     fit: "footprint",
   },
   kn_tv_modern: {
-    // Flat-screen TV — sits on top of a TV console (surface mount, like a table lamp).
+    // Flat-screen TV — sits on top of a TV console when one is nearby (surface
+    // mount, like a table lamp). The GLB has its own base built in, so if the
+    // user drops it without a host we let it stand on the floor instead of
+    // floating in mid-air at the default 2.8 ft surface elevation.
     file: "kn_tv_modern.glb",
     category: "tv",
     mountType: "surface",
@@ -1021,6 +1024,7 @@ const MODEL_REGISTRY = {
     forwardAxis: "+z",
     wallFacingMode: "free",
     defaultFacing: "forward",
+    standaloneFallback: true,
   },
   dining_table: {
     file: "dining_table.glb",

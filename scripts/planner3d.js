@@ -1812,7 +1812,11 @@ function getRoomAssetTargetSize(f, r, placement, reg) {
     h = Math.max(h, Math.min(r.height * 0.52, h));
   }
   if (reg?.mountType === "surface") {
-    h = Math.max(base.h || 1.1, Math.min(r.height * 0.26, 1.9));
+    // Default cap keeps lamps/vases short. Assets whose verificationTargetSize
+    // claims a taller stature (TVs, tall plants) are allowed to use their
+    // authored height directly so they don't get squished into a thumbnail.
+    const surfaceCap = Math.min(r.height * 0.26, 1.9);
+    h = base.h && base.h > surfaceCap ? base.h : Math.max(base.h || 1.1, surfaceCap);
   }
   if (reg?.mountType === "ceiling") {
     h = Math.max(base.h || 1.1, 1);
@@ -2447,7 +2451,10 @@ function verificationTargetSize(key) {
     dresser_tall: { w: 3.3, d: 1.7, h: 4.1 },
     console_low: { w: 4.6, d: 1.35, h: 2.4 },
     tv_console: { w: 4.8, d: 1.5, h: 2.8 },
-    kn_tv_modern: { w: 4.5, d: 0.4, h: 2.6 },
+    // Modern flat-screen with stand. Natural GLB aspect is 5.35:1 (W:D), so the
+    // depth must be wide enough that uniform scaling reaches the full 4.5 ft
+    // panel width rather than getting capped to a 25" thumbnail.
+    kn_tv_modern: { w: 4.5, d: 0.85, h: 3.0 },
     dining_table: { w: 5.2, d: 3, h: 2.8 },
     table_round_large: { w: 4.2, d: 4.2, h: 2.8 },
     table_round_small: { w: 2.4, d: 2.4, h: 2.2 },
