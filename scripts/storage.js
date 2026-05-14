@@ -853,7 +853,12 @@ const MODEL_REGISTRY = {
     fit: "wall",
   },
   lamp_floor: {
-    file: "lamp_floor.glb",
+    // lamp_floor.glb is naturally a stocky 0.4 × 0.89 × 0.42 ft (Y/X = 2.2),
+    // so uniform-scaling it into the 1×1 ft catalog footprint capped the
+    // height at ~2.1 ft — a table lamp on the floor, not a floor lamp. The
+    // lamp_stand.glb model has proper Y/X = 3.9 floor-lamp proportions, so
+    // both "Floor Lamp" and "Stand Lamp" catalog entries now share it.
+    file: "lamp_stand.glb",
     category: "lamp",
     mountType: "floor",
     defaultScale: 1,

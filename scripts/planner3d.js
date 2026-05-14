@@ -2437,6 +2437,10 @@ function verificationTargetSize(key) {
     lamp_cube: { w: 1.35, d: 1.35, h: 1.35 },
     lamp_pendant: { w: 1.6, d: 1.6, h: 1.9 },
     lamp_stand: { w: 1, d: 1, h: 4.2 },
+    // Proper 4.6 ft floor lamp — taller than the table-lamp-sized model the
+    // catalog was using before. Footprint must be ≥1.2 × 1.3 so uniform scale
+    // can actually reach 4.6 ft tall instead of getting capped by W/D.
+    lamp_floor: { w: 1.2, d: 1.3, h: 4.6 },
     shelving: { w: 2.8, d: 0.6, h: 2.1 },
     shelf_small: { w: 2.1, d: 0.45, h: 1.2 },
     plant_small: { w: 1.1, d: 1.1, h: 1.6 },

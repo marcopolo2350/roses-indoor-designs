@@ -111,6 +111,19 @@ const placed = await page.evaluate(() => {
   wa("wa-west", minX + 0.05, cz);
   wa("wa-east", maxX - 0.05, cz);
 
+  // Floor lamp next to the standalone TV — verify it stands at proper height.
+  room.furniture.push({
+    id: "floor-lamp",
+    label: "Floor Lamp",
+    assetKey: "lamp_floor",
+    w: 1.2,
+    d: 1.3,
+    x: cx + 6,
+    z: minZ + 1.5,
+    rotation: 0,
+    mountType: "floor",
+  });
+
   window.draw?.();
   return { placed: room.furniture.length, bounds: { minX, maxX, minZ, maxZ } };
 });

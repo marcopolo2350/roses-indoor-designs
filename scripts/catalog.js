@@ -327,9 +327,12 @@ const FURN_ITEMS = [
     group: "Decor",
   },
   {
+    // Footprint needs to be ≥1.2 × 1.3 so uniform scaling can reach the full
+    // 4.6 ft floor-lamp height instead of getting clamped by W/D and rendering
+    // as a stocky 2 ft lamp.
     label: "Floor Lamp",
-    w: 1,
-    d: 1,
+    w: 1.2,
+    d: 1.3,
     icon: "L",
     symbol: "L",
     assetKey: "lamp_floor",
