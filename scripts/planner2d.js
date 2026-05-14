@@ -753,6 +753,33 @@ function is2DRoundFootprint(f, item) {
   const reg = typeof MODEL_REGISTRY !== "undefined" ? MODEL_REGISTRY[key] : null;
   return reg?.footprintShape === "round";
 }
+// Wall-mounted furniture (wall art, mirrors, sconces) is stored as absolute
+// (x, z) coordinates, so when the user drags a polygon vertex and the walls
+// move, those pieces stay behind in mid-air. After every vertex edit we
+// re-snap each wall-mounted item to its nearest wall, which preserves the
+// "this picture is on this wall" intent for typical reshape edits.
+function reSnapWallFurniture(room) {
+  if (!room?.furniture?.length) return;
+  const snapper = window.Planner2DSnapping;
+  if (!snapper?.wallSnapForFurniture) return;
+  for (const f of room.furniture) {
+    const reg = f.assetKey ? MODEL_REGISTRY[f.assetKey] : null;
+    const onWall = f.mountType === "wall" || reg?.mountType === "wall";
+    if (!onWall) continue;
+    const catalogItem =
+      FURN_ITEMS.find((entry) => entry.assetKey === f.assetKey) ||
+      FURN_ITEMS.find((entry) => entry.label === f.label) ||
+      f;
+    const snap = snapper.wallSnapForFurniture(catalogItem, { x: f.x, z: f.z }, room, reg);
+    if (snap?.valid && snap.snapped) {
+      f.x = snap.snapped.x;
+      f.z = snap.snapped.z;
+      if (Number.isFinite(snap.angle)) {
+        f.rotation = Math.round(((-snap.angle * 180) / Math.PI) * 10) / 10;
+      }
+    }
+  }
+}
 function rotatedPlacementCorners(centerX, centerZ, width, depth, rotationDeg = 0, inset = 1) {
   const hw = Math.max(0.08, (width || 2) * 0.5 * inset);
   const hd = Math.max(0.08, (depth || 1.5) * 0.5 * inset);
@@ -1971,6 +1998,7 @@ function onM(e) {
     curRoom.polygon[sel.idx].x = Math.round((dOrig.x + dx) * 2) / 2;
     curRoom.polygon[sel.idx].y = Math.round((dOrig.y + dy) * 2) / 2;
     curRoom.walls = genWalls(curRoom);
+    reSnapWallFurniture(curRoom);
     draw();
   } else if (tool === "select" && sel.type === "opening" && dOrig) {
     updateOpeningFromPoint(sel.idx, wp);
