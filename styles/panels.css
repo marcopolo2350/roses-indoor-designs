@@ -26,18 +26,27 @@
 }
 .props-tab {
   position: absolute;
-  right: 12px;
+  right: 8px;
   top: 60px;
   z-index: 255;
-  padding: 12px 18px;
-  border-radius: var(--r);
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: var(--shl);
-  font-size: 11px;
+  /* Compact pill so it doesn't cover the upper-right room vertex when the
+     room hugs the canvas edge. Was 12px 18px — too tall and too wide. */
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.2px;
   color: var(--accent-d);
   display: none;
+  opacity: 0.78;
+  transition: opacity 0.15s ease;
+}
+.props-tab:hover,
+.props-tab:focus-visible {
+  opacity: 1;
 }
 .props-tab.on {
   display: block;

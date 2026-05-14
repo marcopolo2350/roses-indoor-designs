@@ -147,6 +147,28 @@ console.log("Placed:", JSON.stringify(placed, null, 2));
 await page.screenshot({ path: path.join(outDir, "01-plan.png") });
 console.log("Saved 01-plan.png");
 
+// Reshape the room (drag a polygon vertex inward) and verify wall art moves with the wall.
+const reshape = await page.evaluate(() => {
+  const room = window.appState.getCurrentRoom();
+  // Move the NE vertex inward by 4 ft.
+  // polygon corners are: [0]=NW, [1]=NE, [2]=SE, [3]=SW for the default room.
+  const ne = room.polygon[1];
+  ne.x -= 4;
+  // Recompute walls and re-snap wall items (the new helper).
+  room.walls = window.genWalls ? window.genWalls(room) : room.walls;
+  if (typeof window.reSnapWallFurniture === "function") {
+    window.reSnapWallFurniture(room);
+  }
+  window.draw?.();
+  // Return the wall art positions so we can inspect them.
+  return room.furniture
+    .filter((f) => f.assetKey === "wall_art_01")
+    .map((f) => ({ id: f.id, x: +f.x.toFixed(2), z: +f.z.toFixed(2), rotation: f.rotation }));
+});
+console.log("Wall art after reshape:", JSON.stringify(reshape, null, 2));
+await page.screenshot({ path: path.join(outDir, "01b-after-reshape.png") });
+console.log("Saved 01b-after-reshape.png");
+
 // Enter 3D, give GLBs time to load
 await page.evaluate(() => window.toggle3D?.());
 await page.waitForTimeout(6000);
