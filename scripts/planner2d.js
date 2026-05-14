@@ -707,6 +707,52 @@ function floorRoomForPlacementPoint(wp, room = curRoom) {
   );
   return nearby || room;
 }
+// Round-footprint assets — area rugs, round tables, planter pots, etc. The
+// 2D layout used to draw every piece as a (rounded) rectangle, which made it
+// hard to judge how much floor a circular rug actually covers when comparing
+// the plan to the 3D walk-through.
+const PLANNER2D_ROUND_FOOTPRINT_KEYS = new Set([
+  // Rugs
+  "rug",
+  "rug_round",
+  // Round dining/coffee tables and small accent tables
+  "table_round_large",
+  "table_round_small",
+  "ph_table_round",
+  "ph_coffee_round",
+  "ph_side_table",
+  "ph_side_table_tall",
+  // Plants and potted decor (the pot is round)
+  "plant_floor",
+  "plant_palm",
+  "plant_small",
+  "plant_cactus",
+  "plant_round",
+  "plant_leafy",
+  "ph_planter_clay",
+  "ph_plant_potted_01",
+  "ph_plant_potted_02",
+  "ph_plant_potted_04",
+  "kn_potted_plant",
+  "kn_plant_small_1",
+  "kn_plant_small_2",
+  "kn_plant_small_3",
+  // Column
+  "column_round",
+  // Stools (round seat)
+  "stool",
+  "ph_stool_metal",
+]);
+function is2DRoundFootprint(f, item) {
+  const key = String(f?.assetKey || item?.assetKey || "").toLowerCase();
+  if (!key) return false;
+  if (PLANNER2D_ROUND_FOOTPRINT_KEYS.has(key)) return true;
+  // Anything explicitly named "round" reads as round in 2D too.
+  if (/round/.test(key)) return true;
+  // Honor a registry-side opt-in if a future asset wants to declare itself.
+  const reg = typeof MODEL_REGISTRY !== "undefined" ? MODEL_REGISTRY[key] : null;
+  return reg?.footprintShape === "round";
+}
 function rotatedPlacementCorners(centerX, centerZ, width, depth, rotationDeg = 0, inset = 1) {
   const hw = Math.max(0.08, (width || 2) * 0.5 * inset);
   const hd = Math.max(0.08, (depth || 1.5) * 0.5 * inset);
@@ -871,7 +917,11 @@ function drawPendingFurniturePlacement(room) {
   if (Number.isFinite(state.previewRotation))
     ctx.rotate((-(state.previewRotation || 0) * Math.PI) / 180);
   ctx.beginPath();
-  ctx.roundRect(-width / 2, -depth / 2, width, depth, Math.max(12, Math.min(width, depth) * 0.16));
+  if (is2DRoundFootprint(null, item)) {
+    ctx.ellipse(0, 0, width / 2, depth / 2, 0, 0, Math.PI * 2);
+  } else {
+    ctx.roundRect(-width / 2, -depth / 2, width, depth, Math.max(12, Math.min(width, depth) * 0.16));
+  }
   ctx.fillStyle = fill;
   ctx.shadowColor = glow;
   ctx.shadowBlur = 18;
@@ -1244,6 +1294,12 @@ function draw() {
       ctx.beginPath();
       ctx.roundRect(-hw, -hd, hw * 2, seatDepth, rr);
       ctx.roundRect(-hw, -hd, legWidth, hd * 2, rr);
+    } else if (is2DRoundFootprint(f, item)) {
+      // Draw the actual round footprint so the user can see how much floor
+      // the 3D circle covers — square approximation made big round rugs read
+      // bigger in 2D than they actually were in 3D.
+      ctx.beginPath();
+      ctx.ellipse(0, 0, hw, hd, 0, 0, Math.PI * 2);
     } else {
       const rr = Math.min(hw, hd) * 0.22;
       ctx.beginPath();

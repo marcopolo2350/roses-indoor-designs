@@ -124,6 +124,20 @@ const placed = await page.evaluate(() => {
     mountType: "floor",
   });
 
+  // Round rug in the center — verify 2D draws an ellipse, not a rounded
+  // rectangle (so the user can see the actual covered floor area).
+  room.furniture.push({
+    id: "round-rug",
+    label: "Round Rug",
+    assetKey: "rug_round",
+    w: 4.2,
+    d: 4.2,
+    x: cx,
+    z: cz + 0.5,
+    rotation: 0,
+    mountType: "floor",
+  });
+
   window.draw?.();
   return { placed: room.furniture.length, bounds: { minX, maxX, minZ, maxZ } };
 });
