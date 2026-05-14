@@ -174,7 +174,8 @@
     const focus = rooms.length > 1 ? roomsFocusFor(rooms, room, helpers) : focusFor(room, helpers);
     const height = rooms.length > 1 ? focus.height3D || roomHeight(room) : roomHeight(room);
     return {
-      yaw: Math.PI * 0.16,
+      // +π so 2D plan top → 3D far/back wall.
+      yaw: Math.PI * 1.16,
       pitch: 0.8,
       dist: Math.max(18, Math.min(56, Math.max(focus.width, focus.height, height) * 2.08)),
       target: { x: focus.x, y: height * 0.47, z: -focus.y },
@@ -186,7 +187,7 @@
     const centroid = roomCentroid(room, helpers);
     const height = roomHeight(room);
     return {
-      yaw: Math.PI * 0.3,
+      yaw: Math.PI * 1.3,
       pitch: 0.42,
       dist: Math.max(15, Math.min(28, Math.max(focus.width, focus.height, height) * 1.15)),
       target: {
@@ -215,7 +216,7 @@
       corner: favoriteCornerPose(room, helpers),
       eye: intimateRoomPose(room, helpers),
       orbit: {
-        yaw: Math.PI * 0.18,
+        yaw: Math.PI * 1.18,
         pitch: 0.52,
         dist: 17,
         target: { x: focus.x, y: roomHeight(room) * 0.42, z: -focus.y },

@@ -83,7 +83,12 @@ let is3D = false,
   ren,
   raf3d;
 let camMode = "orbit",
-  cYaw = Math.PI * 0.25,
+  // Default orbit yaw is shifted by π from the old 0.25π so the 3D camera
+  // looks at the 2D plan's "front" (the user-natural orientation: top of
+  // plan = far wall in 3D). The 0.25π default put the camera at the +Z
+  // side, which made items the user dragged to the top of the plan render
+  // against the foreground wall instead.
+  cYaw = Math.PI * 1.25,
   cPitch = 0.5,
   cDist = 20;
 let fpPos = { x: 0, y: 4.5, z: 0 };
@@ -468,6 +473,11 @@ const ROOM_TYPES = [
     name: "Laundry",
     suggestions: ["washing_machine", "kitchen_cabinet_base", "shelf_small", "trashcan_small"],
   },
+  {
+    id: "hallway",
+    name: "Hallway",
+    suggestions: ["console_low", "mirror", "runner_rug", "lamp_wall", "wall_art_01"],
+  },
 ];
 const DESIGN_PRESETS = [
   {
@@ -700,6 +710,19 @@ const ROOM_STARTERS = [
     designPreset: "quiet_luxury",
     tag: "Suite",
     hint: "King bed, sitting area, and a dressing nook.",
+  },
+  {
+    // Long narrow corridor for connecting rooms or runs to stairs.
+    id: "hallway",
+    name: "Hallway",
+    shape: "rect",
+    width: 16,
+    depth: 4,
+    height: 9,
+    roomType: "hallway",
+    designPreset: "airy_minimal",
+    tag: "Pass",
+    hint: "A connector — runs between rooms, fits a stair entry, holds a console or runner.",
   },
   {
     id: "free",

@@ -147,6 +147,11 @@ function handleUiAction(action, target, event) {
     return moveCurrentRoomOrder(Number(target?.dataset?.direction || 0));
   if (action === "delete-current-room") return deleteCurrentRoom();
   if (action === "attach-adjacent-room") return attachAdjacentRoom(target?.dataset?.side || "east");
+  if (action === "add-stairs-structure") return addStairsToCurrentRoom();
+  if (action === "set-selected-stairs-direction")
+    return setSelectedStairsDirection(target?.dataset?.direction || "up");
+  if (action === "set-selected-stairs-linked-floor")
+    return setSelectedStairsLinkedFloor(target?.dataset?.floorId || "");
   if (action === "set-wall-finish") return setWallFinish(target?.dataset?.finishId || "warm_white");
   if (action === "reset-wall-color-to-style") return resetWallColorToStyle();
   if (action === "set-wall-paint") return setWallPaint(target?.dataset?.color || "");
@@ -1952,6 +1957,54 @@ function createNextFloor() {
   });
   activeProjectFloorId = floor.id;
   openCrModal("living_room", createRoomContext);
+}
+function addStairsToCurrentRoom() {
+  if (!curRoom) return;
+  curRoom.structures = curRoom.structures || [];
+  // Drop a default 4 × 8 ft flight near the room center. Stairs are oriented
+  // along the longer dimension; default is "up" (rising toward the ceiling).
+  const xs = (curRoom.polygon || []).map((p) => p.x);
+  const ys = (curRoom.polygon || []).map((p) => p.y);
+  const cx = xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : 6;
+  const cy = ys.length ? (Math.min(...ys) + Math.max(...ys)) / 2 : 6;
+  const stairs = {
+    id: uid(),
+    type: "stairs",
+    rect: {
+      x: Math.round((cx - 2) * 2) / 2,
+      y: Math.round((cy - 4) * 2) / 2,
+      w: 4,
+      h: 8,
+    },
+    height: curRoom.height,
+    riseHeight: curRoom.height,
+    direction: "up",
+    linkedFloorId: "",
+  };
+  curRoom.structures.push(stairs);
+  sel = { type: "structure", idx: curRoom.structures.length - 1 };
+  panelHidden = false;
+  pushU();
+  draw();
+  showP();
+  toast("Stairs added — drag to position");
+}
+function setSelectedStairsDirection(direction) {
+  if (sel.type !== "structure" || !curRoom) return;
+  const st = curRoom.structures?.[sel.idx];
+  if (!st || st.type !== "stairs") return;
+  st.direction = direction === "down" ? "down" : "up";
+  pushU();
+  draw();
+  showP();
+}
+function setSelectedStairsLinkedFloor(floorId) {
+  if (sel.type !== "structure" || !curRoom) return;
+  const st = curRoom.structures?.[sel.idx];
+  if (!st || st.type !== "stairs") return;
+  st.linkedFloorId = floorId || "";
+  pushU();
+  showP();
 }
 function duplicateProjectRoom(baseRoomId = curRoom?.baseRoomId || curRoom?.id) {
   if (!curRoom) return;
