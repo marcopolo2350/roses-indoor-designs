@@ -2534,6 +2534,10 @@ function renderRoomPanelNoSelection(
     "Ceiling Geometry",
     `<label>CEILING HEIGHT (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.5)}" value="${distanceInputValue(r.height)}" data-action="set-room-height-input"><div class="prop-tip">Height changes the room geometry, wall proportions, and how the 3D space feels. It is a structural room value, not a lighting effect.</div><div class="prop-tip">Closets live in the dedicated structural tool, not the furniture catalog.</div>`,
   );
+  const stairsSection = propSection(
+    "Stairs & Connectors",
+    `<button class="pbtn soft" type="button" style="width:100%" data-action="add-stairs-structure">Add Stairs to this Room</button><div class="prop-tip">Stairs are structural — drop a default 4×8 ft flight here, then drag it where it goes. In 3D it renders as a real staircase rising to the ceiling.</div>`,
+  );
   const designDirectionSection = propSection(
     "Design Direction",
     `<label>ROOM TYPE</label><div class="mat-grid">${ROOM_TYPES.map((type) => `<button class="mat-btn${(r.roomType || "living_room") === type.id ? " sel" : ""}" type="button" data-action="set-room-type" data-room-type="${type.id}">${type.name}</button>`).join("")}</div><div class="prop-tip">Room type tunes suggestions without changing your current furniture.</div><label style="margin-top:8px">STYLE PRESETS</label><div class="prop-state">Presets are optional design directions. They update finishes and lighting, so they sit behind a deliberate review step.</div><button class="pbtn soft" type="button" style="width:100%;margin-top:8px" data-action="toggle-design-preset-panel">${designPresetPanelOpen ? "Hide Style Presets" : "Review Style Presets"}</button>${designPresetPanelOpen ? `<div class="mat-grid tall" style="margin-top:8px">${DESIGN_PRESETS.map((preset) => `<button class="mat-btn${(pendingDesignPresetId || r.designPreset || "") === preset.id ? " sel" : ""}" type="button" data-action="select-pending-design-preset" data-preset-id="${preset.id}">${preset.name}</button>`).join("")}</div><div class="prop-tip">${DESIGN_PRESETS.find((p) => p.id === (pendingDesignPresetId || r.designPreset))?.note || "Choose a style direction to coordinate finishes, lighting, and mood."}</div><button class="pbtn" type="button" style="width:100%;margin-top:8px" data-action="apply-pending-design-preset">Apply Selected Preset</button>` : ""}`,
@@ -2588,7 +2592,13 @@ function renderRoomPanelNoSelection(
   );
   let h = cBtn.replace("$T", "Room Tools") + roomPanelTabs();
   if (roomPanelGroup === "build")
-    h += homePlanSection + connectionsSection + referenceSection + geometrySection + layerSection;
+    h +=
+      homePlanSection +
+      connectionsSection +
+      referenceSection +
+      geometrySection +
+      stairsSection +
+      layerSection;
   if (roomPanelGroup === "style") h += surfacesSection + lightingSection + designDirectionSection;
   if (roomPanelGroup === "furnish")
     h += furnishHintSection + editorSection + layerSection + redesignSection;
@@ -2653,14 +2663,29 @@ function showP() {
       `<label>OFFSET (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.25)}" value="${distanceInputValue(op.offset)}" data-action="update-selected-opening" data-field="offset"><label>WIDTH (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.25)}" value="${distanceInputValue(op.width)}" data-action="update-selected-opening" data-field="width">${op.type === "door" ? `<label>SWING DIRECTION</label><select data-action="update-selected-opening" data-field="swing"><option value="in"${op.swing === "in" ? " selected" : ""}>In</option><option value="out"${op.swing === "out" ? " selected" : ""}>Out</option></select><label>HINGE SIDE</label><select data-action="update-selected-opening" data-field="hinge"><option value="left"${op.hinge === "left" ? " selected" : ""}>Left</option><option value="right"${op.hinge === "right" ? " selected" : ""}>Right</option></select>` : `<label>SILL HEIGHT (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.25)}" value="${distanceInputValue(op.sillHeight || 3)}" data-action="update-selected-opening" data-field="sillHeight"><label>HEIGHT (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.25)}" value="${distanceInputValue(op.height || 4)}" data-action="update-selected-opening" data-field="height"><div class="prop-tip">Drag this opening along any wall to reposition it.</div>`}<button class="pbtn dng" type="button" data-action="delete-selected-opening">Delete</button>`;
   } else if (sel.type === "structure") {
     const st = r.structures[sel.idx];
-    if (st.rect)
+    if (st.type === "stairs" && st.rect) {
+      const otherFloors =
+        typeof projectFloors === "function"
+          ? projectFloors(curRoom).filter((f) => f.id !== (curRoom.floorId || "floor_1"))
+          : [];
+      const floorOptions = otherFloors
+        .map(
+          (f) =>
+            `<option value="${esc(f.id)}"${st.linkedFloorId === f.id ? " selected" : ""}>${esc(f.label || f.id)}</option>`,
+        )
+        .join("");
+      h =
+        cBtn.replace("$T", "Stairs") +
+        `<div class="pr"><div><label>X (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.5)}" value="${distanceInputValue(st.rect.x)}" data-action="update-selected-structure" data-field="x"></div><div><label>Y (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.5)}" value="${distanceInputValue(st.rect.y)}" data-action="update-selected-structure" data-field="y"></div></div><div class="pr"><div><label>W (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.5)}" value="${distanceInputValue(st.rect.w)}" data-action="update-selected-structure" data-field="w"></div><div><label>D (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.5)}" value="${distanceInputValue(st.rect.h)}" data-action="update-selected-structure" data-field="h"></div></div><label>DIRECTION</label><div class="quick-rotate-row"><button class="pbtn soft${st.direction !== "down" ? " sel" : ""}" type="button" data-action="set-selected-stairs-direction" data-direction="up">Up ↑</button><button class="pbtn soft${st.direction === "down" ? " sel" : ""}" type="button" data-action="set-selected-stairs-direction" data-direction="down">Down ↓</button></div><label>LINKED FLOOR</label><select data-action="set-selected-stairs-linked-floor"><option value="">— Not linked —</option>${floorOptions}</select><div class="prop-tip">Linking a floor records which floor this stair leads to. Walk-through traversal across floors is on the roadmap; today it primarily annotates the plan and renders the stair geometry in 3D.</div><button class="pbtn dng" type="button" data-action="delete-selected-structure">Delete</button>`;
+    } else if (st.rect) {
       h =
         cBtn.replace("$T", "Closet") +
         `<div class="pr"><div><label>X (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.5)}" value="${distanceInputValue(st.rect.x)}" data-action="update-selected-structure" data-field="x"></div><div><label>Y (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.5)}" value="${distanceInputValue(st.rect.y)}" data-action="update-selected-structure" data-field="y"></div></div><div class="pr"><div><label>W (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.5)}" value="${distanceInputValue(st.rect.w)}" data-action="update-selected-structure" data-field="w"></div><div><label>D (${distanceLabel()})</label><input type="number" step="${distanceInputStep(0.5)}" value="${distanceInputValue(st.rect.h)}" data-action="update-selected-structure" data-field="h"></div></div><label>FINISH</label><select data-action="update-selected-structure" data-field="finish">${CLOSET_FINISHES.map((f) => `<option value="${f.id}"${st.finish === f.id ? " selected" : ""}>${f.name}</option>`).join("")}</select><div class="prop-tip">Built-in styling now belongs to the selected closet.</div><button class="pbtn dng" type="button" data-action="delete-selected-structure">Delete</button>`;
-    else
+    } else {
       h =
         cBtn.replace("$T", "Partition") +
         `<button class="pbtn dng" type="button" data-action="delete-selected-structure">Delete</button>`;
+    }
   } else if (sel.type === "annotation") {
     const note = r.textAnnotations[sel.idx];
     h =

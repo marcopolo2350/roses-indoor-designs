@@ -1176,6 +1176,60 @@ function draw() {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("closet", (a.x + b.x) / 2, (a.y + b.y) / 2);
+    } else if (st.type === "stairs" && st.rect) {
+      const a = tS({ x: st.rect.x, y: st.rect.y }),
+        b = tS({ x: st.rect.x + st.rect.w, y: st.rect.y + st.rect.h });
+      const w = b.x - a.x,
+        h = b.y - a.y;
+      ctx.fillStyle = "rgba(220, 207, 188, 0.92)";
+      ctx.strokeStyle = is ? "#B8918E" : "#8D7E6E";
+      ctx.lineWidth = is ? 2.5 : 1.5;
+      if (is) ctx.setLineDash([5, 3]);
+      ctx.fillRect(a.x, a.y, w, h);
+      ctx.strokeRect(a.x, a.y, w, h);
+      ctx.setLineDash([]);
+      // Draw step lines perpendicular to the long side.
+      const horizontal = st.rect.w >= st.rect.h;
+      const stepCount = 10;
+      ctx.strokeStyle = "rgba(141, 126, 110, 0.6)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 1; i < stepCount; i++) {
+        const t = i / stepCount;
+        if (horizontal) {
+          ctx.moveTo(a.x + w * t, a.y + 2);
+          ctx.lineTo(a.x + w * t, b.y - 2);
+        } else {
+          ctx.moveTo(a.x + 2, a.y + h * t);
+          ctx.lineTo(b.x - 2, a.y + h * t);
+        }
+      }
+      ctx.stroke();
+      // Arrow showing "up" direction along the long axis (toward higher steps).
+      const dir = st.direction === "down" ? -1 : 1;
+      const arrLen = Math.max(14, Math.min(w, h) * 0.4);
+      const midX = (a.x + b.x) / 2;
+      const midY = (a.y + b.y) / 2;
+      ctx.fillStyle = "rgba(141, 126, 110, 0.85)";
+      ctx.beginPath();
+      if (horizontal) {
+        const tipX = midX + dir * arrLen;
+        ctx.moveTo(tipX, midY);
+        ctx.lineTo(tipX - dir * arrLen * 0.5, midY - arrLen * 0.35);
+        ctx.lineTo(tipX - dir * arrLen * 0.5, midY + arrLen * 0.35);
+      } else {
+        const tipY = midY + dir * arrLen;
+        ctx.moveTo(midX, tipY);
+        ctx.lineTo(midX - arrLen * 0.35, tipY - dir * arrLen * 0.5);
+        ctx.lineTo(midX + arrLen * 0.35, tipY - dir * arrLen * 0.5);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = "rgba(78, 68, 60, 0.85)";
+      ctx.font = `${Math.max(8, vScale * 0.28)}px Outfit,sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(st.direction === "down" ? "stairs ↓" : "stairs ↑", midX, midY - arrLen * 0.55);
     } else if (st.type === "partition" && st.line) {
       const a = tS(st.line.a),
         b = tS(st.line.b);

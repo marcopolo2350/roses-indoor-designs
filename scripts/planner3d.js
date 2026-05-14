@@ -258,6 +258,7 @@ function getRoomsFocus(rooms = [curRoom]) {
     height,
     maxD: Math.max(width, height),
     height3D: maxH || curRoom?.height || 9,
+    roomCount: valid.length,
   };
 }
 function overviewRoomPose(room = curRoom) {
@@ -761,7 +762,7 @@ function setCamMode(m) {
     document.getElementById("walkHint").classList.add("on");
     setTimeout(() => document.getElementById("walkHint").classList.remove("on"), 2500);
   } else {
-    cYaw = Math.PI * 0.18;
+    cYaw = Math.PI * 1.18;
     cPitch = 0.52;
     cDist = Math.max(
       11,
@@ -1279,6 +1280,7 @@ function buildRoomEnvelope3D(room, { floorFocus, renderer } = {}) {
   });
   room.structures.forEach((st) => {
     if (st.type === "closet" && st.rect) scene.add(buildCloset3D(st, room));
+    else if (st.type === "stairs" && st.rect) scene.add(buildStairs3D(st, room));
     else if (st.type === "partition" && st.line) {
       const pa = st.line.a,
         pb = st.line.b,
@@ -1294,14 +1296,21 @@ function buildRoomEnvelope3D(room, { floorFocus, renderer } = {}) {
     }
   });
   room.furniture.forEach((f) => placeFurnitureInScene(f, room));
-  const ceilLight = new THREE.PointLight(
-    0xfff8e8,
-    0.28 * (room.materials.ceilingBrightness || 1),
-    Math.max((getRoomFocus(room).maxD || 6) * 3.2, (floorFocus?.maxD || 6) * 2.4),
-  );
-  ceilLight.position.set(getRoomFocus(room).x, roomHeight - 0.4, -getRoomFocus(room).y);
-  scene.add(ceilLight);
-  pushStyleNode("ceilingLights", ceilLight, room);
+  // Per-room ceiling point light. Skip past ~5 rooms on the same floor — too
+  // many dynamic point lights tank framerate on lower-end devices, and the
+  // global ambient/directional + any lamps already cover the room.
+  const sameFloorRoomCount = floorFocus?.roomCount || 1;
+  const roomCountThreshold = (navigator.maxTouchPoints || 0) > 0 ? 3 : 5;
+  if (sameFloorRoomCount <= roomCountThreshold) {
+    const ceilLight = new THREE.PointLight(
+      0xfff8e8,
+      0.28 * (room.materials.ceilingBrightness || 1),
+      Math.max((getRoomFocus(room).maxD || 6) * 3.2, (floorFocus?.maxD || 6) * 2.4),
+    );
+    ceilLight.position.set(getRoomFocus(room).x, roomHeight - 0.4, -getRoomFocus(room).y);
+    scene.add(ceilLight);
+    pushStyleNode("ceilingLights", ceilLight, room);
+  }
 }
 
 function build3D() {
@@ -1347,7 +1356,9 @@ function build3D() {
       ),
     );
     if (camMode === "orbit") {
-      cYaw = Math.PI * 0.22;
+      // Default orbit camera shifted by π so the 2D plan's "top of page"
+      // direction maps to the 3D back wall (user-natural orientation).
+      cYaw = Math.PI * 1.22;
       cPitch = 0.48;
     }
     orbitTarget = {
@@ -1759,6 +1770,104 @@ function buildCloset3D(st, r) {
       );
       g.add(handle);
     }
+  }
+  return g;
+}
+// Build a flight of stairs as a stack of step treads. The footprint runs along
+// the longer dimension of the rect; total rise defaults to the room height,
+// so a default stairs object reaches the floor above.
+function buildStairs3D(st, r) {
+  const g = new THREE.Group();
+  const rect = st.rect;
+  const totalRise = Math.max(1, Number.isFinite(st.riseHeight) ? st.riseHeight : r.height || 9);
+  const runLength = Math.max(rect.w, rect.h);
+  const runWidth = Math.min(rect.w, rect.h);
+  const treadAxisIsX = rect.w >= rect.h;
+  const stepCount = Math.max(6, Math.min(20, Math.round(totalRise / 0.65)));
+  const stepRise = totalRise / stepCount;
+  const stepRun = runLength / stepCount;
+  const treadMat = new THREE.MeshStandardMaterial({
+    color: 0xb8a892,
+    roughness: 0.62,
+    metalness: 0.04,
+  });
+  const riserMat = new THREE.MeshStandardMaterial({
+    color: 0xe6dbc9,
+    roughness: 0.54,
+    metalness: 0.03,
+  });
+  const stringerMat = new THREE.MeshStandardMaterial({
+    color: 0x8d7e6e,
+    roughness: 0.58,
+    metalness: 0.05,
+  });
+  const direction = st.direction === "down" ? -1 : 1;
+  const startX = rect.x;
+  const startY = -(rect.y + rect.h);
+  // Reverse the step direction visually for "down" so the user sees descending steps.
+  for (let i = 0; i < stepCount; i++) {
+    const idx = direction === 1 ? i : stepCount - 1 - i;
+    const yBase = idx * stepRise;
+    // Tread (horizontal plank)
+    const treadGeo = treadAxisIsX
+      ? new THREE.BoxGeometry(stepRun, 0.18, runWidth - 0.06)
+      : new THREE.BoxGeometry(runWidth - 0.06, 0.18, stepRun);
+    const tread = new THREE.Mesh(treadGeo, treadMat);
+    if (treadAxisIsX) {
+      tread.position.set(
+        startX + i * stepRun + stepRun / 2,
+        yBase + stepRise - 0.09,
+        startY + rect.h / 2,
+      );
+    } else {
+      tread.position.set(
+        startX + rect.w / 2,
+        yBase + stepRise - 0.09,
+        startY + i * stepRun + stepRun / 2,
+      );
+    }
+    tread.castShadow = true;
+    tread.receiveShadow = true;
+    g.add(tread);
+    // Riser (vertical face)
+    const riserGeo = treadAxisIsX
+      ? new THREE.BoxGeometry(0.06, stepRise - 0.18, runWidth - 0.06)
+      : new THREE.BoxGeometry(runWidth - 0.06, stepRise - 0.18, 0.06);
+    const riser = new THREE.Mesh(riserGeo, riserMat);
+    if (treadAxisIsX) {
+      riser.position.set(
+        startX + i * stepRun + (direction === 1 ? 0.03 : stepRun - 0.03),
+        yBase + (stepRise - 0.18) / 2,
+        startY + rect.h / 2,
+      );
+    } else {
+      riser.position.set(
+        startX + rect.w / 2,
+        yBase + (stepRise - 0.18) / 2,
+        startY + i * stepRun + (direction === 1 ? 0.03 : stepRun - 0.03),
+      );
+    }
+    g.add(riser);
+  }
+  // Side stringers along both long edges for a solid look.
+  if (treadAxisIsX) {
+    [-(runWidth / 2) + 0.04, runWidth / 2 - 0.04].forEach((zOff) => {
+      const stringer = new THREE.Mesh(
+        new THREE.BoxGeometry(runLength, totalRise, 0.06),
+        stringerMat,
+      );
+      stringer.position.set(startX + runLength / 2, totalRise / 2, startY + rect.h / 2 + zOff);
+      g.add(stringer);
+    });
+  } else {
+    [-(runWidth / 2) + 0.04, runWidth / 2 - 0.04].forEach((xOff) => {
+      const stringer = new THREE.Mesh(
+        new THREE.BoxGeometry(0.06, totalRise, runLength),
+        stringerMat,
+      );
+      stringer.position.set(startX + rect.w / 2 + xOff, totalRise / 2, startY + runLength / 2);
+      g.add(stringer);
+    });
   }
   return g;
 }
