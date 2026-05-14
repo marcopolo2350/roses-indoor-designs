@@ -308,11 +308,24 @@ function findWalkStart(roomOrRooms = curRoom) {
   }
   return { x: focus.x, z: -focus.y };
 }
+// Walk and turn step sizes are per-frame. At 60 fps:
+//   sp = 0.34 (old) → 20.4 ft/sec, a near-sprint pace that disorients first-
+//                     time users walking through their own living room.
+//   sp = 0.13 (new) →  7.8 ft/sec, a brisk-but-natural walk that gives non-
+//                     gamers time to look around.
+//   turn 0.07 (old) → 4.2 rad/sec ≈ 240°/sec, faster than a swivel-chair spin.
+//   turn 0.035 (new) → 2.1 rad/sec ≈ 120°/sec, comfortable head-turn pace.
+// Hold Shift to roughly double both, for users who do want the old pace.
+const WALK_SPEED_BASE = 0.13;
+const WALK_TURN_BASE = 0.035;
+const WALK_SPRINT_MULTIPLIER = 2.1;
+let walkSprintActive = false;
 function applyWalkInputStep() {
   if (camMode !== "walk" || !curRoom) return;
-  if (activeTurnDir) cYaw += activeTurnDir * 0.07;
+  const mult = walkSprintActive ? WALK_SPRINT_MULTIPLIER : 1;
+  if (activeTurnDir) cYaw += activeTurnDir * WALK_TURN_BASE * mult;
   if (activeWalkDir) {
-    const sp = 0.34,
+    const sp = WALK_SPEED_BASE * mult,
       vx = Math.sin(cYaw) * sp * activeWalkDir,
       vz = -Math.cos(cYaw) * sp * activeWalkDir,
       nx = fpPos.x + vx,
@@ -334,6 +347,9 @@ function bindWalkKeys() {
     return null;
   };
   window.addEventListener("keydown", (e) => {
+    if (camMode === "walk" && is3D && (e.key === "Shift" || e.shiftKey)) {
+      walkSprintActive = true;
+    }
     const d = keyDir((e.key || "").toLowerCase());
     if (!d || camMode !== "walk" || !is3D) return;
     e.preventDefault();
@@ -341,6 +357,7 @@ function bindWalkKeys() {
     if (d.turn) activeTurnDir = d.turn;
   });
   window.addEventListener("keyup", (e) => {
+    if (e.key === "Shift") walkSprintActive = false;
     const d = keyDir((e.key || "").toLowerCase());
     if (!d) return;
     if (d.walk && activeWalkDir === d.walk) activeWalkDir = 0;
@@ -349,6 +366,7 @@ function bindWalkKeys() {
   window.addEventListener("blur", () => {
     activeWalkDir = 0;
     activeTurnDir = 0;
+    walkSprintActive = false;
   });
   window.__roseWalkKeysBound = true;
 }
