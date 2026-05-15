@@ -37,6 +37,7 @@ const allowedAssignments = new Set(
     ["RoseStorageService", "scripts/core/storage-service.js"],
     ["__lastSelfTest", "scripts/walkthrough.js"],
     ["__roseEditorKeysBound", "scripts/ui/shortcuts.js"],
+    ["__roseStairCooldown", "scripts/state.js"],
     ["__roseWalkKeysBound", "scripts/state.js"],
     ["_snapPulses", "scripts/planner2d.js"],
     ["_snapPulses", "scripts/state.js"],
@@ -81,6 +82,7 @@ const allowedAssignments = new Set(
     ["storageKey", "scripts/core/storage-keys.js"],
     ["syncCurrentRoomRecord", "scripts/core/history.js"],
     ["toggleShortcutSheet", "scripts/ui/shortcuts.js"],
+    ["transitionToLinkedFloor", "scripts/ui.js"],
     ["updateUndoStrip", "scripts/ui.js"],
   ].map(([name, file]) => `${name}\t${file}`),
 );

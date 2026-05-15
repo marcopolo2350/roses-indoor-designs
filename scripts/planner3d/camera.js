@@ -174,7 +174,6 @@
     const focus = rooms.length > 1 ? roomsFocusFor(rooms, room, helpers) : focusFor(room, helpers);
     const height = rooms.length > 1 ? focus.height3D || roomHeight(room) : roomHeight(room);
     return {
-      // +π so 2D plan top → 3D far/back wall.
       yaw: Math.PI * 1.16,
       pitch: 0.8,
       dist: Math.max(18, Math.min(56, Math.max(focus.width, focus.height, height) * 2.08)),

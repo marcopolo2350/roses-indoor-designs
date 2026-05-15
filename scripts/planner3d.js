@@ -1356,8 +1356,6 @@ function build3D() {
       ),
     );
     if (camMode === "orbit") {
-      // Default orbit camera shifted by π so the 2D plan's "top of page"
-      // direction maps to the 3D back wall (user-natural orientation).
       cYaw = Math.PI * 1.22;
       cPitch = 0.48;
     }

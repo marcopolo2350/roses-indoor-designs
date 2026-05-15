@@ -83,11 +83,11 @@ let is3D = false,
   ren,
   raf3d;
 let camMode = "orbit",
-  // Default orbit yaw is shifted by π from the old 0.25π so the 3D camera
-  // looks at the 2D plan's "front" (the user-natural orientation: top of
-  // plan = far wall in 3D). The 0.25π default put the camera at the +Z
-  // side, which made items the user dragged to the top of the plan render
-  // against the foreground wall instead.
+  // cYaw is shifted by π from the original 0.25π so the default 3D view
+  // matches the 2D plan's "top = back wall" intuition. Side effect: 2D
+  // left/right is mirrored in the rendered scene. The correct fix is to
+  // remove the `-z` negation everywhere (~30 callsites) and let the default
+  // camera handle it; that's a deeper refactor not done here.
   cYaw = Math.PI * 1.25,
   cPitch = 0.5,
   cDist = 20;

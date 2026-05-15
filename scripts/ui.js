@@ -341,27 +341,31 @@ let tutS = -1;
 const TUTS = [
   {
     t: "Start with one room",
-    d: "Begin with a simple room card. You can reshape it later or grow the footprint with the Up, Right, Down, and Left room buttons.",
+    d: "Pick a Room Type card to drop a starter — Living Room, Bedroom, Hallway, etc. You can reshape it later or grow the footprint with the Up, Right, Down, and Left room buttons.",
   },
   {
     t: "Shape the shell first",
-    d: "Use Draw or Vertex to reshape the footprint. Doors and windows snap to walls, so build the shell before styling.",
+    d: "Use Draw or Vertex to reshape the footprint. Doors and windows snap to walls, and wall art now follows along when you drag a vertex inward.",
   },
   {
     t: "Keep the panel collapsed while placing",
-    d: "On phone, reopen the panel only when you need details. The floating panel chip lets you place or move pieces without the sheet covering the room.",
+    d: "On phone, reopen the panel only when you need details. The floating panel chip is now a small pill so it stops covering the upper-right vertex when you reshape a room near the canvas edge.",
   },
   {
     t: "Furnish with tap, then place",
-    d: "Choose Furnish, pick an item, then tap the exact spot where it belongs. This is the fastest way to work on iPhone.",
+    d: "Choose Furnish, pick an item, then tap where it belongs. The 2D plan draws round footprints (rugs, plants, round tables) as circles so the floor area matches what you'll see in 3D.",
   },
   {
     t: "Use Existing Room mode for redesigns",
     d: "Mark real pieces as Existing, then tag them Keep, Move, Replace, or Remove so the redesign stays organized.",
   },
   {
-    t: "Walk in 3D with the touch controls",
-    d: "Switch to Walk, use the new move and turn controls, and drag to look around. Landscape is the easiest way to explore.",
+    t: "Stairs and multi-floor",
+    d: "Build → Stairs & Connectors → Add Stairs drops a 4×8 ft flight you can drag and rotate. Pick a Linked Floor in its panel — when you walk onto the stair in 3D, the view jumps to that floor.",
+  },
+  {
+    t: "Walk in 3D",
+    d: "Switch to Walk. Use WASD or the move/turn controls to explore. Walk speed is gentle by default; hold Shift to walk faster. Drag to look around.",
   },
   {
     t: "Save options instead of overwriting",
@@ -1958,6 +1962,46 @@ function createNextFloor() {
   activeProjectFloorId = floor.id;
   openCrModal("living_room", createRoomContext);
 }
+function transitionToLinkedFloor(floorId) {
+  if (!floorId || !curRoom) return;
+  const targetRooms = currentFloorRooms(curRoom, floorId);
+  if (!targetRooms?.length) {
+    toast("That stair doesn't lead anywhere yet — pick a floor in its panel.");
+    return;
+  }
+  const wasWalking = camMode === "walk";
+  // Find a stair on the destination floor that links back here (round-trip),
+  // so the user lands on the matching stair instead of just any spot.
+  const sourceFloorId = curRoom.floorId || "floor_1";
+  let landingPoint = null;
+  for (const room of targetRooms) {
+    for (const st of room.structures || []) {
+      if (st.type === "stairs" && st.rect && st.linkedFloorId === sourceFloorId) {
+        // Step onto the bottom of the linked stair (not the middle of the
+        // tread) so the user can walk off it.
+        const cx = st.rect.x + st.rect.w / 2;
+        const cy = st.rect.y + st.rect.h * 0.95;
+        landingPoint = { x: cx, z: -cy };
+        break;
+      }
+    }
+    if (landingPoint) break;
+  }
+  // Switch the active floor — rebuild3D fires inside setActiveFloor.
+  toast("Floor change…");
+  setActiveFloor(floorId);
+  if (wasWalking && landingPoint) {
+    // setActiveFloor rebuilds the scene asynchronously; nudge the walk pos
+    // after that completes.
+    setTimeout(() => {
+      if (typeof window.fpPos === "object") {
+        fpPos.x = landingPoint.x;
+        fpPos.z = landingPoint.z;
+      }
+    }, 300);
+  }
+}
+window.transitionToLinkedFloor = transitionToLinkedFloor;
 function addStairsToCurrentRoom() {
   if (!curRoom) return;
   curRoom.structures = curRoom.structures || [];
