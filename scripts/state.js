@@ -334,6 +334,32 @@ function applyWalkInputStep() {
     if (clampWalkPos(nx, nz, walkRooms)) {
       fpPos.x = nx;
       fpPos.z = nz;
+      // If we walked onto a stair structure linked to another floor, hop the
+      // walk-through to that floor instead of just standing on the geometry.
+      checkStairFloorTransition(walkRooms);
+    }
+  }
+}
+function checkStairFloorTransition(rooms) {
+  if (window.__roseStairCooldown && Date.now() < window.__roseStairCooldown) return;
+  const py = -fpPos.z;
+  for (const room of rooms) {
+    for (const st of room.structures || []) {
+      if (st.type !== "stairs" || !st.rect || !st.linkedFloorId) continue;
+      if (
+        fpPos.x >= st.rect.x &&
+        fpPos.x <= st.rect.x + st.rect.w &&
+        py >= st.rect.y &&
+        py <= st.rect.y + st.rect.h
+      ) {
+        if (typeof window.transitionToLinkedFloor === "function") {
+          // Cool-down so the user can step off the stair on the new floor
+          // without instantly bouncing back.
+          window.__roseStairCooldown = Date.now() + 1500;
+          window.transitionToLinkedFloor(st.linkedFloorId);
+          return;
+        }
+      }
     }
   }
 }
