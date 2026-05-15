@@ -1313,6 +1313,146 @@ function buildRoomEnvelope3D(room, { floorFocus, renderer } = {}) {
   }
 }
 
+// Mini-map overlay: a small top-down thumbnail of the active floor with a
+// dot for the camera/walker position and a triangle for their facing.
+function drawMinimap3D() {
+  const canvas = document.getElementById("minimap3D");
+  if (!canvas || !curRoom || !is3D) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  // Match backing-store size to displayed CSS size for crisp lines on hi-DPI.
+  const cssW = canvas.clientWidth || canvas.width || 220;
+  const cssH = canvas.clientHeight || canvas.height || 180;
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  if (canvas.width !== cssW * dpr || canvas.height !== cssH * dpr) {
+    canvas.width = cssW * dpr;
+    canvas.height = cssH * dpr;
+  }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, cssW, cssH);
+  // Background tint
+  ctx.fillStyle = "rgba(20, 16, 14, 0.78)";
+  ctx.fillRect(0, 0, cssW, cssH);
+  const rooms = currentFloor3DRooms(curRoom).filter((r) => r?.polygon?.length);
+  if (!rooms.length) return;
+  // Compute bounds across all rooms on this floor
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
+  rooms.forEach((room) => {
+    room.polygon.forEach((p) => {
+      if (p.x < minX) minX = p.x;
+      if (p.y < minY) minY = p.y;
+      if (p.x > maxX) maxX = p.x;
+      if (p.y > maxY) maxY = p.y;
+    });
+  });
+  const pad = 12;
+  const planW = Math.max(1, maxX - minX);
+  const planH = Math.max(1, maxY - minY);
+  const scale = Math.min((cssW - pad * 2) / planW, (cssH - pad * 2) / planH);
+  const offX = pad + ((cssW - pad * 2) - planW * scale) / 2 - minX * scale;
+  const offY = pad + ((cssH - pad * 2) - planH * scale) / 2 - minY * scale;
+  const project = (x, y) => ({ x: offX + x * scale, y: offY + y * scale });
+
+  // Room polygons
+  rooms.forEach((room) => {
+    const sameRoom = room === curRoom;
+    ctx.beginPath();
+    room.polygon.forEach((p, i) => {
+      const pt = project(p.x, p.y);
+      if (i === 0) ctx.moveTo(pt.x, pt.y);
+      else ctx.lineTo(pt.x, pt.y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = sameRoom ? "rgba(255, 240, 220, 0.18)" : "rgba(200, 190, 180, 0.10)";
+    ctx.fill();
+    ctx.strokeStyle = sameRoom ? "rgba(255, 240, 220, 0.9)" : "rgba(200, 190, 180, 0.6)";
+    ctx.lineWidth = sameRoom ? 1.6 : 1.1;
+    ctx.stroke();
+    // Furniture footprints — tiny rectangles
+    (room.furniture || []).forEach((f) => {
+      if (!Number.isFinite(f.x) || !Number.isFinite(f.z)) return;
+      const fw = (f.w || 1.5) * scale;
+      const fh = (f.d || 1.5) * scale;
+      const center = project(f.x, f.z);
+      ctx.save();
+      ctx.translate(center.x, center.y);
+      ctx.rotate(-((f.rotation || 0) * Math.PI) / 180);
+      ctx.fillStyle = "rgba(184, 145, 142, 0.65)";
+      ctx.fillRect(-fw / 2, -fh / 2, fw, fh);
+      ctx.restore();
+    });
+    // Door openings — small breaks marked in green
+    (room.openings || []).forEach((op) => {
+      if (op.type !== "door") return;
+      const wall = (room.walls || []).find((w) => w.id === op.wallId);
+      if (!wall) return;
+      const a = wS(room, wall);
+      const b = wE(room, wall);
+      const wl = wL(room, wall) || 1;
+      const t = (op.offset || 0) / wl;
+      const px = a.x + (b.x - a.x) * t;
+      const py = a.y + (b.y - a.y) * t;
+      const p = project(px, py);
+      ctx.fillStyle = "rgba(143, 180, 124, 0.95)";
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    // Stairs — small diagonal hatch
+    (room.structures || []).forEach((st) => {
+      if (st.type !== "stairs" || !st.rect) return;
+      const a = project(st.rect.x, st.rect.y);
+      const b = project(st.rect.x + st.rect.w, st.rect.y + st.rect.h);
+      ctx.fillStyle = "rgba(220, 207, 188, 0.45)";
+      ctx.strokeStyle = "rgba(220, 207, 188, 0.85)";
+      ctx.lineWidth = 1;
+      ctx.fillRect(a.x, a.y, b.x - a.x, b.y - a.y);
+      ctx.strokeRect(a.x, a.y, b.x - a.x, b.y - a.y);
+    });
+  });
+
+  // Player marker
+  // Walk mode: use fpPos. Orbit mode: use orbitTarget projected to plan y.
+  let playerPlanX, playerPlanY, facingYaw;
+  if (camMode === "walk") {
+    playerPlanX = fpPos.x;
+    playerPlanY = -fpPos.z; // 3D z → 2D y mapping is negated
+    facingYaw = cYaw;
+  } else if (orbitTarget) {
+    playerPlanX = orbitTarget.x;
+    playerPlanY = -orbitTarget.z;
+    facingYaw = cYaw + Math.PI; // orbit camera looks toward target, opposite of camera vector
+  }
+  if (Number.isFinite(playerPlanX) && Number.isFinite(playerPlanY)) {
+    const pos = project(playerPlanX, playerPlanY);
+    // Facing triangle
+    const r = 8;
+    const tipX = pos.x + Math.sin(facingYaw) * r;
+    const tipY = pos.y - Math.cos(facingYaw) * r;
+    const leftX = pos.x + Math.sin(facingYaw + 2.4) * r * 0.85;
+    const leftY = pos.y - Math.cos(facingYaw + 2.4) * r * 0.85;
+    const rightX = pos.x + Math.sin(facingYaw - 2.4) * r * 0.85;
+    const rightY = pos.y - Math.cos(facingYaw - 2.4) * r * 0.85;
+    ctx.beginPath();
+    ctx.moveTo(tipX, tipY);
+    ctx.lineTo(leftX, leftY);
+    ctx.lineTo(rightX, rightY);
+    ctx.closePath();
+    ctx.fillStyle = camMode === "walk" ? "rgba(255, 200, 90, 0.95)" : "rgba(180, 210, 255, 0.95)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(20, 16, 14, 0.6)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    // Center dot for clarity
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, 1.6, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(20, 16, 14, 0.85)";
+    ctx.fill();
+  }
+}
 function build3D() {
   try {
     resetRoomDebug();
@@ -1558,6 +1698,9 @@ function build3D() {
       }
       if (composer) composer.render();
       else ren.render(scene, cam);
+      // Mini-map updates on every render frame so the player marker tracks
+      // the camera/walker in real time.
+      drawMinimap3D();
     })();
   } catch (err) {
     console.warn("3D build failed:", err);

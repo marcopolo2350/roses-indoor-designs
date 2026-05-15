@@ -67,7 +67,11 @@
       -(startPoint.y + Math.sin(angle) * hingeOffset),
     );
     pivot.rotation.y = -angle;
-    pivot.rotation.y += (swingIn ? -1 : 1) * (hingeRight ? 1 : -1) * Math.PI * 0.5;
+    // swingIn was previously multiplied by -1, which actually pushed the leaf
+    // to the OUTSIDE of the wall (and `swing: "out"` doors swung inside).
+    // Flipping the sign so `swing: "in"` opens the leaf into the room and
+    // `swing: "out"` opens it away, matching the 2D plan arc.
+    pivot.rotation.y += (swingIn ? 1 : -1) * (hingeRight ? 1 : -1) * Math.PI * 0.5;
 
     const doorMat = new THREERef.MeshStandardMaterial({
       color: colorClone(THREERef, trimColor).offsetHSL(0.015, 0.08, -0.05),

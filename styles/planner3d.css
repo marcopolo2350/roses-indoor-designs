@@ -298,6 +298,37 @@
   gap: 8px;
 }
 
+/* Minimap — top-down plan thumbnail with player marker */
+.minimap-3d {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 220px;
+  height: 180px;
+  background: rgba(20, 16, 14, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  z-index: 90;
+  display: none;
+  pointer-events: none;
+}
+.scr.mode-3d .minimap-3d {
+  display: block;
+}
+.scr.presentation .minimap-3d,
+.scr.photo-mode .minimap-3d {
+  display: none;
+}
+@media (max-width: 540px) {
+  .minimap-3d {
+    width: 140px;
+    height: 110px;
+    top: 8px;
+    left: 8px;
+  }
+}
+
 /* Walk hint */
 .walk-hint {
   position: absolute;
